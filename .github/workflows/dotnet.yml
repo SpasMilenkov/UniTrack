@@ -1,0 +1,55 @@
+name: .NET with Qodana
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'UniTrackBackend/**'  # Updated to your project directory
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'UniTrackBackend/**'  # Updated to your project directory
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x  # Using .NET 7
+
+    - name: Restore dependencies
+      run: dotnet restore UniTrackBackend/UniTrackBackend.sln  # Update with solution file path
+
+    - name: Build
+      run: dotnet build --no-restore UniTrackBackend/UniTrackBackend.sln  # Update with solution file path
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal UniTrackBackend/UniTrackBackend.sln  # Update with solution file path
+
+    - name: Publish
+      run: dotnet publish UniTrackBackend/UniTrackBackend.csproj -c Release -o out  # Update with project file path
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-app
+        path: out/
+  
+  qodana-check:
+    runs-on: ubuntu-latest
+    needs: build  # Qodana runs after the build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Qodana for .NET
+      uses: JetBrains/qodana-action@v1
+      with:
+        project-dir: 'UniTrackBackend'  # Path to your .NET project
+        results-dir: 'UniTrackBackend/qodana-results'  # Path for Qodana results
+        additional-parameters: '--idea-config UniTrackBackend/.idea'  # Update if needed
