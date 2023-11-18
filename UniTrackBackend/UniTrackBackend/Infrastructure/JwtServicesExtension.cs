@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -46,6 +47,24 @@ public static class JwtServicesExtension
     {
         services.AddSwaggerGen(options =>
         {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "UniTrack API",
+                Description = "The ASP.NET Core Web API behind the UniTrack School Management System and analysis tool.",
+                Contact = new OpenApiContact
+                {
+                    Name = "Spas Milenkov",
+                    Email = "dummy@example.com",
+                    Url = new Uri(@"https://github.com/SpasMilenkov")
+                },
+                Version = "v1"
+            });
+            
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            
+            options.IncludeXmlComments(xmlPath);
+            
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Description = "Standard authorization header using bearer token",
@@ -54,7 +73,7 @@ public static class JwtServicesExtension
                 Type = SecuritySchemeType.ApiKey
             });
             options.OperationFilter<SecurityRequirementsOperationFilter>();
-
+            
         });
         return services;
     }
