@@ -12,17 +12,31 @@ public class AuthController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IAuthService _authService;
 
-    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService)
+    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _authService = authService;
+        _roleManager = roleManager;
     }
 
-    // Login Endpoint
+    /// <summary>
+    /// Authenticates a user and provides a JWT and refresh token.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint authenticates the user based on the provided email and password.
+    /// If authentication is successful, it returns a JWT for accessing protected resources and a refresh token.
+    /// The tokens are set as cookies in the response.
+    /// </remarks>
+    /// <param name="model">The login credentials (email and password).</param>
+    /// <response code="200">Successful login with JWT and refresh token.</response>
+    /// <response code="401">Unauthorized if credentials are invalid.</response>
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginViewModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
@@ -38,8 +52,19 @@ public class AuthController : ControllerBase
 
     }
 
-    // Register Endpoint
+    /// <summary>
+    /// Registers a new user and provides a JWT and refresh token.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint registers a new user with the provided details.
+    /// On successful registration, it returns a JWT and a refresh token.
+    /// </remarks>
+    /// <param name="model">Registration details including email, password, and name.</param>
+    /// <response code="200">Successful registration with JWT and refresh token.</response>
+    /// <response code="400">Bad request if registration fails (e.g., email already in use).</response>
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
         var user = new User
@@ -50,7 +75,7 @@ public class AuthController : ControllerBase
             LastName = model.LastName
         };
         var result = await _userManager.CreateAsync(user, model.Password);
-
+        
         if (!result.Succeeded) return BadRequest(result.Errors);
         
         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -60,8 +85,18 @@ public class AuthController : ControllerBase
 
     }
 
-    // Refresh Token Endpoint
+    /// <summary>
+    /// Refreshes the JWT using a refresh token.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint uses the refresh token provided in cookies to generate a new JWT and refresh token.
+    /// If the refresh token is valid, it returns new tokens as cookies in the response.
+    /// </remarks>
+    /// <response code="200">Successful refresh with new JWT and refresh token.</response>
+    /// <response code="400">Bad request if the refresh token is missing or invalid.</response>
     [HttpPost("refresh-token")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RefreshToken()
     {
         var refreshToken = Request.Cookies["RefreshToken"];
@@ -86,7 +121,16 @@ public class AuthController : ControllerBase
         return Ok("Token refreshed");
     }
     
+    /// <summary>
+    /// Logs out the user by invalidating the refresh token.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint logs out the current user by invalidating the refresh token.
+    /// It deletes the refresh token cookie from the response.
+    /// </remarks>
+    /// <response code="200">Successful logout.</response>
     [HttpPost("logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Logout()
     {
         var refreshToken = Request.Cookies["RefreshToken"];
@@ -105,6 +149,4 @@ public class AuthController : ControllerBase
 
         return Ok();
     }
-
-    
 }
