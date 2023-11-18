@@ -10,11 +10,9 @@ public static class DataSeeder
     {
         using var scope = serviceProvider.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         
         await SeedRolesAsync(roleManager);
         
-        //Add users here
     }
 
     private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
