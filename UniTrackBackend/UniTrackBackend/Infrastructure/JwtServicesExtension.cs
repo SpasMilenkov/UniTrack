@@ -9,7 +9,7 @@ namespace UniTrackBackend.Infrastructure;
 
 public static class JwtServicesExtension
 {
-    public static IServiceCollection AddJwtToken(this IServiceCollection services, IConfiguration configuration)
+    public static void AddJwtToken(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(options =>
             {
@@ -40,10 +40,9 @@ public static class JwtServicesExtension
                     }
                 };
             });
-        return services;
     }
 
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    public static void AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
         {
@@ -55,7 +54,7 @@ public static class JwtServicesExtension
                 {
                     Name = "Spas Milenkov",
                     Email = "dummy@example.com",
-                    Url = new Uri(@"https://github.com/SpasMilenkov")
+                    Url = new Uri("https://github.com/SpasMilenkov")
                 },
                 Version = "v1"
             });
@@ -75,6 +74,5 @@ public static class JwtServicesExtension
             options.OperationFilter<SecurityRequirementsOperationFilter>();
             
         });
-        return services;
     }
 }
