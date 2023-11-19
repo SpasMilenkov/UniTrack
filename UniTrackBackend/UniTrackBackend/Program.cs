@@ -1,3 +1,4 @@
+using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
 using UniTrackBackend.Services;
@@ -10,7 +11,11 @@ builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowOrigin",
         options => options.WithOrigins(
-                "https://localhost:5500", "http://127.0.0.1:5500")
+                "https://localhost:5500",
+                "http://127.0.0.1:5500",
+                "http://localhost:5173/",
+                "http://localhost:5173",
+                "http://localhost")
             .AllowCredentials()
             .AllowAnyMethod()
             .AllowAnyHeader()
