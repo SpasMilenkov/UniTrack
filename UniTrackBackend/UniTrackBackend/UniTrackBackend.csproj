@@ -37,7 +37,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+      <ProjectReference Include="..\UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Data\UniTrackBackend.Data.csproj" />
     </ItemGroup>
 
 </Project>
