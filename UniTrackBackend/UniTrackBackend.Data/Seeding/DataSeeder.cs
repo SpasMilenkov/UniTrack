@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using UniTrackBackend.Models;
-using UniTrackBackend.Models.TypeSafe;
+using Microsoft.Extensions.DependencyInjection;
+using UniTrackBackend.Data.Models.TypeSafe;
 
-namespace UniTrackBackend.Infrastructure;
+namespace UniTrackBackend.Data.Seeding;
 
 public static class DataSeeder
 {
