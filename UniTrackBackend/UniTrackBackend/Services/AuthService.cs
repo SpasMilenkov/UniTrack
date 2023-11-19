@@ -5,9 +5,9 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using UniTrackBackend.Database;
+using UniTrackBackend.Data.Database;
+using UniTrackBackend.Data.Models;
 using UniTrackBackend.Interfaces;
-using UniTrackBackend.Models;
 
 
 namespace UniTrackBackend.Services;

@@ -1,4 +1,4 @@
-using UniTrackBackend.Models;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Interfaces;
 
