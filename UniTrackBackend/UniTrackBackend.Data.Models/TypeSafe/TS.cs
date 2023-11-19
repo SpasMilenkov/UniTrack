@@ -1,4 +1,4 @@
-namespace UniTrackBackend.Models.TypeSafe;
+namespace UniTrackBackend.Data.Models.TypeSafe;
 
 public abstract class Ts
 {
