@@ -1,7 +1,9 @@
+using UniTrackBackend.Data;
 using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ builder.Services.AddCors(c =>
 });
 builder.Services.AddJwtToken(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IApprovalService, ApprovalService>();
+builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
