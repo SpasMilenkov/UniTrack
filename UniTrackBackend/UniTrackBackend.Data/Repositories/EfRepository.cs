@@ -16,7 +16,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class
         _dbSet = context.Set<TEntity>();
     }
 
-    public async Task<IEnumerable<TEntity>> GeAsync(Expression<Func<TEntity, bool>>? filter = null,
+    public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
     {
         IQueryable<TEntity> query = _dbSet;
@@ -34,6 +34,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class
         return await query.ToListAsync();
         
     }
+
     public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
@@ -64,6 +65,16 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class
         {
             _dbSet.Remove(entity);
         }
+    }
+
+    public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.FirstOrDefaultAsync(predicate);
+    }
+
+    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.SingleOrDefaultAsync(predicate);
     }
 }
 
