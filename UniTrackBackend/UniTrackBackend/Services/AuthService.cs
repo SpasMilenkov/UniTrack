@@ -91,23 +91,6 @@ public class AuthService : IAuthService
     };
     
     //Needs User repository and entities to develop further
-    
-    public async Task<bool> ApproveStudents()
-    {
-        throw new NotImplementedException();
-    }
-    public async Task<bool> ApproveParents()
-    {
-        throw new NotImplementedException();
-    }
-    public async Task<bool> ApproveTeachers()
-    {
-        throw new NotImplementedException();
-    }
-    public async Task<bool> ApproveAdmins()
-    {
-        throw new NotImplementedException();
-    }
 }
 
  

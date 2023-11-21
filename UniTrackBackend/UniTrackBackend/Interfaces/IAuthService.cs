@@ -9,8 +9,4 @@ public interface IAuthService
     public Task<User?> GetUserFromRefreshToken(string refreshToken);
     public CookieOptions GetRefreshCookieOptions();
     public CookieOptions GetAccessCookieOptions();
-    public Task<bool> ApproveStudents();
-    public Task<bool> ApproveParents();
-    public Task<bool> ApproveTeachers();
-    public Task<bool> ApproveAdmins();
 }
