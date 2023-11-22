@@ -28,13 +28,16 @@ public class ApprovalService : IApprovalService
             
             await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
 
-            var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Name);
+            var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Grade);
             if (grade is null)
                 throw new DataException();
             
             var student = new Student
             {
+                
                 Grade = grade,
+                UserId = user.Id,
+                User = user
             };
 
             await _unitOfWork.StudentRepository.AddAsync(student);
