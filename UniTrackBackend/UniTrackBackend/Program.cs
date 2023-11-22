@@ -3,7 +3,6 @@ using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
 using UniTrackBackend.Services;
-using UniTrackBackend.Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 

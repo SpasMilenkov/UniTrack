@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Interfaces;
-using UniTrackBackend.ViewModels;
 
 namespace UniTrackBackend.Controllers;
 
