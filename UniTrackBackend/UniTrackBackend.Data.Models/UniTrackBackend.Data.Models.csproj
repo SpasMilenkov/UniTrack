@@ -6,10 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+
     <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Identity.Stores">
-        <HintPath>..\..\..\..\.nuget\packages\microsoft.extensions.identity.stores\7.0.14\lib\net7.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
-      </Reference>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.14" />
     </ItemGroup>
 
 </Project>
