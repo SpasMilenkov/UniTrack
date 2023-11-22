@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UniTrackBackend</name>
+    </assembly>
+    <members>
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.StudentViewModel})">
+            <summary>
+            Approves student registrations.
+            </summary>
+            <remarks>
+            This endpoint approves pending student registrations. 
+            Only accessible to users with the Admin role.
+            </remarks>
+            <response code="200">Returns a confirmation message when a student is approved.</response>
+            <response code="401">Unauthorized if the user is not authenticated.</response>
+            <response code="403">Forbidden if the user does not have the Admin role.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveTeachers(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.TeacherViewModel})">
+            <summary>
+            Approves teacher registrations.
+            </summary>
+            <remarks>
+            This endpoint approves pending teacher registrations.
+            Only accessible to users with the Admin role.
+            </remarks>
+            <response code="200">Returns a confirmation message when a teacher is approved.</response>
+            <response code="401">Unauthorized if the user is not authenticated.</response>
+            <response code="403">Forbidden if the user does not have the Admin role.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveAdmins(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.AdminViewModel})">
+            <summary>
+            Approves admin registrations.
+            </summary>
+            <remarks>
+            This endpoint approves pending admin registrations.
+            Only accessible to users with the Admin role.
+            </remarks>
+            <response code="200">Returns a confirmation message when an admin is approved.</response>
+            <response code="401">Unauthorized if the user is not authenticated.</response>
+            <response code="403">Forbidden if the user does not have the Admin role.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveParents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.ParentViewModel})">
+            <summary>
+            Approves parent registrations.
+            </summary>
+            <remarks>
+            This endpoint approves pending parent registrations.
+            Only accessible to users with the Admin role.
+            </remarks>
+            <response code="200">Returns a confirmation message when a parent is approved.</response>
+            <response code="401">Unauthorized if the user is not authenticated.</response>
+            <response code="403">Forbidden if the user does not have the Admin role.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.Login(UniTrackBackend.Api.ViewModels.LoginViewModel)">
+            <summary>
+            Authenticates a user and provides a JWT and refresh token.
+            </summary>
+            <remarks>
+            This endpoint authenticates the user based on the provided email and password.
+            If authentication is successful, it returns a JWT for accessing protected resources and a refresh token.
+            The tokens are set as cookies in the response.
+            </remarks>
+            <param name="model">The login credentials (email and password).</param>
+            <response code="200">Successful login with JWT and refresh token.</response>
+            <response code="401">Unauthorized if credentials are invalid.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.Register(UniTrackBackend.Api.ViewModels.RegisterViewModel)">
+            <summary>
+            Registers a new user and provides a JWT and refresh token.
+            </summary>
+            <remarks>
+            This endpoint registers a new user with the provided details.
+            On successful registration, it returns a JWT and a refresh token.
+            </remarks>
+            <param name="model">Registration details including email, password, and name.</param>
+            <response code="200">Successful registration with JWT and refresh token.</response>
+            <response code="400">Bad request if registration fails (e.g., email already in use).</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.RefreshToken">
+            <summary>
+            Refreshes the JWT using a refresh token.
+            </summary>
+            <remarks>
+            This endpoint uses the refresh token provided in cookies to generate a new JWT and refresh token.
+            If the refresh token is valid, it returns new tokens as cookies in the response.
+            </remarks>
+            <response code="200">Successful refresh with new JWT and refresh token.</response>
+            <response code="400">Bad request if the refresh token is missing or invalid.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.Logout">
+            <summary>
+            Logs out the user by invalidating the refresh token.
+            </summary>
+            <remarks>
+            This endpoint logs out the current user by invalidating the refresh token.
+            It deletes the refresh token cookie from the response.
+            </remarks>
+            <response code="200">Successful logout.</response>
+        </member>
+    </members>
+</doc>
