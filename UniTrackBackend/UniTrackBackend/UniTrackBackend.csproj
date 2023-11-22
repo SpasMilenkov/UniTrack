@@ -37,8 +37,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\UniTrackBackend.Api.ViewModels\UniTrackBackend.Api.ViewModels.csproj" />
       <ProjectReference Include="..\UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj" />
       <ProjectReference Include="..\UniTrackBackend.Data\UniTrackBackend.Data.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Services\UniTrackBackend.Services.csproj" />
     </ItemGroup>
 
 </Project>
