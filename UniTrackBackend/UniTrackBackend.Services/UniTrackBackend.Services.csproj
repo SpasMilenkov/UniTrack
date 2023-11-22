@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\UniTrackBackend.Api.ViewModels\UniTrackBackend.Api.ViewModels.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Data\UniTrackBackend.Data.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Services.Mappings\UniTrackBackend.Services.Mappings.csproj" />
+    </ItemGroup>
+
+</Project>
