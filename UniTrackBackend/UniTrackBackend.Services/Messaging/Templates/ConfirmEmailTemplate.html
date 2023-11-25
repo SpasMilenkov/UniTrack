@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Confirmation Email</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #49c5b6;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 5px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        Confirm Your Email
+    </div>
+    <div class="content">
+        <p>Hi there,</p>
+        <p>Thanks for registering with us! Please confirm your email address by clicking the button below.</p>
+        <a href="{LINK_TOKEN}" class="button">Confirm Email</a>
+        <p>If the button doesn't work, please paste the following link into your browser:</p>
+        <p><a href="{LINK_TOKEN}">Get the link here</a></p>
+    </div>
+    <div class="footer">&#169; 2023 UniTrack</div>
+</div>
+</body>
+</html>
