@@ -1,8 +1,11 @@
+using System.Net;
+using System.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Interfaces;
+using UniTrackBackend.Services.Messaging;
 
 namespace UniTrackBackend.Controllers;
 
@@ -12,15 +15,15 @@ public class AuthController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IAuthService _authService;
+    private readonly IEmailService _emailService;
 
-    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService, RoleManager<IdentityRole> roleManager)
+    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService, IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _authService = authService;
-        _roleManager = roleManager;
+        _emailService = emailService;
     }
 
     /// <summary>
@@ -79,10 +82,23 @@ public class AuthController : ControllerBase
         if (!result.Succeeded) return BadRequest(result.Errors);
         
         await _signInManager.SignInAsync(user, isPersistent: false);
+
+        var emailToken = await _authService.GetEmailConfirmationToken(user);
+        
+        var callbackUrl = Url.Action(
+            "ConfirmEmail",
+            "Auth",
+            new { userId = user.Id, token = HttpUtility.UrlEncode(emailToken) },
+            protocol: HttpContext.Request.Scheme);
+        
+        if (callbackUrl is null)
+            return BadRequest();
+
+        await _emailService.SendEmailAsync(user.FirstName, user.LastName, user.Email, callbackUrl, "confirmemail");
+        
         var token = _authService.GenerateJwtToken(user);
         var refreshToken = await _authService.GenerateRefreshToken(user);
         return Ok(new { token, refreshToken });
-
     }
 
     /// <summary>
@@ -114,7 +130,6 @@ public class AuthController : ControllerBase
 
         var newAccessToken = _authService.GenerateJwtToken(user);
         var newRefreshToken = await _authService.GenerateRefreshToken(user);
-        
         
         Response.Cookies.Append("RefreshToken", newRefreshToken, _authService.GetRefreshCookieOptions());
         Response.Cookies.Append("AccessToken", newAccessToken, _authService.GetAccessCookieOptions());
@@ -148,5 +163,103 @@ public class AuthController : ControllerBase
         Response.Cookies.Delete("RefreshToken", new CookieOptions { Secure = true, HttpOnly = true });
 
         return Ok();
+    }
+    /// <summary>
+    /// Confirms a user's email address.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint verifies a user's email address using a unique user ID and a token sent via email.
+    /// It requires both the user ID and the token to confirm the email.
+    /// </remarks>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="token">The token sent to the user's email for confirmation.</param>
+    /// <response code="200">Email confirmed successfully.</response>
+    /// <response code="400">Bad request if the user ID or token is missing or invalid.</response>
+    /// <response code="404">User not found if the user ID does not match any existing user.</response>
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+        {
+            return BadRequest("User ID and Token are required");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, WebUtility.UrlDecode(token));
+        if (result.Succeeded)
+        {
+            return Ok("Email confirmed successfully");
+        }
+
+        return BadRequest("Email could not be confirmed");
+    }
+    
+    /// <summary>
+    /// Initiates the password reset process for a user.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint is used when a user forgets their password and needs to reset it.
+    /// It sends a password reset link to the user's email if the account with the given email exists and is confirmed.
+    /// </remarks>
+    /// <param name="email">The email address of the user who wants to reset their password.</param>
+    /// <response code="200">Indicates that a password reset link has been sent if an account with the email exists.</response>
+    /// <response code="400">Bad request if the email is missing or invalid.</response>
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return BadRequest("Email is required");
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        {
+            return Ok("If an account with this email exists, a password reset link has been sent.");
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var callbackUrl = Url.Action("ResetPassword", "Auth", new { email = user.Email, token = HttpUtility.UrlEncode(token) }, Request.Scheme);
+
+        
+        if (callbackUrl != null)
+            await _emailService.SendEmailAsync(user.FirstName, user.LastName, user.Email!, callbackUrl,
+                "resetpassword");
+
+        return Ok("If an account with this email exists, a password reset link has been sent.");
+    }
+    
+    /// <summary>
+    /// Resets a user's password.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint allows a user to reset their password using a token received in their email.
+    /// It requires a valid token, the user's email, and the new password.
+    /// </remarks>
+    /// <param name="model">The model containing the email, token, and new password of the user.</param>
+    /// <response code="200">Password has been reset successfully.</response>
+    /// <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+    {
+
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            return BadRequest("Invalid request");
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+        if (result.Succeeded)
+        {
+            return Ok("Password has been reset successfully");
+        }
+        
+        return BadRequest("Error resetting password");
     }
 }
