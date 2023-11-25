@@ -9,4 +9,5 @@ public interface IAuthService
     public Task<User?> GetUserFromRefreshToken(string refreshToken);
     public CookieOptions GetRefreshCookieOptions();
     public CookieOptions GetAccessCookieOptions();
+    public Task<string?> GetEmailConfirmationToken(User user);
 }

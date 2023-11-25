@@ -89,8 +89,12 @@ public class AuthService : IAuthService
         Domain = "localhost",
         IsEssential = true
     };
-    
-    //Needs User repository and entities to develop further
+
+    public async Task<string?> GetEmailConfirmationToken(User user)
+    {
+        // Generate the confirmation link
+        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    }
 }
 
  
