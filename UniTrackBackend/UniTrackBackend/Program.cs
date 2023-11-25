@@ -3,6 +3,7 @@ using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddJwtToken(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApprovalService, ApprovalService>();
 builder.Services.AddScoped<UnitOfWork>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
