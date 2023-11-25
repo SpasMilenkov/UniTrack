@@ -31,9 +31,12 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/purple-green.css",
+              "node_modules/bootstrap/scss/bootstrap.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
