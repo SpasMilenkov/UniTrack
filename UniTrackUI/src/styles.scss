@@ -1,4 +1,68 @@
 @import 'assets/variables';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+a {
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: $color-ut-white;
+}
+
+h1,
+h2
+{
+  font-family: 'Cabin Sketch', sans-serif !important;
+}
+
+.text-ut-primary{
+  color: $color-ut-primary;
+}
+
+.text-ut-accent{
+  color: $color-ut-accent;
+}
+
+.text-ut-white{
+  color: $color-ut-white;
+}
+
+.text-ut-dark-grey{
+  color: $color-ut-dark-grey;
+}
+
+.text-ut-light-grey{
+  color: $color-ut-light-grey;
+}
+
+.bg-ut-primary{
+  background: $color-ut-primary;
+}
+
+.bg-ut-accent{
+  background: $color-ut-accent;
+}
+
+.bg-ut-white{
+  background: $color-ut-white;
+}
+
+.bg-ut-dark-grey{
+  background: $color-ut-dark-grey;
+}
+
+.bg-ut-light-grey{
+  background: $color-ut-light-grey;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
