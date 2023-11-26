@@ -1,0 +1,67 @@
+@use "../colors" as colors;
+@use "@angular/material" as mat;
+@include mat.core();
+
+$uni-track-ui-primary-palette: mat.define-palette(
+  (
+    100: colors.$color-ut-primary-100,
+    200: colors.$color-ut-primary-200,
+    300: colors.$color-ut-primary-300,
+    400: colors.$color-ut-primary-400,
+    500: colors.$color-ut-primary,
+    600: colors.$color-ut-primary-600,
+    700: colors.$color-ut-primary-700,
+    800: colors.$color-ut-primary-800,
+    900: colors.$color-ut-primary-900,
+    contrast: (
+      100: colors.$color-ut-dark-grey,
+      200: colors.$color-ut-dark-grey,
+      300: colors.$color-ut-dark-grey,
+      400: colors.$color-ut-dark-grey,
+      500: colors.$color-ut-dark-grey,
+      600: colors.$color-ut-dark-grey,
+      700: colors.$color-ut-white,
+      800: colors.$color-ut-white,
+      900: colors.$color-ut-white,
+    )
+  )
+);
+
+$uni-track-ui-accent-palette: mat.define-palette(
+  (
+    100: colors.$color-ut-accent-100,
+    200: colors.$color-ut-accent-200,
+    300: colors.$color-ut-accent-300,
+    400: colors.$color-ut-accent-400,
+    500: colors.$color-ut-accent,
+    600: colors.$color-ut-accent-600,
+    700: colors.$color-ut-accent-700,
+    800: colors.$color-ut-accent-800,
+    900: colors.$color-ut-accent-900,
+    contrast: (
+      100: colors.$color-ut-dark-grey,
+      200: colors.$color-ut-dark-grey,
+      300: colors.$color-ut-dark-grey,
+      400: colors.$color-ut-dark-grey,
+      500: colors.$color-ut-white,
+      600: colors.$color-ut-white,
+      700: colors.$color-ut-white,
+      800: colors.$color-ut-white,
+      900: colors.$color-ut-white,
+    )
+  )
+);
+
+$uni-track-ui-warn-palette: mat.define-palette(mat.$red-palette);
+
+$uni-track-ui-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $uni-track-ui-primary-palette,
+      accent: $uni-track-ui-accent-palette,
+      warn: $uni-track-ui-warn-palette,
+    ),
+  )
+);
+
+@include mat.all-component-themes($uni-track-ui-theme);
