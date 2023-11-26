@@ -1,0 +1,10 @@
+@import '../colors';
+
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text{
+  background-color: $color-ut-accent;
+  color: $color-ut-white;
+}
+
+.mat-mdc-menu-item .mat-icon-no-color, .mat-mdc-menu-item .mat-mdc-menu-submenu-icon{
+  color: $color-ut-white !important;
+}

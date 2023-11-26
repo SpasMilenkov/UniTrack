@@ -1,0 +1,74 @@
+<div
+  class="header-wrapper position-fixed w-100 bg-ut-primary d-flex flex-wrap align-items-center justify-content-between p-2 shadow-lg"
+>
+  <div
+    class="logo-wrapper d-flex justify-content-start align-items-center px-3"
+    routerLink="./"
+  >
+    <img
+      src="assets/images/uni-track-logo.jpg"
+      alt="uni-track-logo"
+      class="uni-track-logo"
+    />
+    <h1 class="title-wrapper text-ut-white m-0 px-3">UniTrack</h1>
+  </div>
+  <ul class="d-md-flex d-none justify-content-end align-items-center">
+    <li class="li-wrapper">
+      <mat-icon>text_increase</mat-icon>
+    </li>
+    <li class="li-wrapper">
+      <mat-icon>leaderboard</mat-icon>
+    </li>
+    <li class="li-wrapper">
+      <mat-icon>notifications</mat-icon>
+    </li>
+    <li [matMenuTriggerFor]="profileMenu">
+      <img
+        class="profile-img"
+        src="assets/images/programmer.png"
+        alt="profile-img"
+      />
+    </li>
+  </ul>
+  <button
+    class="d-block d-md-none"
+    mat-icon-button
+    [matMenuTriggerFor]="mobileMenu"
+  >
+    <mat-icon class="text-ut-white">more_vert</mat-icon>
+  </button>
+</div>
+
+<mat-menu #mobileMenu="matMenu">
+  <div mat-menu-item>
+    <mat-icon>text_increase</mat-icon>
+    <span>Grades</span>
+  </div>
+  <div mat-menu-item>
+    <mat-icon>leaderboard</mat-icon>
+    <span>Statistics</span>
+  </div>
+  <div mat-menu-item>
+    <mat-icon>notifications</mat-icon>
+    <span>Notifications</span>
+  </div>
+  <div mat-menu-item>
+    <mat-icon>person</mat-icon>
+    View profile
+  </div>
+  <div mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    <span>Log out</span>
+  </div>
+</mat-menu>
+
+<mat-menu #profileMenu="matMenu">
+  <div mat-menu-item routerLink="profile">
+    <mat-icon>person</mat-icon>
+    View profile
+  </div>
+  <div mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    <span>Log out</span>
+  </div>
+</mat-menu>
