@@ -98,5 +98,43 @@
             </remarks>
             <response code="200">Successful logout.</response>
         </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.ConfirmEmail(System.String,System.String)">
+            <summary>
+            Confirms a user's email address.
+            </summary>
+            <remarks>
+            This endpoint verifies a user's email address using a unique user ID and a token sent via email.
+            It requires both the user ID and the token to confirm the email.
+            </remarks>
+            <param name="userId">The unique identifier of the user.</param>
+            <param name="token">The token sent to the user's email for confirmation.</param>
+            <response code="200">Email confirmed successfully.</response>
+            <response code="400">Bad request if the user ID or token is missing or invalid.</response>
+            <response code="404">User not found if the user ID does not match any existing user.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.ForgotPassword(System.String)">
+            <summary>
+            Initiates the password reset process for a user.
+            </summary>
+            <remarks>
+            This endpoint is used when a user forgets their password and needs to reset it.
+            It sends a password reset link to the user's email if the account with the given email exists and is confirmed.
+            </remarks>
+            <param name="email">The email address of the user who wants to reset their password.</param>
+            <response code="200">Indicates that a password reset link has been sent if an account with the email exists.</response>
+            <response code="400">Bad request if the email is missing or invalid.</response>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AuthController.ResetPassword(UniTrackBackend.Api.ViewModels.ResetPasswordModel)">
+            <summary>
+            Resets a user's password.
+            </summary>
+            <remarks>
+            This endpoint allows a user to reset their password using a token received in their email.
+            It requires a valid token, the user's email, and the new password.
+            </remarks>
+            <param name="model">The model containing the email, token, and new password of the user.</param>
+            <response code="200">Password has been reset successfully.</response>
+            <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
+        </member>
     </members>
 </doc>
