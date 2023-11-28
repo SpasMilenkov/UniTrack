@@ -1,0 +1,25 @@
+@use 'colors';
+
+.primary-btn-md, .primary-btn-lg{
+  width: 50%;
+  align-self: end;
+  border-radius: 10px !important;
+  background-color: colors.$color-ut-primary !important;
+  color: colors.$color-ut-white !important;
+}
+
+.primary-btn-lg{
+  width: 100%;
+}
+
+.accent-btn-md, .accent-btn-lg {
+  width: 50%;
+  align-self: end;
+  border-radius: 10px !important;
+  background-color: colors.$color-ut-accent !important;
+  color: colors.$color-ut-white !important;
+}
+
+.accent-btn-lg {
+  width: 100%;
+}
