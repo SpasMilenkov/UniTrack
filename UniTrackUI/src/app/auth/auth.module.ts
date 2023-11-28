@@ -5,17 +5,20 @@ import { AppRoutingModule } from '../app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { MaterialModule } from '../shared/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SignupComponent } from './signup/signup.component';
 
 
 
 @NgModule({
   declarations: [
     AuthLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   exports: [
     AuthLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     CommonModule,
