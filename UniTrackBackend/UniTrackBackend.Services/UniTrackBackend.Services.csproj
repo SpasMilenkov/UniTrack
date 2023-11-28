@@ -14,20 +14,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.IdentityModel.Tokens">
-        <HintPath>..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\7.0.3\lib\net6.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
-      </Reference>
-      <Reference Include="System.IdentityModel.Tokens.Jwt">
-        <HintPath>..\..\..\..\.nuget\packages\system.identitymodel.tokens.jwt\7.0.3\lib\net6.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-      </Reference>
-      <Reference Include="System.Security.Permissions">
-        <HintPath>..\..\..\..\.nuget\packages\system.security.permissions\6.0.0\lib\net6.0\System.Security.Permissions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="MailKit" Version="4.3.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.3" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
     </ItemGroup>
 
 </Project>
