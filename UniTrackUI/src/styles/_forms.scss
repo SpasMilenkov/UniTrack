@@ -1,0 +1,55 @@
+@use "colors";
+
+.mat-form-field-appearance-outline {
+  .mat-mdc-text-field-wrapper {
+    background-color: colors.$color-ut-white;
+    border-radius: 5px !important;
+    border: 1.5px solid colors.$color-ut-accent;
+
+    &.mdc-text-field--outlined.mdc-text-field--invalid{
+      border-color: colors.$color-ut-dark-wine ;
+    }
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+    color: colors.$color-ut-dark-grey !important;
+    width: auto;
+  }
+
+  .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label, .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label--float-above{
+    color: colors.$color-ut-dark-wine !important;
+  }
+
+  &.without-space-after .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above{
+    --mat-mdc-form-field-label-transform: translateY(-24px) scale(0.65);
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input{
+    color: colors.$color-ut-dark-grey;
+  }
+
+  .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing{
+    border-color: colors.$color-ut-dark-wine;
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__leading, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__notch, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__trailing{
+    border: none;
+  }
+}
+
+
+.form-wrapper {
+  background-color: colors.$color-ut-primary;
+  border-radius: 8px;
+  max-width: 450px;
+  padding: 26px 50px;
+  box-shadow: 5px 5px 5px colors.$ut-shadow-regular;
+}
+
+.mat-mdc-form-field-error {
+  color: colors.$color-ut-dark-wine;
+}
