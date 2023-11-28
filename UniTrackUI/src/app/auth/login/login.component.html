@@ -3,7 +3,7 @@
   (ngSubmit)="onLogin()"
   class="form-wrapper d-flex flex-column"
 >
-  <h1 class="fs-2 text-ut-white ">Login</h1>
+  <h1 class="fs-2 text-ut-white">Login</h1>
   <mat-form-field appearance="outline" class="without-space-after pt-3">
     <mat-label>Email</mat-label>
     <input formControlName="email" matInput />
@@ -26,7 +26,23 @@
   </mat-error>
   <mat-form-field appearance="outline" class="without-space-after pt-3">
     <mat-label>Password</mat-label>
-    <input formControlName="password" matInput />
+    <input
+      formControlName="password"
+      [type]="hidePassword ? 'password' : 'text'"
+      matInput
+    />
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="toggleHidePassword($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hidePassword"
+    >
+      <mat-icon class="text-ut-accent">{{
+        hidePassword ? "visibility_off" : "visibility"
+      }}</mat-icon>
+    </button>
   </mat-form-field>
   <mat-error
     *ngIf="
@@ -36,12 +52,10 @@
   >
     Password field cannot be empty.
   </mat-error>
-  <a class="text-end text-ut-accent mt-4">
+  <a class="text-end text-ut-accent mt-4" routerLink="../signup">
     Don't have an account?&nbsp;&nbsp;Sign up here.
   </a>
-  <a class="text-end text-ut-accent my-1">
-    Forgot your password?
-  </a>
+  <a class="text-end text-ut-accent my-1"> Forgot your password? </a>
   <button class="accent-btn-md mt-3" mat-raised-button color="primary">
     Login
   </button>

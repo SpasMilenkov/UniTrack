@@ -14,6 +14,7 @@ export class LoginComponent {
     ]),
     password: this.fb.control(null, Validators.required),
   });
+  hidePassword = true;
 
   constructor(private fb: FormBuilder) {}
 
@@ -22,5 +23,10 @@ export class LoginComponent {
   onLogin(): void {
     this.authForm.markAllAsTouched();
     console.log(this.authForm.value);
+  }
+
+  toggleHidePassword(event: any): void{
+    this.hidePassword = !this.hidePassword;
+    event.stopPropagation();
   }
 }
