@@ -1,9 +1,11 @@
 using System.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models.TypeSafe;
+using UniTrackBackend.Services.Auth;
 
 namespace UniTrackBackend.Services;
 
@@ -11,71 +13,99 @@ public class ApprovalService : IApprovalService
 {
     private readonly UnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
-    
-    public ApprovalService(UnitOfWork unitOfWork, UserManager<User> userManager)
+    private readonly ILogger<ApprovalService> _logger;
+
+    public ApprovalService(UnitOfWork unitOfWork, UserManager<User> userManager, ILogger<ApprovalService> logger)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
+        _logger = logger;
     }
     public async Task<bool> ApproveStudentsAsync(List<StudentViewModel> students)
     {
-        foreach (var studentModel in students)
+        try
         {
-            var user = await _userManager.FindByEmailAsync(studentModel.Email);
-            
-            if (user is null)
-                throw new DataException();
-            
-            await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
-
-            var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Grade);
-            if (grade is null)
-                throw new DataException();
-            
-            var student = new Student
+            foreach (var studentModel in students)
             {
-                
-                Grade = grade,
-                UserId = user.Id,
-                User = user
-            };
+                var user = await _userManager.FindByEmailAsync(studentModel.Email);
+            
+                if (user is null)
+                    throw new DataException();
+            
+                await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
 
-            await _unitOfWork.StudentRepository.AddAsync(student);
+                var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Grade);
+                if (grade is null)
+                    throw new DataException();
+            
+                var student = new Student
+                {
+                
+                    Grade = grade,
+                    UserId = user.Id,
+                    User = user
+                };
+
+                await _unitOfWork.StudentRepository.AddAsync(student);
+            }
+            await _unitOfWork.SaveAsync();
+            return true;
         }
-        await _unitOfWork.SaveAsync();
-        return true;
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred while processing the approval");
+            throw;
+        }
+
     }
 
     public async Task<bool> ApproveParentsAsync(List<ParentViewModel> parents)
     {
-        foreach (var parentModel in parents)
+        try
         {
-            var user = await _userManager.FindByEmailAsync(parentModel.Email);
+            foreach (var parentModel in parents)
+            {
+                var user = await _userManager.FindByEmailAsync(parentModel.Email);
             
-            if (user is null)
-                throw new DataException();
+                if (user is null)
+                    throw new DataException();
 
-            await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
+                await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
             
+            }
+            await _unitOfWork.SaveAsync();
+            return true;
         }
-        await _unitOfWork.SaveAsync();
-        return true;
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred while processing the approval");
+            throw;
+        }
+
     }
 
     public async Task<bool> ApproveTeachersAsync(List<TeacherViewModel> teachers)
     {
-        foreach (var teacherModel in teachers)
+        try
         {
-            var user = await _userManager.FindByEmailAsync(teacherModel.Email);
+            foreach (var teacherModel in teachers)
+            {
+                var user = await _userManager.FindByEmailAsync(teacherModel.Email);
 
-            if (user is null)
-                throw new DataException();
+                if (user is null)
+                    throw new DataException();
             
-            await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
+                await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
             
+            }
+            await _unitOfWork.SaveAsync();
+            return true;
         }
-        await _unitOfWork.SaveAsync();
-        return true;
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred while processing the approval");
+            throw;
+        }
     }
     
 }
