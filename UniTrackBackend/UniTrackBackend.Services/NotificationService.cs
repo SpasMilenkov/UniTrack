@@ -31,10 +31,7 @@ namespace UniTrackBackend.Services
         public async Task SendNotificationsAsync()
         {
             var schedules = await _unitOfWork.ScheduleRepository.GetAllAsync();
-            var upcomingEvents = await _unitOfWork.EventRepository.GetAsync(
-                filter: e => e.StartTime > DateTime.Now,
-                orderBy: q => q.OrderBy(e => e.StartTime));
-
+            
             foreach (var schedule in schedules)
             {
                 foreach (var scheduleEvent in schedule.Events) // This assumes schedule has a collection of ScheduleEvent
