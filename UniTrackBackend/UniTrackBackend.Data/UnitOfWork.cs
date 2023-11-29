@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Repositories;
@@ -15,10 +16,47 @@ public class UnitOfWork : IDisposable
     private EfRepository<Student>? _studentRepository;
     private EfRepository<Subject>? _subjectRepository;
     private EfRepository<Teacher>? _teacherRepository;
-    
+    private EfRepository<ScheduleEvent>? _eventRepository;
+    private EfRepository<UserSchedule>? _scheduleRepository;
+    private EfRepository<Notification>? _notificationRepository;
+
     public UnitOfWork(UniTrackDbContext context)
     {
         _context = context;
+    }
+    public EfRepository<Notification> NotificationRepository
+    {
+        get
+        {
+            if (_notificationRepository == null)
+            {
+                _notificationRepository = new EfRepository<Notification>(_context);
+            }
+            return _notificationRepository;
+        }
+    }
+
+    public EfRepository<ScheduleEvent> EventRepository
+    {
+        get
+        {
+            if (_eventRepository == null)
+            {
+                _eventRepository = new EfRepository<ScheduleEvent>(_context);
+            }
+            return _eventRepository;
+        }
+    }
+    public EfRepository<UserSchedule> ScheduleRepository
+    {
+        get
+        {
+            if (_scheduleRepository == null)
+            {
+                _scheduleRepository = new EfRepository<UserSchedule>(_context);
+            }
+            return _scheduleRepository;
+        }
     }
 
     public EfRepository<Absence> AbsenceRepository
