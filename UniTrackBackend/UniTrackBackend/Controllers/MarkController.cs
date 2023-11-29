@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
-using System;
-using System.Threading.Tasks;
 
-namespace UniTrackBackend.Api.Controllers
+namespace UniTrackBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

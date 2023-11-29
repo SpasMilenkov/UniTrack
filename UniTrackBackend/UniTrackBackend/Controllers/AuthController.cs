@@ -1,9 +1,7 @@
-using System.Net;
 using System.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Data.Models;
+using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
 using UniTrackBackend.Services.Messaging;
 
@@ -13,15 +11,11 @@ namespace UniTrackBackend.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
     private readonly IAuthService _authService;
     private readonly IEmailService _emailService;
 
-    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService, IEmailService emailService)
+    public AuthController(IAuthService authService, IEmailService emailService)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
         _authService = authService;
         _emailService = emailService;
     }
@@ -42,17 +36,25 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginViewModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password)) return Unauthorized();
+        try
+        {
+            var user = await _authService.LoginUser(model);
+            if (user is null)
+                return Unauthorized();
         
-        var token = _authService.GenerateJwtToken(user);
-        var refreshToken = await _authService.GenerateRefreshToken(user);
+            var token = _authService.GenerateJwtToken(user);
+            var refreshToken = await _authService.GenerateRefreshToken(user);
             
-        Response.Cookies.Append("RefreshToken", refreshToken, _authService.GetRefreshCookieOptions());
-        Response.Cookies.Append("AccessToken", token, _authService.GetAccessCookieOptions());
+            Response.Cookies.Append("RefreshToken", refreshToken, CookieOptionManager.RefreshCookieOptions);
+            Response.Cookies.Append("AccessToken", token, CookieOptionManager.AccessCookieOptions);
         
-        return Ok(new { token });
-
+            return Ok(new { token });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     /// <summary>
@@ -70,35 +72,39 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        var user = new User
+        try
         {
-            UserName = model.Email,
-            Email = model.Email,
-            FirstName = model.FirstName,
-            LastName = model.LastName
-        };
-        var result = await _userManager.CreateAsync(user, model.Password);
+            var user = await _authService.RegisterUser(model);
+            
+            var emailToken = await _authService.GetEmailConfirmationToken(user);
         
-        if (!result.Succeeded) return BadRequest(result.Errors);
+            if(emailToken is null)
+                return BadRequest("User registration failed");
         
-        await _signInManager.SignInAsync(user, isPersistent: false);
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Auth",
+                new { userId = user.Id, token = HttpUtility.UrlEncode(emailToken) },
+                protocol: HttpContext.Request.Scheme);
+        
+            if (callbackUrl is null)
+                return BadRequest("User registration failed");
 
-        var emailToken = await _authService.GetEmailConfirmationToken(user);
-        
-        var callbackUrl = Url.Action(
-            "ConfirmEmail",
-            "Auth",
-            new { userId = user.Id, token = HttpUtility.UrlEncode(emailToken) },
-            protocol: HttpContext.Request.Scheme);
-        
-        if (callbackUrl is null)
-            return BadRequest();
+            if (user.Email != null)
+                await _emailService.SendEmailAsync(user.FirstName, user.LastName, user.Email, callbackUrl,
+                    "verification");
 
-        await _emailService.SendEmailAsync(user.FirstName, user.LastName, user.Email, callbackUrl, "confirmemail");
-        
-        var token = _authService.GenerateJwtToken(user);
-        var refreshToken = await _authService.GenerateRefreshToken(user);
-        return Ok(new { token, refreshToken });
+            var token = _authService.GenerateJwtToken(user);
+            var refreshToken = await _authService.GenerateRefreshToken(user);
+            await _authService.SignInUser(user);
+
+            return Ok(new { token, refreshToken });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest("User registration failed");
+        }
     }
 
     /// <summary>
@@ -115,25 +121,34 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RefreshToken()
     {
-        var refreshToken = Request.Cookies["RefreshToken"];
-        if (string.IsNullOrEmpty(refreshToken))
+        try
         {
-            return BadRequest("Refresh token is required");
+            var refreshToken = Request.Cookies["RefreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return BadRequest("Refresh token is required");
+            }
+
+            var user = await _authService.GetUserFromRefreshToken(refreshToken);
+        
+            if (user is null)
+            {
+                return BadRequest("Invalid refresh token");
+            }
+
+            var newAccessToken = _authService.GenerateJwtToken(user);
+            var newRefreshToken = await _authService.GenerateRefreshToken(user);
+        
+            Response.Cookies.Append("RefreshToken", newRefreshToken, CookieOptionManager.RefreshCookieOptions);
+            Response.Cookies.Append("AccessToken", newAccessToken, CookieOptionManager.AccessCookieOptions);
+            return Ok("Token refreshed");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
 
-        var user = await _authService.GetUserFromRefreshToken(refreshToken);
-        
-        if (user is null)
-        {
-            return BadRequest("Invalid refresh token");
-        }
-
-        var newAccessToken = _authService.GenerateJwtToken(user);
-        var newRefreshToken = await _authService.GenerateRefreshToken(user);
-        
-        Response.Cookies.Append("RefreshToken", newRefreshToken, _authService.GetRefreshCookieOptions());
-        Response.Cookies.Append("AccessToken", newAccessToken, _authService.GetAccessCookieOptions());
-        return Ok("Token refreshed");
     }
     
     /// <summary>
@@ -154,10 +169,7 @@ public class AuthController : ControllerBase
         {
             var user = await _authService.GetUserFromRefreshToken(refreshToken);
             if (user != null)
-            {
-                user.RefreshToken = null;
-                await _userManager.UpdateAsync(user);
-            }
+                await _authService.LogoutUser(user);
         }
         
         Response.Cookies.Delete("RefreshToken", new CookieOptions { Secure = true, HttpOnly = true });
@@ -184,13 +196,10 @@ public class AuthController : ControllerBase
             return BadRequest("User ID and Token are required");
         }
 
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            return NotFound("User not found");
-        }
+        var user = await _authService.GetUserById(userId);
 
-        var result = await _userManager.ConfirmEmailAsync(user, WebUtility.UrlDecode(token));
+        var result = await _authService.ConfirmEmail(user, token);
+        
         if (result.Succeeded)
         {
             return Ok("Email confirmed successfully");
@@ -216,17 +225,10 @@ public class AuthController : ControllerBase
         {
             return BadRequest("Email is required");
         }
-
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-        {
-            return Ok("If an account with this email exists, a password reset link has been sent.");
-        }
-
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var callbackUrl = Url.Action("ResetPassword", "Auth", new { email = user.Email, token = HttpUtility.UrlEncode(token) }, Request.Scheme);
-
         
+        var user = await _authService.GetUserByEmail(email);
+        var token = await _authService.GenerateForgottenPasswordLink(user);
+        var callbackUrl = Url.Action("ResetPassword", "Auth", new { email = user.Email, token = HttpUtility.UrlEncode(token) }, Request.Scheme);
         if (callbackUrl != null)
             await _emailService.SendEmailAsync(user.FirstName, user.LastName, user.Email!, callbackUrl,
                 "resetpassword");
@@ -247,19 +249,11 @@ public class AuthController : ControllerBase
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
     {
-
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null)
-        {
-            return BadRequest("Invalid request");
-        }
-
-        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+        var result = await _authService.ResetPassword(model);
         if (result.Succeeded)
         {
             return Ok("Password has been reset successfully");
         }
-        
         return BadRequest("Error resetting password");
     }
 }
