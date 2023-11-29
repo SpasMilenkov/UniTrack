@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
+using UniTrackBackend.Services.Commons.Exceptions;
 using UniTrackBackend.Services.Messaging;
 
 namespace UniTrackBackend.Controllers;
@@ -227,6 +228,8 @@ public class AuthController : ControllerBase
         }
         
         var user = await _authService.GetUserByEmail(email);
+        if (user is null)
+            return NotFound("If user with this email exists an email has been sent.");
         var token = await _authService.GenerateForgottenPasswordLink(user);
         var callbackUrl = Url.Action("ResetPassword", "Auth", new { email = user.Email, token = HttpUtility.UrlEncode(token) }, Request.Scheme);
         if (callbackUrl != null)
