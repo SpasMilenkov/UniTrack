@@ -6,6 +6,7 @@ using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models.TypeSafe;
 using UniTrackBackend.Services.Auth;
+using UniTrackBackend.Services.Commons.Exceptions;
 
 namespace UniTrackBackend.Services;
 
@@ -28,15 +29,15 @@ public class ApprovalService : IApprovalService
             foreach (var studentModel in students)
             {
                 var user = await _userManager.FindByEmailAsync(studentModel.Email);
-            
+
                 if (user is null)
-                    throw new DataException();
+                    return false;
             
                 await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
 
                 var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Grade);
                 if (grade is null)
-                    throw new DataException();
+                    return false;
             
                 var student = new Student
                 {
@@ -56,7 +57,6 @@ public class ApprovalService : IApprovalService
             _logger.LogError(e, "An error occurred while processing the approval");
             throw;
         }
-
     }
 
     public async Task<bool> ApproveParentsAsync(List<ParentViewModel> parents)
@@ -66,9 +66,9 @@ public class ApprovalService : IApprovalService
             foreach (var parentModel in parents)
             {
                 var user = await _userManager.FindByEmailAsync(parentModel.Email);
-            
+
                 if (user is null)
-                    throw new DataException();
+                    return false;
 
                 await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
             
@@ -93,7 +93,7 @@ public class ApprovalService : IApprovalService
                 var user = await _userManager.FindByEmailAsync(teacherModel.Email);
 
                 if (user is null)
-                    throw new DataException();
+                    return false;
             
                 await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
             

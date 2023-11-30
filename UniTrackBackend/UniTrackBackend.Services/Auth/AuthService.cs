@@ -62,7 +62,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while generating JWT token");
             throw;
         }
 
@@ -83,7 +83,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while generating user refresh token");
             throw;
         }
     }
@@ -96,7 +96,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while authenticating the user");
             throw;
         }
     }
@@ -116,7 +116,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while attempting to get user from refresh token");
             throw;
         }
 
@@ -131,7 +131,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while generating email confirmation token");
             throw;
         }
     }
@@ -155,23 +155,24 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while registering the user");
             throw;
         }
     }
 
-    public async Task<User> LoginUser(LoginViewModel model)
+    public async Task<User?> LoginUser(LoginViewModel model)
     {
         try
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password)) throw new DataException();;
-
+            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+                return null;
+            
             return user;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while logging in the user");
             throw;
         }
 
@@ -185,7 +186,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while signing in the user");
             throw;
         }
     }
@@ -199,7 +200,7 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while logging out the user");
             throw;
         }
     }
@@ -213,23 +214,27 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while verifying the user email");
             throw;
         }
     }
 
-    public async Task<IdentityResult> ResetPassword(ResetPasswordModel model)
+    public async Task<IdentityResult?> ResetPassword(ResetPasswordModel model)
     {
         try
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-
+            if (user is null)
+            {
+                _logger.LogWarning("User with that email does not exist", model.Email);
+                return null;
+            }
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
             return result;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while resetting password");
             throw;
         }
     }
@@ -245,22 +250,26 @@ public class AuthService : IAuthService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while generating password reset link");
             throw;
         }
     }
 
-    public async Task<User> GetUserByEmail(string email)
+    public async Task<User?> GetUserByEmail(string email)
     {
         try
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            if (user is null )
             {
-                throw new DataException("If an account with this email exists, a password reset link has been sent.");
+                _logger.LogWarning("User with that email doesnt exist or has not confirmed it");
+                return null;
             }
 
-            return user;
+            if (await _userManager.IsEmailConfirmedAsync(user)) return user;
+            
+            _logger.LogWarning("User with that email has not confirmed it");
+            return null;
         }
         catch (Exception e)
         {
@@ -269,21 +278,20 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<User> GetUserById(string id)
+    public async Task<User?> GetUserById(string id)
     {
         try
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
-                throw new DataException();
+                _logger.LogWarning("User with that id does not exist", id);
             return user;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "An error occurred while trying to fetch a user");
             throw;
         }
-
     }
 }
 
