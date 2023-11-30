@@ -186,6 +186,9 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
@@ -219,6 +222,9 @@ namespace UniTrackBackend.Data.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassTeacherId")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("ElectiveSubjectId")
                         .HasColumnType("integer");
