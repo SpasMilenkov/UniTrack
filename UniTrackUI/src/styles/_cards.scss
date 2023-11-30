@@ -1,0 +1,22 @@
+@use 'colors';
+
+.card-wrapper{
+  background: colors.$color-ut-primary-100;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+
+  &.purple-card{
+    background-color: colors.$color-ut-accent-100;
+  }
+
+  .card-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    color: colors.$color-ut-accent;
+  }
+}

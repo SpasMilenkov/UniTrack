@@ -1,0 +1,31 @@
+<div
+  class="card-wrapper row"
+  [ngSwitch]="type"
+  [ngClass]="{ 'purple-card': purpleCard }"
+>
+  <div *ngSwitchCase="teacherDetailsCardTypes.ADD_GRADE" class="card-content">
+    <h1 class="text-center">
+      Add <span class="fw-bold text-ut-primary">grade</span>
+    </h1>
+    <button mat-raised-button class="w-100 primary-btn-lg" color="primary">Add grade</button>
+  </div>
+  <div *ngSwitchCase="teacherDetailsCardTypes.ADD_ABSENCE" class="card-content">
+    <h1 class="text-center">
+      Add <span class="fw-bold text-ut-primary">absence</span>
+    </h1>
+    <button
+      mat-raised-button
+      class="w-100"
+      color="accent"
+      class="accent-btn-lg"
+    >
+      Add absence
+    </button>
+  </div>
+  <div *ngSwitchCase="teacherDetailsCardTypes.ADD_EVENT" class="card-content">
+    <h1 class="text-center">
+      Add <span class="fw-bold text-ut-primary">event</span>
+    </h1>
+    <button mat-raised-button class="primary-btn-lg" color="primary">Add event</button>
+  </div>
+</div>

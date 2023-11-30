@@ -20,6 +20,25 @@
               [absences]="getStudentProfile().absences || []"
               *ngIf="profile.type === profileTypes.STUDENT"
             ></app-student-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [type]="teacherDetailsCardTypes.ADD_GRADE"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [purpleCard]="true"
+              [type]="teacherDetailsCardTypes.ADD_ABSENCE"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [type]="teacherDetailsCardTypes.ADD_EVENT"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
           </div>
         </div>
       </div>

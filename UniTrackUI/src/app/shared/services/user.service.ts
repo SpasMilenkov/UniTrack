@@ -31,4 +31,16 @@ export class UserService {
       ],
     };
   }
+
+  getTeacherProfile(): Profile | StudentProfile {
+    return {
+      type: ProfileTypes.TEACHER,
+      avatarUrl: 'assets/images/teacher.png',
+      firstName: 'John',
+      lastName: 'Doe',
+      id: '11111',
+      classNumber: '101',
+      className: 'Class A'
+    };
+  }
 }
