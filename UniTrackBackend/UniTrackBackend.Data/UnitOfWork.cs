@@ -15,10 +15,20 @@ public class UnitOfWork : IDisposable
     private EfRepository<Student>? _studentRepository;
     private EfRepository<Subject>? _subjectRepository;
     private EfRepository<Teacher>? _teacherRepository;
+    private EfRepository<User>? _userRepository;
     
     public UnitOfWork(UniTrackDbContext context)
     {
         _context = context;
+    }
+    public EfRepository<User> UserRepository
+    {
+        get
+        {
+            _userRepository ??= new EfRepository<User>(_context);
+
+            return _userRepository;
+        }
     }
 
     public EfRepository<Absence> AbsenceRepository
