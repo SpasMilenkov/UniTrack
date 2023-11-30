@@ -1,3 +1,28 @@
-<div class="container-fluid p-0 main-wrapper">
-  {{profile | json}}
+<div class="container-fluid p-0 main-wrapper bgr-warning">
+  <div class="row m-0 main-content">
+    <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10 profile-wrapper">
+      <div class="profile-content mt-5 py-3 row">
+        <div class="col-md-3">
+          <app-profile-details [profile]="profile"></app-profile-details>
+        </div>
+        <div class="col-md-9">
+          <div class="row h-100">
+            <app-student-details-card
+              class="col-md-6 my-1"
+              [type]="studentDetailsCardTypes.GRADES"
+              [grades]="getStudentProfile().grades || []"
+              *ngIf="profile.type === profileTypes.STUDENT"
+            ></app-student-details-card>
+            <app-student-details-card
+              class="col-md-6 my-1"
+              [purpleCard]="true"
+              [type]="studentDetailsCardTypes.ABSENCES"
+              [absences]="getStudentProfile().absences || []"
+              *ngIf="profile.type === profileTypes.STUDENT"
+            ></app-student-details-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

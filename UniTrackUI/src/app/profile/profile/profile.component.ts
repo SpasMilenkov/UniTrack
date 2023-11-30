@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
+import { StudentDetailsCardTypes } from 'src/app/shared/enums/student-details-card-types.enum';
 import { Profile } from 'src/app/shared/models/profile';
 import { StudentProfile } from 'src/app/shared/models/student-profile';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -11,6 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class ProfileComponent {
   profile!: Profile;
+  studentDetailsCardTypes = StudentDetailsCardTypes;
   profileTypes = ProfileTypes;
 
   constructor(private userService: UserService) { }

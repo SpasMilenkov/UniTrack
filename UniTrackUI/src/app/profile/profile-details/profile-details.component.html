@@ -1,0 +1,16 @@
+<div class="main-wrapper d-md-block d-flex align-items-center">
+  <img
+    [src]="profile.avatarUrl"
+    alt="profile-image"
+    class="avatar-wrapper mb-4 shadow-lg"
+  />
+  <div class="ps-4">
+    <h2 class="fw-bold m-0">
+      {{ profile.firstName }}&nbsp;{{ profile.lastName }}
+    </h2>
+    <div *ngIf="profile.type === profileTypes.STUDENT">
+      {{ getStudentProfile().number }}
+    </div>
+    <div>{{ profile.className }}</div>
+  </div>
+</div>
