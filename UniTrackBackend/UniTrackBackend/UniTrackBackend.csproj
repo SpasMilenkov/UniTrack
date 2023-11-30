@@ -43,9 +43,4 @@
       <ProjectReference Include="..\UniTrackBackend.Services\UniTrackBackend.Services.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interfaces\" />
-      <Folder Include="Services\" />
-    </ItemGroup>
-
 </Project>
