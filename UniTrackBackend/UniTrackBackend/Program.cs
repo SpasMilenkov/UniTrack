@@ -2,6 +2,7 @@ using UniTrackBackend.Data;
 using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Interfaces;
+using UniTrackBackend.Middlewares;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Messaging;
@@ -45,6 +46,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
