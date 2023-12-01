@@ -27,7 +27,7 @@ public class Mapper : IMapper
         }
         catch (Exception e)
         {
-            
+            _logger.LogError(e, "Error while trying to convert mark view model to mark entity");
             return null;
         }
     }
