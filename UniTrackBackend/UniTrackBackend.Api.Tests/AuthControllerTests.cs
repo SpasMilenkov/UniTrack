@@ -144,8 +144,8 @@ public class AuthControllerTests
                    uac.Values.ToString()!.Contains("confirmation-token") &&
                    uac.Protocol == "http")), Times.Once());
     }
-    
-    
+
+
     [Fact]
     public async Task Register_InvalidModel_ReturnsBadRequest()
     {
@@ -168,30 +168,6 @@ public class AuthControllerTests
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);
     }
-    
-    // [Fact]
-    // public async Task Register_EmailInUse_ReturnsBadRequest()
-    // {
-    //     // Arrange
-    //     var registerModel = new RegisterViewModel
-    //     {
-    //         Email = "existing@example.com",
-    //         UserName = "new@example.com",
-    //         FirstName = "string",
-    //         LastName = "string",
-    //         Password = "Password123!",
-    //         ConfirmPassword = "Password123!",
-    //         // Other properties...
-    //     };
-    //
-    //     _mockAuthService.Setup(s => s.RegisterUser(registerModel))!.ReturnsAsync((User)null!); // Simulate email already in use
-    //
-    //     // Act
-    //     var result = await _controller.Register(registerModel);
-    //
-    //     // Assert
-    //     Assert.IsType<BadRequestObjectResult>(result);
-    // }
 
     [Fact]
     public async Task Register_TokenGenerationFailure_ReturnsBadRequest()
