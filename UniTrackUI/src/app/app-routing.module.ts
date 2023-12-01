@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './auth/auth-layout/auth-layout.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ProfileComponent } from './profile/profile/profile.component';
 
 const routes: Routes =  [
   {
@@ -15,6 +16,7 @@ const routes: Routes =  [
       { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },
+  { path: 'profile', component: ProfileComponent},
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];
 

@@ -1,0 +1,26 @@
+@use 'colors';
+
+.event-wrapper{
+  width: 100%;
+  background-color: colors.$color-ut-light-grey;
+  min-height: 350px;
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px colors.$ut-shadow-regular ;
+
+  .image-wrapper{
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .small-text-wrapper{
+    font-size: 0.8rem;
+  }
+
+  .text-wrapper{
+    min-height: 200px;
+  }
+
+  .description-wrapper{
+    text-align: justify;
+  }
+}

@@ -1,0 +1,23 @@
+<div
+  class="card-wrapper"
+  [ngSwitch]="type"
+  [ngClass]="{ 'purple-card': purpleCard }"
+>
+  <div *ngSwitchCase="profileDetailsCardTypes.GRADES" class="card-content">
+    <h1>{{ averageGrades | number : "1.2-2" }}</h1>
+    <span>grade point average</span>
+  </div>
+  <div
+    *ngSwitchCase="profileDetailsCardTypes.ABSENCES"
+    class="card-content flex-row justify-content-center text-center"
+  >
+    <div class="pe-1">
+      <h1>{{ excusedAbsences }}</h1>
+      <span>excused absences</span>
+    </div>
+    <div class="ps-1">
+      <h1>{{ unexcusedAbsences }}</h1>
+      <span>unexcused absences</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="container-fluid p-0 main-wrapper bgr-warning">
+  <div class="row m-0 main-content">
+    <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10 profile-wrapper">
+      <div class="profile-content mt-5 py-3 row">
+        <div class="col-md-3">
+          <app-profile-details [profile]="profile"></app-profile-details>
+        </div>
+        <div class="col-md-9">
+          <div class="row h-100">
+            <app-student-details-card
+              class="col-md-6 my-1"
+              [type]="studentDetailsCardTypes.GRADES"
+              [grades]="getStudentProfile().grades || []"
+              *ngIf="profile.type === profileTypes.STUDENT"
+            ></app-student-details-card>
+            <app-student-details-card
+              class="col-md-6 my-1"
+              [purpleCard]="true"
+              [type]="studentDetailsCardTypes.ABSENCES"
+              [absences]="getStudentProfile().absences || []"
+              *ngIf="profile.type === profileTypes.STUDENT"
+            ></app-student-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [type]="teacherDetailsCardTypes.ADD_GRADE"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [purpleCard]="true"
+              [type]="teacherDetailsCardTypes.ADD_ABSENCE"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
+            <app-teacher-details-card
+              class="col-md-4 my-1"
+              [type]="teacherDetailsCardTypes.ADD_EVENT"
+              *ngIf="profile.type === profileTypes.TEACHER"
+            >
+            </app-teacher-details-card>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="my-5 p-0">
+          <div class="events-wrapper">
+            <h2 class="title-wrapper text-ut-accent fw-bold p-2 ps-4 m-0">
+              Upcoming events:
+            </h2>
+            <div class="cards-wrapper p-3" *ngIf="events$ | async as events">
+              <div class="row">
+                <app-event-card
+                  *ngFor="let event of events"
+                  [event]="event"
+                  class="col-md-4"
+                ></app-event-card>
+                <div *ngIf="!events.length" class="text-center">
+                  There are no upcoming events.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
