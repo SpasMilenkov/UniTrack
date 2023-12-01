@@ -136,11 +136,11 @@
             <response code="200">Password has been reset successfully.</response>
             <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Data.Models.Mark)">
+        <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Api.ViewModels.MarkViewModel)">
             <summary>
             Adds a new mark.
             </summary>
-            <param name="mark">The mark details to add.</param>
+            <param name="model">The mark details to add.</param>
             <returns>The created mark.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.GetMark(System.Int32)">
@@ -184,12 +184,12 @@
             <param name="date">The date of interest.</param>
             <returns>A list of marks assigned on the specified date.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.MarkController.UpdateMark(System.Int32,UniTrackBackend.Data.Models.Mark)">
+        <member name="M:UniTrackBackend.Controllers.MarkController.UpdateMark(System.Int32,UniTrackBackend.Api.ViewModels.MarkViewModel)">
             <summary>
             Updates a specific mark.
             </summary>
             <param name="id">The ID of the mark to update.</param>
-            <param name="mark">The updated mark details.</param>
+            <param name="model">The updated mark details.</param>
             <returns>The updated mark.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.DeleteMark(System.Int32)">
