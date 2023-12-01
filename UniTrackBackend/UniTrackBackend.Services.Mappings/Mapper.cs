@@ -37,11 +37,11 @@ public class Mapper : IMapper
         {
             var absence = new Absence
             {
-                StudentId = model.StudentId,
+                StudentId = model.StudentId,  
                 TeacherId = model.TeacherId,
-                Value = model.Value,
-                Time = model.Time
-                // Map other properties as needed
+                Value = model.AbsenceCount,
+                Time = model.Date,
+                                
             };
             return absence;
         }
@@ -52,3 +52,12 @@ public class Mapper : IMapper
         }
     }
 }
+//absences: {
+//    subject: string;
+//    absence: number;
+//    excused: boolean;
+//    date: Date;
+//    teacherId; string;
+//     teacherFirstName: string;
+//     teacherLastName: string;
+//  }[]
