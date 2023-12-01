@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
+using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Api.Tests;
 
@@ -10,23 +14,36 @@ public class MarkControllerTests
 {
     private readonly Mock<IMarkService> _mockService;
     private readonly MarkController _controller;
-
+    private readonly Mock<IMapper> _mapper;
     public MarkControllerTests()
     {
         _mockService = new Mock<IMarkService>();
-        _controller = new MarkController(_mockService.Object);
+        _mapper = new Mock<IMapper>();
+        _controller = new MarkController(_mockService.Object, _mapper.Object);
+        
     }
     [Fact]
-    public async Task AddMark_ValidMark_ReturnsCreatedAtActionResult()
+    public async Task AddMark_ValidMarkViewModel_ReturnsCreatedAtActionResult()
     {
-        var mark = new Mark { /* set properties */ };
+        // Arrange
+        var model = new MarkViewModel() { Id = 1 /*, other properties if necessary */ };
+        var mark = new Mark() { Id = 1 /*, map other properties from model */ };
+    
+        // Set up the mapper to convert MarkViewModel to Mark
+        _mapper.Setup(m => m.MapMark(It.IsAny<MarkViewModel>())).Returns(mark);
+
+        // Set up the service to return the Mark object
         _mockService.Setup(s => s.AddMarkAsync(It.IsAny<Mark>())).ReturnsAsync(mark);
 
-        var result = await _controller.AddMark(mark);
+        // Act
+        var result = await _controller.AddMark(model);
 
+        // Assert
         var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-        Assert.Equal(mark, createdAtActionResult.Value);
+        var resultValue = Assert.IsType<Mark>(createdAtActionResult.Value);
+        Assert.Equal(mark.Id, resultValue.Id); // Extend this to other properties as needed
     }
+
 
     [Fact]
     public async Task AddMark_InvalidMark_ReturnsBadRequest()
@@ -126,10 +143,11 @@ public class MarkControllerTests
     [Fact]
     public async Task UpdateMark_ValidData_ReturnsOkObjectResult()
     {
-        var mark = new Mark { Id = 1, /* Other properties */ };
+        var model = new MarkViewModel(){Id = 1};
+        var mark = new Mark() { Id = 1, /* Other properties */ };
+                _mapper.Setup(s => s.MapMark(It.IsAny<MarkViewModel>())).Returns(mark);
         _mockService.Setup(s => s.UpdateMarkAsync(It.IsAny<Mark>())).ReturnsAsync(mark);
-
-        var result = await _controller.UpdateMark(1, mark);
+        var result = await _controller.UpdateMark(1, model);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(mark, okResult.Value);
@@ -138,17 +156,17 @@ public class MarkControllerTests
     [Fact]
     public async Task UpdateMark_IdMismatch_ReturnsBadRequest()
     {
-        var mark = new Mark { Id = 1, /* Other properties */ };
+        var mark = new MarkViewModel() { Id = 1, /* Other properties */ };
 
         var result = await _controller.UpdateMark(2, mark);
 
-        Assert.IsType<BadRequestResult>(result);
+        Assert.IsType<BadRequestObjectResult>(result);
     }
 
     [Fact]
     public async Task UpdateMark_NonExistingMark_ReturnsNotFound()
     {
-        var mark = new Mark { Id = 999, /* Other properties */ };
+        var mark = new MarkViewModel() { Id = 999, /* Other properties */ };
         _mockService.Setup(s => s.UpdateMarkAsync(It.IsAny<Mark>())).ReturnsAsync((Mark)null);
 
         var result = await _controller.UpdateMark(999, mark);
@@ -156,16 +174,16 @@ public class MarkControllerTests
         Assert.IsType<NotFoundResult>(result);
     }
 
-// DeleteMark Tests
     [Fact]
-    public async Task DeleteMark_ExistingId_ReturnsNoContentResult()
+    public async Task DeleteMark_ExistingId_ReturnsOkResult()
     {
-        _mockService.Setup(s => s.DeleteMarkAsync(It.IsAny<int>())).Returns(Task.CompletedTask);
+        _mockService.Setup(s => s.DeleteMarkAsync(It.IsAny<int>())).ReturnsAsync(true);
 
         var result = await _controller.DeleteMark(1);
 
-        Assert.IsType<NoContentResult>(result);
+        Assert.IsType<OkResult>(result);
     }
+
 
     [Fact]
     public async Task DeleteMark_NonExistingId_ReturnsNotFoundResult()
