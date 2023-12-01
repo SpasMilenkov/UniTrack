@@ -1,0 +1,54 @@
+<ng-container [ngSwitch]="event.type">
+  <div class="event-wrapper my-2" [title]="event.type">
+    <img
+      *ngSwitchCase="eventTypes.LECTURE"
+      class="image-wrapper"
+      src="assets/images/6101073.jpg"
+      alt="image-LECTURE"
+    />
+    <img
+      *ngSwitchCase="eventTypes.NEWS"
+      class="image-wrapper"
+      src="assets/images/4346281.jpg"
+      alt="image-NEWS"
+    />
+    <img
+      *ngSwitchCase="eventTypes.SOCIAL"
+      class="image-wrapper"
+      src="assets/images/4186002.jpg"
+      alt="image-SOCIAL"
+    />
+    <img
+      *ngSwitchCase="eventTypes.SPORT"
+      class="image-wrapper"
+      src="assets/images/7036657.jpg"
+      alt="image-SPORT"
+    />
+    <img
+      *ngSwitchCase="eventTypes.EXAM"
+      class="image-wrapper"
+      src="assets/images/7610872.jpg"
+      alt="image-EXAM"
+    />
+    <div
+      class="text-wrapper pt-3 pb-2 px-3 d-flex justify-content-between flex-column"
+    >
+      <h1 class="text-center text-ut-accent mb-0">
+        {{ event.title }}
+        <mat-icon *ngIf="event.required" title="Attendance is mandatory"
+          >fmd_bad</mat-icon
+        >
+      </h1>
+      <h2 class="text-center fw-bold text-ut-primary mb-0">
+        {{ event.time | date : "fullDate" }}
+      </h2>
+
+      <div class="my-2 description-wrapper">
+        {{ event.description }}
+      </div>
+      <div class="small-text-wrapper text-ut-accent text-end fw-bold">
+        {{ event.createdBy }}
+      </div>
+    </div>
+  </div>
+</ng-container>
