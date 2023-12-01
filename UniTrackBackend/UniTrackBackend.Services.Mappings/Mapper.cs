@@ -1,16 +1,34 @@
+using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.Mappings;
 
-public class Mapper
+public class Mapper : IMapper
 {
-    public Mark MapMark(MarkViewModel model)
+    private readonly ILogger<Mapper> _logger;
+    public Mapper(ILogger<Mapper> logger)
     {
-        var mark = new Mark
+        _logger = logger;
+    }
+    public Mark? MapMark(MarkViewModel model)
+    {
+        try
+        {
+            var mark = new Mark
+            {
+                StudentId = model.StudentId,
+                TeacherId = model.TeacherId,
+                SubjectId = model.SubjectId,
+                Points = model.Value,
+                GradedOn =  model.GradedOn
+            };
+            return mark;
+        }
+        catch (Exception e)
         {
             
-        };
-        return mark;
+            return null;
+        }
     }
 }
