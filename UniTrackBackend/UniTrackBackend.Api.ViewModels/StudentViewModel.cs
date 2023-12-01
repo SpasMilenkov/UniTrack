@@ -4,21 +4,51 @@ namespace UniTrackBackend.Api.ViewModels;
 
 public class StudentViewModel
 {
-    // public int StudentId { get; set; }
 
     [Required]
-    [StringLength(100)]
-    public required string Name { get; set; }
-    
+    public string Id { get; set; }
 
     [Required]
-    [StringLength(10)]
-    public required string Grade { get; set; }
+    public string UniId { get; set; }
 
     [Required]
-    [EmailAddress]
-    [StringLength(100)]
-    public required string Email { get; set; }
-    
+    public string ClassTeacherId { get; set; }
 
+    [Required]
+    [MaxLength(50)]
+    public string ClassTeacherFirstName { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string ClassTeacherLastName { get; set; }
+
+    [Url]
+    public string AvatarUrl { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string FirstName { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string LastName { get; set; }
+
+    [Required]
+    [RegularExpression("STUDENT")]
+    public string Type { get; set; }
+
+    [Required]
+    public string ClassId { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string ClassName { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int Number { get; set; }
+
+    public List<MarkViewModel> Marks { get; set; }
+
+    // public List<AbsenceViewModel> Absences { get; set; }
 }
