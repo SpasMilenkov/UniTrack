@@ -136,5 +136,68 @@
             <response code="200">Password has been reset successfully.</response>
             <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
         </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Api.ViewModels.MarkViewModel)">
+            <summary>
+            Adds a new mark.
+            </summary>
+            <param name="model">The mark details to add.</param>
+            <returns>The created mark.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetMark(System.Int32)">
+            <summary>
+            Retrieves a mark by its ID.
+            </summary>
+            <param name="id">The ID of the mark.</param>
+            <returns>The requested mark.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetAllMarks">
+            <summary>
+            Retrieves all marks.
+            </summary>
+            <returns>A list of all marks.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetMarksByStudent(System.Int32)">
+            <summary>
+            Retrieves marks for a specific student.
+            </summary>
+            <param name="studentId">The ID of the student.</param>
+            <returns>A list of marks for the specified student.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetMarksByTeacher(System.Int32)">
+            <summary>
+            Retrieves marks assigned by a specific teacher.
+            </summary>
+            <param name="teacherId">The ID of the teacher.</param>
+            <returns>A list of marks assigned by the specified teacher.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetMarksBySubject(System.Int32)">
+            <summary>
+            Retrieves marks for a specific subject.
+            </summary>
+            <param name="subjectId">The ID of the subject.</param>
+            <returns>A list of marks for the specified subject.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.GetMarksByDate(System.DateTime)">
+            <summary>
+            Retrieves marks assigned on a specific date.
+            </summary>
+            <param name="date">The date of interest.</param>
+            <returns>A list of marks assigned on the specified date.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.UpdateMark(System.Int32,UniTrackBackend.Api.ViewModels.MarkViewModel)">
+            <summary>
+            Updates a specific mark.
+            </summary>
+            <param name="id">The ID of the mark to update.</param>
+            <param name="model">The updated mark details.</param>
+            <returns>The updated mark.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.DeleteMark(System.Int32)">
+            <summary>
+            Deletes a specific mark.
+            </summary>
+            <param name="id">The ID of the mark to delete.</param>
+            <returns>No content on successful deletion.</returns>
+        </member>
     </members>
 </doc>

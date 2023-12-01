@@ -5,6 +5,7 @@ using UniTrackBackend.Interfaces;
 using UniTrackBackend.Middlewares;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Auth;
+using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApprovalService, ApprovalService>();
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IMapper, Mapper>();
 
 builder.Services.AddControllers();
 
