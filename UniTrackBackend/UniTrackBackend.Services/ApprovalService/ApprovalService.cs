@@ -1,14 +1,11 @@
-using System.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;
-using UniTrackBackend.Services.Auth;
-using UniTrackBackend.Services.Commons.Exceptions;
 
-namespace UniTrackBackend.Services;
+namespace UniTrackBackend.Services.ApprovalService;
 
 public class ApprovalService : IApprovalService
 {

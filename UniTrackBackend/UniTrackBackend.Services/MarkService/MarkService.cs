@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniTrackBackend.Data;
-using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services
+namespace UniTrackBackend.Services.MarkService
 {
     public class MarkService : IMarkService
     {

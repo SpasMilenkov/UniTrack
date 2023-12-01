@@ -1,7 +1,6 @@
 ﻿using UniTrackBackend.Data.Models;
 
-
-namespace UniTrackBackend.Data.Interfaces
+namespace UniTrackBackend.Services.AbsenceService
 {
         public interface IAbsenceService
         {

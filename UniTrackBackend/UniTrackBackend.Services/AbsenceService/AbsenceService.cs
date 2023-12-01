@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UniTrackBackend.Data.Database;
-using UniTrackBackend.Data.Interfaces;
+﻿using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Data.Services
+namespace UniTrackBackend.Services.AbsenceService
 {
     public class AbsenceService : IAbsenceService
     {

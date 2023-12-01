@@ -1,6 +1,6 @@
 using UniTrackBackend.Api.ViewModels;
 
-namespace UniTrackBackend.Services;
+namespace UniTrackBackend.Services.ApprovalService;
 
 public interface IApprovalService
 {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Data;
 
-namespace UniTrackBackend.Services
+namespace UniTrackBackend.Services.StudentService
 {
     public class StudentService : IStudentService
     {
@@ -40,14 +35,16 @@ namespace UniTrackBackend.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task DeleteStudentAsync(int id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
             var student = await _unitOfWork.StudentRepository.GetByIdAsync(id);
-            if (student != null)
-            {
-                await _unitOfWork.StudentRepository.DeleteAsync(id);
-                await _unitOfWork.SaveAsync();
-            }
+                
+            if (student == null) return false;
+            
+            await _unitOfWork.StudentRepository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
+            return true;
+
         }
     }
 }
