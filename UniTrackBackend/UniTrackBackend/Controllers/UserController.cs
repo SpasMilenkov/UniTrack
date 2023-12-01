@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
 
@@ -25,11 +26,36 @@ namespace UniTrackBackend.Controllers
         [HttpGet("GetUser/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _adminService.GetUserByIdAsync(id);
-            if (user == null)
-                return NotFound();
+            //try
+            //{
+            //    var userId = int.Parse(id); 
+            //    var user = await _adminService.GetUserByIdAsync(userId);
 
-            return Ok(user);
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    return Ok(user);
+            //}
+            //catch (FormatException)
+            //{
+            //    // Handle the case where the id is not a valid integer
+            //    return BadRequest("User ID must be an integer.");
+            //}
+            try
+            {
+                var user = await _adminService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred processing your request.");
+            }
         }
 
         [HttpGet("GetAllUsers")]
