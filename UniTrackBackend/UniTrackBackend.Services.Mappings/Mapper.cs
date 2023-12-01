@@ -31,4 +31,33 @@ public class Mapper : IMapper
             return null;
         }
     }
+    public Absence? MapAbsence(AbsenceViewModel model)
+    {
+        try
+        {
+            var absence = new Absence
+            {
+                StudentId = model.StudentId,  
+                TeacherId = model.TeacherId,
+                Value = model.AbsenceCount,
+                Time = model.Date,
+                                
+            };
+            return absence;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map AbsenceViewModel to Absence");
+            return null;
+        }
+    }
 }
+//absences: {
+//    subject: string;
+//    absence: number;
+//    excused: boolean;
+//    date: Date;
+//    teacherId; string;
+//     teacherFirstName: string;
+//     teacherLastName: string;
+//  }[]
