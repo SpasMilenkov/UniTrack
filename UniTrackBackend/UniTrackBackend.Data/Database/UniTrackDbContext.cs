@@ -34,12 +34,10 @@ public class UniTrackDbContext : IdentityDbContext<User>
             .HasOne(s => s.User)
             .WithOne()
             .HasForeignKey<Student>(s => s.UserId);
-        
+
         modelBuilder.Entity<Teacher>()
             .HasOne(t => t.User)
             .WithOne()
             .HasForeignKey<Teacher>(t => t.UserId);
     }
-
-
 }
