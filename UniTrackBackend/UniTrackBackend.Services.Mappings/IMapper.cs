@@ -6,4 +6,5 @@ namespace UniTrackBackend.Services.Mappings;
 public interface IMapper
 {
     public Mark? MapMark(MarkViewModel model);
+    public Absence? MapAbsence(AbsenceViewModel model);
 }
