@@ -4,11 +4,11 @@ namespace UniTrackBackend.Services.AbsenceService
 {
         public interface IAbsenceService
         {
-            Task<Absence?> AddAbsenceAsync(Absence? absence);
-            Task<IEnumerable<Absence?>?> GetAbsencesAsync();
-            Task<Absence?> GetAbsencesByStudentIdAsync(int studentId);
-            Task<Absence?> UpdateAbsenceAsync(Absence? absence);
-            Task<bool> DeleteAbsenceAsync(int absenceId);
+            Task<Absence> AddAbsenceAsync(Absence absence);
+            Task<IEnumerable<Absence>> GetAbsencesAsync();
+            Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId);
+            Task UpdateAbsenceAsync(Absence absence);
+            Task DeleteAbsenceAsync(int absenceId);
             
         }
    

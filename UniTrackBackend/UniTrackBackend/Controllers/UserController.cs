@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services;
 using UniTrackBackend.Services.AdminService;
 
 namespace UniTrackBackend.Controllers
