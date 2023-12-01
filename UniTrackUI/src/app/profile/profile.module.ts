@@ -5,6 +5,7 @@ import { ProfileDetailsComponent } from './profile-details/profile-details.compo
 import { StudentDetailsCardComponent } from './student-details-card/student-details-card.component';
 import { TeacherDetailsCardComponent } from './teacher-details-card/teacher-details-card.component';
 import { MaterialModule } from '../shared/material.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -21,7 +22,8 @@ import { MaterialModule } from '../shared/material.module';
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    SharedModule
   ]
 })
 export class ProfileModule { }

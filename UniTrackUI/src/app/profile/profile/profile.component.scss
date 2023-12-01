@@ -1,14 +1,11 @@
-
-.main-wrapper{
-  height: 100vh;
-}
+@use 'colors';
 
 .main-content{
   min-height: 80vh;
 }
 
 .profile-wrapper{
-  height: 80vh;
+  min-height: 80vh;
 }
 
 .profile-content{
@@ -17,4 +14,18 @@
 
 .h-100{
   height: 100%;
+}
+
+.events-wrapper{
+  .title-wrapper{
+    background: colors.$color-ut-accent-100;
+    border-radius: 8px 8px 0 0;
+    max-width: 260px;
+  }
+
+  .cards-wrapper{
+    min-height: 40vh;
+    background: colors.$color-ut-accent-100;
+    border-radius: 0 8px 8px 8px;
+  }
 }
