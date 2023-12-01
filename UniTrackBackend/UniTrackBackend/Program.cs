@@ -1,9 +1,9 @@
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
-using UniTrackBackend.Interfaces;
 using UniTrackBackend.Middlewares;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.ApprovalService;
 using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.Messaging;

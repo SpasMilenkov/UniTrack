@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.AbsenceService;
 
-
-namespace UniTrackBackend.Api.Controllers
+namespace UniTrackBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
