@@ -1,6 +1,6 @@
 ﻿using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services
+namespace UniTrackBackend.Services.MarkService
 {
     public interface IMarkService
     {

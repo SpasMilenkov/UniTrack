@@ -12,7 +12,6 @@ using Microsoft.IdentityModel.Tokens;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Interfaces;
 
 namespace UniTrackBackend.Services.Auth;
 

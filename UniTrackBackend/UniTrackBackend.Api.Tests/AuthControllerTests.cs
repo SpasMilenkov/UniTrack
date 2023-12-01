@@ -5,7 +5,7 @@ using Moq;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Interfaces;
+using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Messaging;
 
 namespace UniTrackBackend.Api.Tests;

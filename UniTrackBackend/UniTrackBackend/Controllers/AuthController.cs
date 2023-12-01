@@ -2,7 +2,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Infrastructure;
-using UniTrackBackend.Interfaces;
+using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Commons.Exceptions;
 using UniTrackBackend.Services.Messaging;
 
