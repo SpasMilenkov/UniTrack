@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Api.ViewModels;
 
@@ -17,4 +18,9 @@ public class TeacherViewModel
     [Phone]
     [StringLength(20)]
     public required string PhoneNumber { get; set; }
+    [Required]
+    public int Id { get; set; }
+    public User Type { get; set; }
+    public List<Subject> Subjects { get; set; }
+
 }
