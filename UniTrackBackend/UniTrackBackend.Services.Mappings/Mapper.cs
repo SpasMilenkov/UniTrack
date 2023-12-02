@@ -51,13 +51,25 @@ public class Mapper : IMapper
             return null;
         }
     }
+    public Teacher? MapTeacher(TeacherViewModel model)
+    {
+
+        try
+        {
+            var teacher = new Teacher
+            {
+                Id = model.Id,
+                User = model.Type,
+                Subjects = model.Subjects,
+                
+
+            };
+            return teacher;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map TeacherViewModel to Teacher");
+            return null;
+        }
+    }
 }
-//absences: {
-//    subject: string;
-//    absence: number;
-//    excused: boolean;
-//    date: Date;
-//    teacherId; string;
-//     teacherFirstName: string;
-//     teacherLastName: string;
-//  }[]
