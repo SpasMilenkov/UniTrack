@@ -7,7 +7,14 @@
     <h1 class="text-center">
       Add <span class="fw-bold text-ut-primary">grade</span>
     </h1>
-    <button mat-raised-button class="w-100 primary-btn-lg" color="primary">Add grade</button>
+    <button
+      mat-raised-button
+      class="w-100 primary-btn-lg"
+      routerLink="../students-list"
+      color="primary"
+    >
+      Add grade
+    </button>
   </div>
   <div *ngSwitchCase="teacherDetailsCardTypes.ADD_ABSENCE" class="card-content">
     <h1 class="text-center">
@@ -18,6 +25,7 @@
       class="w-100"
       color="accent"
       class="accent-btn-lg"
+      routerLink="../students-list"
     >
       Add absence
     </button>
@@ -26,6 +34,8 @@
     <h1 class="text-center">
       Add <span class="fw-bold text-ut-primary">event</span>
     </h1>
-    <button mat-raised-button class="primary-btn-lg" color="primary">Add event</button>
+    <button mat-raised-button class="primary-btn-lg" color="primary">
+      Add event
+    </button>
   </div>
 </div>

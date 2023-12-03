@@ -6,6 +6,7 @@ import { StudentDetailsCardComponent } from './student-details-card/student-deta
 import { TeacherDetailsCardComponent } from './teacher-details-card/teacher-details-card.component';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 
 
@@ -22,6 +23,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     CommonModule,
+    AppRoutingModule,
     MaterialModule,
     SharedModule
   ]
