@@ -4,7 +4,7 @@ namespace UniTrackBackend.Api.ViewModels;
 
 public class StudentViewModel
 {
-    // public int StudentId { get; set; }
+    public int StudentId { get; set; }
 
     [Required]
     [StringLength(100)]

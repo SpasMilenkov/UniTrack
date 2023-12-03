@@ -3,6 +3,7 @@ using Moq;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.AdminService;
 
 namespace UniTrackBackend.Api.Tests
 {

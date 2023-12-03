@@ -2,8 +2,10 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data.Models.TypeSafe;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.ApprovalService;
 
 namespace UniTrackBackend.Controllers
 {

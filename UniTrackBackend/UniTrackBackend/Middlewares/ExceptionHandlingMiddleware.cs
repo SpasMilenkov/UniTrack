@@ -57,6 +57,7 @@ public class ExceptionHandlingMiddleware
                 result = e.Message;
                 break;
             default:
+                code = HttpStatusCode.InternalServerError;
                 result = "An unexpected error occurred.";
                 break;
         }

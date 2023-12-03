@@ -4,7 +4,7 @@ using UniTrackBackend.Data.Repositories;
 
 namespace UniTrackBackend.Data;
 
-public class UnitOfWork : IDisposable
+public sealed class UnitOfWork : IDisposable
 {
     private readonly UniTrackDbContext _context;
     private EfRepository<Absence>? _absenceRepository;
@@ -12,7 +12,7 @@ public class UnitOfWork : IDisposable
     private EfRepository<Grade>? _gradeRepository;
     private EfRepository<Mark>? _markRepository;
     private EfRepository<Parent>? _parentRepository;
-    private EfRepository<Student>? _studentRepository;
+    private StudentRepository? _studentRepository;
     private EfRepository<Subject>? _subjectRepository;
     private EfRepository<Teacher>? _teacherRepository;
     private EfRepository<User>? _userRepository;
@@ -78,11 +78,11 @@ public class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Student> StudentRepository
+    public StudentRepository StudentRepository
     {
         get
         {
-            _studentRepository ??= new EfRepository<Student>(_context);
+            _studentRepository ??= new StudentRepository(_context);
             return _studentRepository;
         }
     }
@@ -112,7 +112,7 @@ public class UnitOfWork : IDisposable
     
     private bool _disposed = false;
 
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (!_disposed)
         {

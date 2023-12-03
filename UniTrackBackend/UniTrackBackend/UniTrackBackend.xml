@@ -136,11 +136,26 @@
             <response code="200">Password has been reset successfully.</response>
             <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
         </member>
+        <member name="T:UniTrackBackend.Controllers.MarkController">
+            <summary>
+            The MarkController is responsible for handling all HTTP requests related to the management of marks in the system.
+            It provides functionality to add, retrieve, update, and delete marks. Additionally, it supports fetching marks
+            based on various filters such as student ID, teacher ID, subject ID, and specific dates. The controller leverages
+            the IMarkService for business logic operations and IMapper for object mapping between view models and data models.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.MarkController.#ctor(UniTrackBackend.Services.MarkService.IMarkService,UniTrackBackend.Services.Mappings.IMapper)">
+            <summary>
+            Initializes a new instance of the MarkController.
+            </summary>
+            <param name="markService">Service for managing marks.</param>
+            <param name="mapper">Automapper for mapping between view models and data models.</param>
+        </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Api.ViewModels.MarkViewModel)">
             <summary>
             Adds a new mark.
             </summary>
-            <param name="model">The mark details to add.</param>
+            <param name="model">The view model containing the mark details to add.</param>
             <returns>The created mark.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.GetMark(System.Int32)">
@@ -189,7 +204,7 @@
             Updates a specific mark.
             </summary>
             <param name="id">The ID of the mark to update.</param>
-            <param name="model">The updated mark details.</param>
+            <param name="model">The view model containing the updated mark details.</param>
             <returns>The updated mark.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.DeleteMark(System.Int32)">
@@ -197,7 +212,41 @@
             Deletes a specific mark.
             </summary>
             <param name="id">The ID of the mark to delete.</param>
-            <returns>No content on successful deletion.</returns>
+            <returns>No content on successful deletion, NotFound if the mark does not exist.</returns>
+        </member>
+        <member name="T:UniTrackBackend.Controllers.StudentController">
+            <summary>
+            The StudentController is responsible for managing student-related operations in the system.
+            It provides functionality to retrieve and delete student records. The controller uses the IStudentService
+            to interact with the underlying data layer and perform business logic operations.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.StudentService.IStudentService,UniTrackBackend.Services.Mappings.IMapper)">
+            <summary>
+            Initializes a new instance of the StudentController with the required services.
+            </summary>
+            <param name="studentService">Service for managing student data.</param>
+            <param name="mapper">Service for mapping view models to entities</param>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.GetStudent(System.Int32)">
+            <summary>
+            Retrieves a student by their ID.
+            </summary>
+            <param name="id">The ID of the student to retrieve.</param>
+            <returns>The student data if found; otherwise, a NotFound result.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.GetAllStudents">
+            <summary>
+            Retrieves all students.
+            </summary>
+            <returns>A list of all students.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.DeleteStudent(System.Int32)">
+            <summary>
+            Deletes a student by their ID.
+            </summary>
+            <param name="id">The ID of the student to delete.</param>
+            <returns>A NoContent result indicating successful deletion.</returns>
         </member>
     </members>
 </doc>

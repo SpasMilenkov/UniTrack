@@ -251,9 +251,6 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime>("GradedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Points")
-                        .HasColumnType("numeric");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
@@ -262,6 +259,9 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -309,6 +309,9 @@ namespace UniTrackBackend.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("ParentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentNumber")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -378,6 +381,10 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("AvatarUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

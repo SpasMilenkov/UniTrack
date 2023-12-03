@@ -4,6 +4,6 @@ public class ElectiveSubject
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public List<Grade> Grades { get; set; } = null!;
-    public List<Student> Students { get; set; } = null!;
+    public ICollection<Grade> Grades { get; set; } = null!;
+    public ICollection<Student> Students { get; set; } = null!;
 }

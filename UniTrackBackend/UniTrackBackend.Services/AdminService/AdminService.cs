@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Data;
 
-namespace UniTrackBackend.Services
+namespace UniTrackBackend.Services.AdminService
 {
     public class AdminService : IAdminService
     {

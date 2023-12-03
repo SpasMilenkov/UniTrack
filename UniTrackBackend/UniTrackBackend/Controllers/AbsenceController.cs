@@ -1,99 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net.Mime;
-using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.Mappings;
+using UniTrackBackend.Services.AbsenceService;
 
-namespace UniTrackBackend.Api.Controllers
+namespace UniTrackBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Produces(MediaTypeNames.Application.Json)]
-    [Consumes(MediaTypeNames.Application.Json)]
     public class AbsencesController : ControllerBase
     {
         private readonly IAbsenceService _absenceService;
-        private readonly IMapper _mapper;
 
-        public AbsencesController(IAbsenceService absenceService, IMapper mapper)
+        public AbsencesController(IAbsenceService absenceService)
         {
             _absenceService = absenceService;
-            _mapper = mapper;   
         }
 
-    
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddAbsence([FromBody] AbsenceViewModel model)
+        public async Task<ActionResult<Absence>> PostAbsence(Absence absence)
         {
-            var absence = _mapper.MapAbsence(model);
-            if (absence is null)
-                return BadRequest();
-            var createdAbsence = await _absenceService.AddAbsenceAsync(absence);
-            return CreatedAtAction(nameof(GetAbsence), new { id = createdAbsence.Id }, createdAbsence);
+            var newAbsence = await _absenceService.AddAbsenceAsync(absence);
+            return CreatedAtAction(nameof(GetAbsenceById), new { id = newAbsence.Id }, newAbsence);
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAbsences()
+        public async Task<ActionResult<IEnumerable<Absence>>> GetAllAbsences()
         {
-            var absences = await _absenceService.GetAbsencesAsync();   
+            var absences = await _absenceService.GetAbsencesAsync();
             return Ok(absences);
         }
 
-      
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAbsence(int id)
+        public async Task<ActionResult<Absence>> GetAbsenceById(int id)
         {
             var absence = await _absenceService.GetAbsencesByStudentIdAsync(id);
-            if (absence is null)
-                return NotFound();
-
+            if (absence == null) return NotFound();
             return Ok(absence);
         }
 
-      
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAbsence(int id, [FromBody] AbsenceViewModel model)
+        public async Task<IActionResult> UpdateAbsence(int id, Absence absence)
         {
-            if (id != model.StudentId)
-                return BadRequest("ID mismatch");
-
-            var absence = _mapper.MapAbsence(model);
-            if (absence is null)
-                return NotFound();
-            var updatedAbsence = await _absenceService.UpdateAbsenceAsync(absence);
-
-            return Ok(updatedAbsence);
+            if (id != absence.Id) return BadRequest("ID mismatch");
+            await _absenceService.UpdateAbsenceAsync(absence);
+            return NoContent();
         }
 
-      
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAbsence(int id)
         {
-            try
-            {
-                var result = await _absenceService.DeleteAbsenceAsync(id);
-                if (!result)
-                {
-                    return NotFound();
-                }
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound();
-            }
-
-            return Ok();
+            await _absenceService.DeleteAbsenceAsync(id);
+            return NoContent();
         }
     }
 }

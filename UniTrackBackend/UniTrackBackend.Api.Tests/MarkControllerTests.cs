@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Mvc; 
 using Moq;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
-using UniTrackBackend.Data.Interfaces;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
+using UniTrackBackend.Services.MarkService;
 
 namespace UniTrackBackend.Api.Tests;
 

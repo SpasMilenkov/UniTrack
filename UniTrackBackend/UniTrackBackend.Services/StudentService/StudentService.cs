@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Data;
 
-namespace UniTrackBackend.Services
+namespace UniTrackBackend.Services.StudentService
 {
     public class StudentService : IStudentService
     {
@@ -17,37 +12,40 @@ namespace UniTrackBackend.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Student> AddStudentAsync(Student student)
+        public async Task<Student?> AddStudentAsync(Student? student)
         {
             await _unitOfWork.StudentRepository.AddAsync(student);
             await _unitOfWork.SaveAsync();
             return student;
         }
 
-        public async Task<Student> GetStudentByIdAsync(int id)
+        public async Task<Student?> GetStudentByIdAsync(int id)
         {
-            return await _unitOfWork.StudentRepository.GetByIdAsync(id);
+            var student = await _unitOfWork.StudentRepository.GetStudentWithDetailsAsync(id);
+            return student;
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudentsAsync()
+        public async Task<IEnumerable<Student?>> GetAllStudentsAsync()
         {
             return await _unitOfWork.StudentRepository.GetAllAsync();
         }
 
-        public async Task UpdateStudentAsync(Student student)
+        public async Task UpdateStudentAsync(Student? student)
         {
             await _unitOfWork.StudentRepository.UpdateAsync(student);
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task DeleteStudentAsync(int id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
             var student = await _unitOfWork.StudentRepository.GetByIdAsync(id);
-            if (student != null)
-            {
-                await _unitOfWork.StudentRepository.DeleteAsync(id);
-                await _unitOfWork.SaveAsync();
-            }
+                
+            if (student == null) return false;
+            
+            await _unitOfWork.StudentRepository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
+            return true;
+
         }
     }
 }
