@@ -1,0 +1,33 @@
+.demo-table {
+  width: 100%;
+}
+
+.mat-column-demo-position {
+  width: 32px;
+  border-right: 1px solid red;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-mdc-table{
+  background-color: rgb(221, 201, 233);
+}
+
+.mat-mdc-header-cell{
+  color: #673389;
+  font-family: 'Cabin Sketch', sans-serif !important;
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+.mat-mdc-cell, .mat-mdc-footer-cell{
+  color: #454955;
+}
+
+.mat-mdc-cell, .mat-mdc-header-cell{
+  border-bottom-color: rgb(246, 229, 250);
+}
+
+.add-icon{
+  cursor: pointer;
+}
