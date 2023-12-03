@@ -9,7 +9,7 @@ import { StudentProfile } from '../shared/models/student-profile';
 })
 export class StudentsListComponent {
   studentsData: StudentProfile[] = [];
-  displayedColumns: string[] = ['avatarUrl', 'firstName', 'lastName', 'className', 'number', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'className', 'number', 'actions'];
 
   constructor(private studentsService: StudentsService) { }
 
