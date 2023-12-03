@@ -40,7 +40,7 @@ export class StudentDetailsCardComponent {
 
   private calculateGrades(): void{
     if(this.grades?.length){
-      this.averageGrades = this.grades?.reduce((p, c) => p + c.grade, 0) / this.grades.length;
+      this.averageGrades = this.grades?.reduce((p, c) => p + +c.grade, 0) / this.grades.length;
     }
   }
 }
