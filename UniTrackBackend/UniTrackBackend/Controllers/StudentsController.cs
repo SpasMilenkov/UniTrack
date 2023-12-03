@@ -9,9 +9,9 @@ using UniTrackBackend.Services.StudentService;
 namespace UniTrackBackend.Controllers
 {
     /// <summary>
-    /// The StudentController is responsible for managing student-related operations in the system.
-    /// It provides functionality to retrieve and delete student records. The controller uses the IStudentService
-    /// to interact with the underlying data layer and perform business logic operations.
+    /// The StudentController manages student-related operations within the system.
+    /// It provides functionalities such as adding, retrieving, updating, and deleting student records.
+    /// The controller interacts with the IStudentService to handle business logic and uses IMapper for model mapping.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -26,14 +26,18 @@ namespace UniTrackBackend.Controllers
         /// Initializes a new instance of the StudentController with the required services.
         /// </summary>
         /// <param name="studentService">Service for managing student data.</param>
-        /// <param name="mapper">Service for mapping view models to entities</param>
+        /// <param name="mapper">Service for mapping view models to entities.</param>
         public StudentController(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
         }
 
-        
+        /// <summary>
+        /// Adds a new student record to the system.
+        /// </summary>
+        /// <param name="model">The student view model containing the data to be added.</param>
+        /// <returns>The created student record.</returns>
         [HttpPost]
         public async Task<IActionResult> AddStudent([FromBody] StudentViewModel model)
         {
@@ -50,16 +54,15 @@ namespace UniTrackBackend.Controllers
         [HttpGet("{id}")]   
         public async Task<IActionResult> GetStudent(int id)
         {
-            
             var student = await _studentService.GetStudentByIdAsync(id);
             if (student == null)
                 return NotFound();
             var result = _mapper.MapStudentViewModel(student);
-            return Ok(student);
+            return Ok(result);
         }
 
         /// <summary>
-        /// Retrieves all students.
+        /// Retrieves all student records.
         /// </summary>
         /// <returns>A list of all students.</returns>
         [HttpGet]
@@ -69,6 +72,12 @@ namespace UniTrackBackend.Controllers
             return Ok(students);
         }
 
+        /// <summary>
+        /// Updates an existing student record.
+        /// </summary>
+        /// <param name="id">The ID of the student to update.</param>
+        /// <param name="model">The updated student view model.</param>
+        /// <returns>A NoContent result indicating successful update.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentViewModel model)
         {
@@ -76,16 +85,15 @@ namespace UniTrackBackend.Controllers
                 return BadRequest();
 
             var student = _mapper.MapStudent(model);
-        
             await _studentService.UpdateStudentAsync(student);
             return NoContent();
         }
-        
+
         /// <summary>
-        /// Deletes a student by their ID.
+        /// Deletes a student record by their ID.
         /// </summary>
         /// <param name="id">The ID of the student to delete.</param>
-        /// <returns>A NoContent result indicating successful deletion.</returns>
+        /// <returns>A NoContent result indicating successful deletion, or NotFound if the student does not exist.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
@@ -100,7 +108,6 @@ namespace UniTrackBackend.Controllers
             {
                 return NotFound();
             }
-
         }
     }
 }
