@@ -22,6 +22,15 @@ public sealed class UnitOfWork : IDisposable
     {
         _context = context;
     }
+    public EfRepository<School> SchoolRepository
+    {
+        get
+        {
+            _schoolRepository ??= new EfRepository<School>(_context);
+
+            return _schoolRepository;
+        }
+    }
     public EfRepository<User> UserRepository
     {
         get
@@ -103,15 +112,6 @@ public sealed class UnitOfWork : IDisposable
         {
             _teacherRepository ??= new EfRepository<Teacher>(_context);
             return _teacherRepository;
-        }
-    }
-
-    public EfRepository<School> SchoolRepository
-    {
-        get
-        {
-            _schoolRepository ??= new EfRepository<School>(_context);
-            return _schoolRepository;
         }
     }
 
