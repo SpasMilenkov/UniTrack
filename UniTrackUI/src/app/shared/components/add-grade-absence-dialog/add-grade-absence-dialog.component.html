@@ -2,11 +2,11 @@
   class="main-wrapper d-flex flex-column align-items-center justify-content-center px-5 py-3"
 >
   <form [formGroup]="form">
-    <h1 mat-dialog-title class="text-ut-accent text-center fw-bold">
+    <h1 mat-dialog-title class="text-center fw-bold">
       Add {{ getTypeTitle() | uppercase }}
     </h1>
     <div mat-dialog-content class="d-flex flex-column justify-content-center">
-      <h2 class="text-center mb-3">
+      <h2 class="subtitle-wrapper text-center mb-3">
         to {{ data.studentFirstName }}&nbsp;{{ data.studentLastName }}
       </h2>
       <mat-label>Select subject</mat-label>
@@ -38,12 +38,12 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
-    <div mat-dialog-actions>
-      <button mat-raised-button mat-dialog-close class="mx-5">Cancel</button>
+    <div mat-dialog-actions class="d-flex flex-column">
+      <button mat-raised-button mat-dialog-close class="my-2 accent-btn-lg cancel-btn">Cancel</button>
       <button
         mat-raised-button
         cdkFocusInitial
-        class="mx-5"
+        class="my-2 accent-btn-lg"
         (click)="onSubmit()"
       >
         Add
