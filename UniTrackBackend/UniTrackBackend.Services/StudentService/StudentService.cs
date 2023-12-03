@@ -12,24 +12,25 @@ namespace UniTrackBackend.Services.StudentService
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Student> AddStudentAsync(Student student)
+        public async Task<Student?> AddStudentAsync(Student? student)
         {
             await _unitOfWork.StudentRepository.AddAsync(student);
             await _unitOfWork.SaveAsync();
             return student;
         }
 
-        public async Task<Student> GetStudentByIdAsync(int id)
+        public async Task<Student?> GetStudentByIdAsync(int id)
         {
-            return await _unitOfWork.StudentRepository.GetByIdAsync(id);
+            var student = await _unitOfWork.StudentRepository.GetStudentWithDetailsAsync(id);
+            return student;
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudentsAsync()
+        public async Task<IEnumerable<Student?>> GetAllStudentsAsync()
         {
             return await _unitOfWork.StudentRepository.GetAllAsync();
         }
 
-        public async Task UpdateStudentAsync(Student student)
+        public async Task UpdateStudentAsync(Student? student)
         {
             await _unitOfWork.StudentRepository.UpdateAsync(student);
             await _unitOfWork.SaveAsync();
