@@ -8,10 +8,12 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { StudentsListComponent } from './students-list/students-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StudentsListComponent
   ],
   imports: [
     BrowserModule,
