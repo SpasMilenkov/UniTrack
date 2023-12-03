@@ -3,7 +3,11 @@ import { Grade } from "./grade";
 import { Profile } from "./profile";
 
 export interface StudentProfile extends Profile{
-  number?: number;
+  id: string;
+  number: number;
   grades?: Grade[];
-  absences?: Absence[]
+  absences?: Absence[];
+  classTeacherId: string;
+  classTeacherFirstName: string;
+  classTeacherLastName: string;
 }
