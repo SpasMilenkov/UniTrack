@@ -8,6 +8,6 @@ public class Student
     public User User { get; set; } = null!;
     public int GradeId { get; set; }
     public Grade Grade { get; set; } = null!;
-    public List<Absence> Absences { get; set; } = null!;
-    public List<Mark> Marks { get; set; } = null!;
+    public ICollection<Absence> Absences { get; set; } = null!;
+    public ICollection<Mark> Marks { get; set; } = null!;
 }
