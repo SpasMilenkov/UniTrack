@@ -5,9 +5,9 @@ namespace UniTrackBackend.Api.ViewModels
     public class SchoolViewModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public List<Teacher> Teachers { get; set; }
-        public List<Student> Students { get; set; }
+        public ICollection<Teacher> Teachers { get; set; } = null!;
+        public ICollection<Student> Students { get; set; } = null!;
     }
 }
