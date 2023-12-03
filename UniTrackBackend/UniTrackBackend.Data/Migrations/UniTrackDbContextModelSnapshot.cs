@@ -166,7 +166,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeachersId");
 
-                    b.ToTable("SubjectTeacher", (string)null);
+                    b.ToTable("SubjectTeacher");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Absence", b =>
@@ -195,7 +195,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Absences", (string)null);
+                    b.ToTable("Absences");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.ElectiveSubject", b =>
@@ -212,7 +212,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ElectiveSubjects", (string)null);
+                    b.ToTable("ElectiveSubjects");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
@@ -237,7 +237,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("ElectiveSubjectId");
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
@@ -251,9 +251,6 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime>("GradedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Points")
-                        .HasColumnType("numeric");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
@@ -263,6 +260,9 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
@@ -271,7 +271,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Marks", (string)null);
+                    b.ToTable("Marks");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Parent", b =>
@@ -291,7 +291,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Parents", (string)null);
+                    b.ToTable("Parents");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
@@ -311,6 +311,9 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("StudentNumber")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -326,7 +329,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Subject", b =>
@@ -348,7 +351,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("GradeId");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Teacher", b =>
@@ -368,7 +371,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.User", b =>
@@ -378,6 +381,10 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("AvatarUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
