@@ -1,1 +1,53 @@
-<p>add-grade-absence-dialog works!</p>
+<div
+  class="main-wrapper d-flex flex-column align-items-center justify-content-center px-5 py-3"
+>
+  <form [formGroup]="form">
+    <h1 mat-dialog-title class="text-ut-accent text-center fw-bold">
+      Add {{ getTypeTitle() | uppercase }}
+    </h1>
+    <div mat-dialog-content class="d-flex flex-column justify-content-center">
+      <h2 class="text-center mb-3">
+        to {{ data.studentFirstName }}&nbsp;{{ data.studentLastName }}
+      </h2>
+      <mat-label>Select subject</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="subject">
+          <mat-option
+            *ngFor="let subject of teacher.subjects"
+            [value]="subject"
+            >{{ subject }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-label *ngIf="data.type === types.ADD_GRADE">Write grade</mat-label>
+      <mat-form-field
+        appearance="outline"
+        *ngIf="data.type === types.ADD_GRADE"
+      >
+        <input type="number" formControlName="grade" matInput />
+      </mat-form-field>
+      <mat-label>Enter a date</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-label>Choose a date</mat-label>
+        <input matInput formControlName="date" [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close class="mx-5">Cancel</button>
+      <button
+        mat-raised-button
+        cdkFocusInitial
+        class="mx-5"
+        (click)="onSubmit()"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>
