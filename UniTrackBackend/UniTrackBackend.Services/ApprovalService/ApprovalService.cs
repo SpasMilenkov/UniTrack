@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;

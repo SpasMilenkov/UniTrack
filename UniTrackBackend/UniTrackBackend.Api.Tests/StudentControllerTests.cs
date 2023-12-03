@@ -1,7 +1,9 @@
+using System.Security.Cryptography.Pkcs;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.StudentService;
 
 namespace UniTrackBackend.Api.Tests;
@@ -10,11 +12,13 @@ public class StudentControllerTests
 {
     private readonly Mock<IStudentService> _mockService;
     private readonly StudentController _controller;
+    private readonly Mock<IMapper> _mockMapper;
 
     public StudentControllerTests()
     {
         _mockService = new Mock<IStudentService>();
-        _controller = new StudentController(_mockService.Object);
+        _mockMapper = new Mock<IMapper>();
+        _controller = new StudentController(_mockService.Object, _mockMapper.Object);
     }
     [Fact]
     public async Task GetStudent_ExistingId_ReturnsOkObjectResult()
