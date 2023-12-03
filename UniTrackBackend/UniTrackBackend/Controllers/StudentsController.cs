@@ -1,6 +1,9 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.StudentService;
 
 namespace UniTrackBackend.Controllers
@@ -17,36 +20,41 @@ namespace UniTrackBackend.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the StudentController with the required services.
         /// </summary>
         /// <param name="studentService">Service for managing student data.</param>
-        public StudentController(IStudentService studentService)
+        /// <param name="mapper">Service for mapping view models to entities</param>
+        public StudentController(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
+            _mapper = mapper;
         }
 
-        //
-        // [HttpPost]
-        // public async Task<IActionResult> AddStudent([FromBody] StudentViewModel model)
-        // {
-        //     var createdStudent = await _studentService.AddStudentAsync(student);
-        //     return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.Id }, createdStudent);
-        // }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddStudent([FromBody] StudentViewModel model)
+        {
+            var student = _mapper.MapStudent(model);
+            var createdStudent = await _studentService.AddStudentAsync(student);
+            return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.Id }, createdStudent);
+        }
 
         /// <summary>
         /// Retrieves a student by their ID.
         /// </summary>
         /// <param name="id">The ID of the student to retrieve.</param>
         /// <returns>The student data if found; otherwise, a NotFound result.</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]   
         public async Task<IActionResult> GetStudent(int id)
         {
+            
             var student = await _studentService.GetStudentByIdAsync(id);
             if (student == null)
                 return NotFound();
-
+            var result = _mapper.MapStudentViewModel(student);
             return Ok(student);
         }
 
@@ -61,15 +69,17 @@ namespace UniTrackBackend.Controllers
             return Ok(students);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentViewModel model)
-        // {
-        //     if (id != model.)
-        //         return BadRequest();
-        //
-        //     await _studentService.UpdateStudentAsync(student);
-        //     return NoContent();
-        // }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentViewModel model)
+        {
+            if (id != model.StudentId)
+                return BadRequest();
+
+            var student = _mapper.MapStudent(model);
+        
+            await _studentService.UpdateStudentAsync(student);
+            return NoContent();
+        }
         
         /// <summary>
         /// Deletes a student by their ID.

@@ -221,11 +221,12 @@
             to interact with the underlying data layer and perform business logic operations.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.StudentService.IStudentService)">
+        <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.StudentService.IStudentService,UniTrackBackend.Services.Mappings.IMapper)">
             <summary>
             Initializes a new instance of the StudentController with the required services.
             </summary>
             <param name="studentService">Service for managing student data.</param>
+            <param name="mapper">Service for mapping view models to entities</param>
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.GetStudent(System.Int32)">
             <summary>

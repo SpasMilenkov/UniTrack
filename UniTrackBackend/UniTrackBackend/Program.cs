@@ -7,6 +7,7 @@ using UniTrackBackend.Services.ApprovalService;
 using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.Messaging;
+using UniTrackBackend.Services.StudentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddCors(c =>
 builder.Services.AddJwtToken(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApprovalService, ApprovalService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMapper, Mapper>();
@@ -48,7 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+// app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
