@@ -15,4 +15,9 @@ public interface IRepository<T> where T : class
     Task DeleteAsync(int id);
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate);
+
+    Task LoadCollectionAsync<TProperty>(T entity, Expression<Func<T, ICollection<TProperty>>> navigationProperty) where TProperty : class;
+
+    Task LoadReferenceAsync<TProperty>(T entity, Expression<Func<T, TProperty>> navigationProperty) where TProperty : class;
+    
 }

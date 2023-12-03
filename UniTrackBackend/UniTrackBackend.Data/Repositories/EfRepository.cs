@@ -76,6 +76,38 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         return await _dbSet.SingleOrDefaultAsync(predicate);
     }
+    
+    public async Task LoadCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> navigationProperty) where TProperty : class
+    {
+        // Extract the property name from the lambda expression
+        var propertyName = GetPropertyName(navigationProperty);
+
+        var collection = _context.Entry(entity).Collection(propertyName);
+        if (!collection.IsLoaded)
+        {
+            await collection.LoadAsync();
+        }
+    }
+
+    public async Task LoadReferenceAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty) where TProperty : class
+    {
+        var reference = _context.Entry(entity).Reference(navigationProperty);
+        if (!reference.IsLoaded)
+        {
+            await reference.LoadAsync();
+        }
+    }
+    
+    private static string GetPropertyName<TProperty>(Expression<Func<TEntity, ICollection<TProperty>>> navigationProperty)
+    {
+        if (navigationProperty.Body is MemberExpression memberExpression)
+        {
+            return memberExpression.Member.Name;
+        }
+
+        throw new ArgumentException("Invalid navigation property expression", nameof(navigationProperty));
+    }
+
 }
 
 

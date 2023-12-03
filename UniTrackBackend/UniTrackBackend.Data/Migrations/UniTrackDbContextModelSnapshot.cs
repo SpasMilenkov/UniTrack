@@ -166,7 +166,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeachersId");
 
-                    b.ToTable("SubjectTeacher");
+                    b.ToTable("SubjectTeacher", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Absence", b =>
@@ -195,7 +195,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Absences");
+                    b.ToTable("Absences", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.ElectiveSubject", b =>
@@ -212,7 +212,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ElectiveSubjects");
+                    b.ToTable("ElectiveSubjects", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
@@ -237,7 +237,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("ElectiveSubjectId");
 
-                    b.ToTable("Grades");
+                    b.ToTable("Grades", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
@@ -271,7 +271,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Marks");
+                    b.ToTable("Marks", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Parent", b =>
@@ -291,7 +291,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Parents");
+                    b.ToTable("Parents", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
@@ -326,7 +326,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Subject", b =>
@@ -348,7 +348,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.HasIndex("GradeId");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Teacher", b =>
@@ -368,7 +368,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.User", b =>
