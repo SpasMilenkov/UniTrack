@@ -1,1 +1,48 @@
-<p>students-list works!</p>
+<div
+  class="main-wrapper my-5 bg-warning offset-lg-2 col-lg-8 offset-md-1 col-md-10"
+>
+  <table
+    mat-table
+    [dataSource]="studentsData"
+    class="mat-elevation-z8 demo-table"
+  >
+    <!-- Position Column -->
+    <ng-container matColumnDef="avatarUrl">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let student">{{ student.avatarUrl }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let student">{{ student.firstName }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let student">{{ student.lastName }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="className">
+      <th mat-header-cell *matHeaderCellDef>Class</th>
+      <td mat-cell *matCellDef="let student">{{ student.className }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef>Number</th>
+      <td mat-cell *matCellDef="let student">{{ student.number }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let student">
+        <mat-icon class="add-icon text-ut-accent">more_verte</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
