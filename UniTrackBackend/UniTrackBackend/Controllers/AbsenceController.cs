@@ -19,7 +19,11 @@ namespace UniTrackBackend.Controllers
             _absenceService = absenceService;
         }
 
-
+        /// <summary>
+        /// Creates a new absence record.
+        /// </summary>
+        /// <param name="absence">The absence details to create.</param>
+        /// <returns>A newly created absence record.</returns>
         [HttpPost]
         public async Task<ActionResult<Absence>> PostAbsence(Absence absence)
         {
@@ -27,6 +31,10 @@ namespace UniTrackBackend.Controllers
             return CreatedAtAction(nameof(GetAbsenceById), new { id = newAbsence.Id }, newAbsence);
         }
 
+        /// <summary>
+        /// Retrieves all absences.
+        /// </summary>
+        /// <returns>A list of all absence records.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AbsenceViewModel>>> GetAllAbsences()
         {
@@ -39,6 +47,11 @@ namespace UniTrackBackend.Controllers
             return Ok(models);
         }
 
+        /// <summary>
+        /// Retrieves absences for a specific student by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the student to retrieve absences for.</param>
+        /// <returns>A list of absences for the specified student; otherwise, a NotFound result.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<AbsenceViewModel>> GetAbsenceById(int id)
         {
@@ -51,7 +64,12 @@ namespace UniTrackBackend.Controllers
             }
             return Ok(models);
         }
-
+        /// <summary>
+        /// Updates an existing absence record.
+        /// </summary>
+        /// <param name="id">The ID of the absence to update.</param>
+        /// <param name="absence">The updated absence details.</param>
+        /// <returns>An ActionResult indicating the result of the operation.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAbsence(int id, Absence absence)
         {
@@ -59,7 +77,11 @@ namespace UniTrackBackend.Controllers
             await _absenceService.UpdateAbsenceAsync(absence);
             return NoContent();
         }
-
+        /// <summary>
+        /// Deletes an absence record.
+        /// </summary>
+        /// <param name="id">The ID of the absence to delete.</param>
+        /// <returns>An ActionResult indicating the result of the operation.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAbsence(int id)
         {
