@@ -6,5 +6,5 @@ public class Grade
     public string Name { get; set; } = null!;
     public ICollection<Subject> Subjects { get; set; } = null!;
     public int ClassTeacherId { get; set; }
-    public Teacher ClassTeacher = null!;
+    public Teacher ClassTeacher { get; set; } = null!;
 }

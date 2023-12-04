@@ -22,13 +22,16 @@ public class StudentRepository: EfRepository<Student>
                 .ThenInclude(g => g.ClassTeacher)
                 .ThenInclude(t => t.User)
                 .FirstOrDefaultAsync(s => s.Id == id);
+            
 
         if (student == null) return student;
         {
             // Load Absences - Consider filtering or limiting the results
             // For example, loading only the recent absences
             await _context.Entry(student).Collection(s => s.Absences)
-                .Query().Where(a => a.Time > DateTime.UtcNow.AddDays(-30)) // Example filter
+                .Query()
+                .Include(a => a.Subject) // Eagerly load Subject
+                .Where(a => a.Time > DateTime.UtcNow.AddDays(-30)) // Example filter
                 .LoadAsync();
 
             // Load Marks - Similar considerations as Absences

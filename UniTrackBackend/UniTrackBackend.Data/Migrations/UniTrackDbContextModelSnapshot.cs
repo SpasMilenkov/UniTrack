@@ -177,7 +177,13 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Excused")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TeacherId")
@@ -192,6 +198,8 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
 
@@ -234,6 +242,8 @@ namespace UniTrackBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassTeacherId");
 
                     b.HasIndex("ElectiveSubjectId");
 
@@ -530,6 +540,12 @@ namespace UniTrackBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniTrackBackend.Data.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.Teacher", "Teacher")
                         .WithMany("Absences")
                         .HasForeignKey("TeacherId")
@@ -538,14 +554,24 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Navigation("Student");
 
+                    b.Navigation("Subject");
+
                     b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
+                    b.HasOne("UniTrackBackend.Data.Models.Teacher", "ClassTeacher")
+                        .WithMany()
+                        .HasForeignKey("ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.ElectiveSubject", null)
                         .WithMany("Grades")
                         .HasForeignKey("ElectiveSubjectId");
+
+                    b.Navigation("ClassTeacher");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
