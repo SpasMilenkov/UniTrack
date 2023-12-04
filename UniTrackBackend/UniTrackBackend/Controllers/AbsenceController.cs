@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services.AbsenceService;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Controllers
 {
@@ -9,11 +11,14 @@ namespace UniTrackBackend.Controllers
     public class AbsencesController : ControllerBase
     {
         private readonly IAbsenceService _absenceService;
+        private readonly IMapper _mapper;
 
-        public AbsencesController(IAbsenceService absenceService)
+        public AbsencesController(IMapper mapper,IAbsenceService absenceService)
         {
+            _mapper = mapper;
             _absenceService = absenceService;
         }
+
 
         [HttpPost]
         public async Task<ActionResult<Absence>> PostAbsence(Absence absence)
@@ -23,18 +28,28 @@ namespace UniTrackBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Absence>>> GetAllAbsences()
+        public async Task<ActionResult<IEnumerable<AbsenceViewModel>>> GetAllAbsences()
         {
             var absences = await _absenceService.GetAbsencesAsync();
-            return Ok(absences);
+            var models = new List<AbsenceViewModel>();
+            foreach (var absence in absences)
+            {
+                models.Add(_mapper.MapAbsenceViewModel(absence));
+            }
+            return Ok(models);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Absence>> GetAbsenceById(int id)
+        public async Task<ActionResult<AbsenceViewModel>> GetAbsenceById(int id)
         {
-            var absence = await _absenceService.GetAbsencesByStudentIdAsync(id);
-            if (absence == null) return NotFound();
-            return Ok(absence);
+            var absences = await _absenceService.GetAbsencesByStudentIdAsync(id);
+            var models = new List<AbsenceViewModel>();
+            if (absences == null) return NotFound();
+            foreach (var absence in absences)
+            {
+                models.Add(_mapper.MapAbsenceViewModel(absence));
+            }
+            return Ok(models);
         }
 
         [HttpPut("{id}")]
