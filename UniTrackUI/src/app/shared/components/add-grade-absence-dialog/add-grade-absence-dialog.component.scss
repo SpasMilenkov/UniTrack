@@ -1,0 +1,22 @@
+@use 'colors';
+
+::ng-deep{
+  .mat-mdc-dialog-container .mdc-dialog__surface{
+    background-color: colors.$color-ut-primary-400 !important;
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__title{
+    color: colors.$color-ut-accent;
+    font-size: 1.8rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .subtitle-wrapper{
+    color: colors.$color-ut-white;
+  }
+
+  .cancel-btn{
+    background-color: colors.$color-ut-dark-wine !important;
+  }
+}

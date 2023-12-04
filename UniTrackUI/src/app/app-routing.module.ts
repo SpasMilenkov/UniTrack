@@ -5,6 +5,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { StudentsListComponent } from './students-list/students-list.component';
 
 const routes: Routes =  [
   {
@@ -17,6 +18,7 @@ const routes: Routes =  [
     ],
   },
   { path: 'profile', component: ProfileComponent},
+  { path: 'students-list', component: StudentsListComponent},
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];
 

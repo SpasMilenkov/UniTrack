@@ -1,6 +1,10 @@
 import { GradeTypes } from "../enums/grade-types.enum";
 
 export interface Grade {
-  grade: GradeTypes;
+  grade: GradeTypes | string;
   subject: string;
+  date: string;
+  teacherId: string;
+  teacherFirstName: string;
+  teacherLastName: string;
 }
