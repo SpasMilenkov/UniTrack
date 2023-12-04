@@ -11,11 +11,11 @@ namespace UniTrackBackend.Api.ViewModels
     {
         [Required]
         [MaxLength(100)]
-        public string Subject { get; set; }
+        public required string Subject { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
-        public int AbsenceCount { get; set; }
+        public decimal AbsenceCount { get; set; }
         
         public bool Excused { get; set; }
 
@@ -29,11 +29,11 @@ namespace UniTrackBackend.Api.ViewModels
 
         [Required]
         [MaxLength(50)]
-        public string TeacherFirstName { get; set; }
+        public required string TeacherFirstName { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string TeacherLastName { get; set; }
+        public required string TeacherLastName { get; set; }
     }
 
 

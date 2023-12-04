@@ -8,5 +8,8 @@ public class Absence
     public Teacher Teacher { get; set; } = null!;
     public int StudentId { get; set; }
     public Student Student { get; set; } = null!;
+    public int SubjectId { get; set; }
+    public Subject Subject { get; set; } = null!;
+    public bool Excused { get; set; }
     public DateTime Time { get; set; }
 }

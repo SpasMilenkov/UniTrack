@@ -42,6 +42,7 @@ public class Mapper : IMapper
                 TeacherId = model.TeacherId,
                 Value = model.AbsenceCount,
                 Time = model.Date,
+                Excused = model.Excused
                                 
             };
             return absence;
@@ -70,11 +71,6 @@ public class Mapper : IMapper
         }
     }
 
-    public StudentResultViewModel? MapStudentViewModel(Student student, List<MarkViewModel> marks, List<AbsenceViewModel> absences)
-    {
-        throw new NotImplementedException();
-    }
-
     public StudentResultViewModel? MapStudentViewModel(Student student)
     {
         try
@@ -92,6 +88,7 @@ public class Mapper : IMapper
             }
             var model = new StudentResultViewModel()
             {
+                Id = student.Id.ToString(),
                 FirstName = student.User.FirstName,
                 LastName = student.User.LastName,
                 UniId = student.Id.ToString(),
@@ -115,9 +112,29 @@ public class Mapper : IMapper
         }
     }
 
-    private AbsenceViewModel MapAbsenceViewModel(Absence absence)
+    public AbsenceViewModel MapAbsenceViewModel(Absence absence)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var model = new AbsenceViewModel
+            {
+                Subject = absence.Subject.Name,
+                AbsenceCount = absence.Value,
+                Excused = absence.Excused,
+                Date = absence.Time.Date,
+                StudentId = absence.StudentId,
+                TeacherId = absence.TeacherId,
+                TeacherFirstName = absence.Teacher.User.FirstName,
+                TeacherLastName = absence.Teacher.User.LastName
+                
+            };
+            return model;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error while trying to map absence entity to view model");
+            throw;
+        }
     }
 
     public MarkViewModel? MapMarkViewModel(Mark mark)
