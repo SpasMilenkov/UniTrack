@@ -216,9 +216,9 @@
         </member>
         <member name="T:UniTrackBackend.Controllers.StudentController">
             <summary>
-            The StudentController is responsible for managing student-related operations in the system.
-            It provides functionality to retrieve and delete student records. The controller uses the IStudentService
-            to interact with the underlying data layer and perform business logic operations.
+            The StudentController manages student-related operations within the system.
+            It provides functionalities such as adding, retrieving, updating, and deleting student records.
+            The controller interacts with the IStudentService to handle business logic and uses IMapper for model mapping.
             </summary>
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.StudentService.IStudentService,UniTrackBackend.Services.Mappings.IMapper)">
@@ -226,7 +226,14 @@
             Initializes a new instance of the StudentController with the required services.
             </summary>
             <param name="studentService">Service for managing student data.</param>
-            <param name="mapper">Service for mapping view models to entities</param>
+            <param name="mapper">Service for mapping view models to entities.</param>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.AddStudent(UniTrackBackend.Api.ViewModels.StudentViewModel)">
+            <summary>
+            Adds a new student record to the system.
+            </summary>
+            <param name="model">The student view model containing the data to be added.</param>
+            <returns>The created student record.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.GetStudent(System.Int32)">
             <summary>
@@ -237,16 +244,24 @@
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.GetAllStudents">
             <summary>
-            Retrieves all students.
+            Retrieves all student records.
             </summary>
             <returns>A list of all students.</returns>
         </member>
+        <member name="M:UniTrackBackend.Controllers.StudentController.UpdateStudent(System.Int32,UniTrackBackend.Api.ViewModels.StudentViewModel)">
+            <summary>
+            Updates an existing student record.
+            </summary>
+            <param name="id">The ID of the student to update.</param>
+            <param name="model">The updated student view model.</param>
+            <returns>A NoContent result indicating successful update.</returns>
+        </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.DeleteStudent(System.Int32)">
             <summary>
-            Deletes a student by their ID.
+            Deletes a student record by their ID.
             </summary>
             <param name="id">The ID of the student to delete.</param>
-            <returns>A NoContent result indicating successful deletion.</returns>
+            <returns>A NoContent result indicating successful deletion, or NotFound if the student does not exist.</returns>
         </member>
     </members>
 </doc>
