@@ -16,10 +16,20 @@ public sealed class UnitOfWork : IDisposable
     private EfRepository<Subject>? _subjectRepository;
     private EfRepository<Teacher>? _teacherRepository;
     private EfRepository<User>? _userRepository;
+    private EfRepository<School>? _schoolRepository;
     
     public UnitOfWork(UniTrackDbContext context)
     {
         _context = context;
+    }
+    public EfRepository<School> SchoolRepository
+    {
+        get
+        {
+            _schoolRepository ??= new EfRepository<School>(_context);
+
+            return _schoolRepository;
+        }
     }
     public EfRepository<User> UserRepository
     {
@@ -104,7 +114,7 @@ public sealed class UnitOfWork : IDisposable
             return _teacherRepository;
         }
     }
-    
+
     public async Task SaveAsync()
     {
         await _context.SaveChangesAsync();
