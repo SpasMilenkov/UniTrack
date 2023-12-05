@@ -38,12 +38,11 @@ public class Mapper : IMapper
         {
             var absence = new Absence
             {
-                StudentId = model.StudentId,  
+                StudentId = model.StudentId,
                 TeacherId = model.TeacherId,
                 Value = model.AbsenceCount,
                 Time = model.Date,
                 Excused = model.Excused
-                                
             };
             return absence;
         }
@@ -137,11 +136,6 @@ public class Mapper : IMapper
         }
     }
 
-    public School? MapSchool(SchoolViewModel model)
-    {
-        throw new NotImplementedException();
-    }
-
     public MarkViewModel? MapMarkViewModel(Mark mark)
     {
         try
@@ -163,13 +157,23 @@ public class Mapper : IMapper
             throw;
         }
     }
+    public School? MapSchool(SchoolViewModel model)
+    {
+        try
+        {
+            var school = new School
+            {
+                // Id = model.Id,
+                // Name = model.Name,
+                // Teachers = model.Teachers,
+                // Students = model.Students,
+            };
+            return school;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map SchoolViewModel to School");
+            return null;
+        }
+    }
 }
-//absences: {
-//    subject: string;
-//    absence: number;
-//    excused: boolean;
-//    date: Date;
-//    teacherId; string;
-//     teacherFirstName: string;
-//     teacherLastName: string;
-//  }[]

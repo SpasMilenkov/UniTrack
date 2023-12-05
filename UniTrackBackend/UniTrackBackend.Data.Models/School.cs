@@ -10,8 +10,8 @@ namespace UniTrackBackend.Data.Models
 {
     public class School
     {
-        public string Name { get; set; } = null!;
         public int Id { get; set; }
+        public string Name { get; set; } = null!;
         public ICollection<Teacher> Teachers { get; set; } = null!;
         public ICollection<Student> Students { get; set; } = null!;
     }
