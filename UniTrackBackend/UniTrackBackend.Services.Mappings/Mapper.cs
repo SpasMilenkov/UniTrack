@@ -137,6 +137,11 @@ public class Mapper : IMapper
         }
     }
 
+    public School? MapSchool(SchoolViewModel model)
+    {
+        throw new NotImplementedException();
+    }
+
     public MarkViewModel? MapMarkViewModel(Mark mark)
     {
         try

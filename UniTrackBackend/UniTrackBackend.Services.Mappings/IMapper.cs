@@ -14,4 +14,6 @@ public interface IMapper
 
     public MarkViewModel? MapMarkViewModel(Mark mark);
     public AbsenceViewModel MapAbsenceViewModel(Absence absence);
+
+    public School? MapSchool(SchoolViewModel model);
 }
