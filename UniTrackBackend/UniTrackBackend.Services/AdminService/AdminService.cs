@@ -1,51 +1,50 @@
-﻿using UniTrackBackend.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using UniTrackBackend.Data;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.AdminService
 {
     public class AdminService : IAdminService
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public AdminService(UnitOfWork unitOfWork)
+        public AdminService(UserManager<User> userManager)
         {
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<IdentityResult> CreateUserAsync(User user)
         {
-            await _unitOfWork.UserRepository.AddAsync(user);
-            await _unitOfWork.SaveAsync();
-            return user;
+            return await _userManager.CreateAsync(user);
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(string id)
         {
-            return await _unitOfWork.UserRepository.GetByIdAsync(id);
+            return await _userManager.FindByIdAsync(id);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public IEnumerable<User> GetAllUsers()
         {
-            return await _unitOfWork.UserRepository.GetAllAsync();
+            // UserManager does not have a direct method to retrieve all users
+            // This will depend on your UserStore implementation
+            return _userManager.Users.ToList();
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task<IdentityResult> UpdateUserAsync(User user)
         {
-            await _unitOfWork.UserRepository.UpdateAsync(user);   
-            await _unitOfWork.SaveAsync();
+            return await _userManager.UpdateAsync(user);   
         }
 
-        public async Task DeleteUserAsync(int id)
+        public async Task<IdentityResult> DeleteUserAsync(string id)
         {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                await _unitOfWork.UserRepository.DeleteAsync(id);
-                await _unitOfWork.SaveAsync();
+                return await _userManager.DeleteAsync(user);
             }
+            return IdentityResult.Failed(new IdentityError { Description = "User not found" });
         }
-
-        // Implement other admin-specific methods here
     }
+
 
 }
