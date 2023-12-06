@@ -4,6 +4,46 @@
         <name>UniTrackBackend</name>
     </assembly>
     <members>
+        <member name="T:UniTrackBackend.Controllers.AdminController">
+            <summary>
+            Handles administrative actions such as managing users.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.CreateUser(UniTrackBackend.Data.Models.User)">
+            <summary>
+            Creates a new user.
+            </summary>
+            <param name="user">The user object to create.</param>
+            <returns>Returns a success message if creation is successful, otherwise a bad request.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.GetUser(System.String)">
+            <summary>
+            Retrieves a user by their ID.
+            </summary>
+            <param name="id">The ID of the user to retrieve.</param>
+            <returns>The user object if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.GetAllUsers">
+            <summary>
+            Retrieves all registered users.
+            </summary>
+            <returns>A list of all users.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.UpdateUser(System.String,UniTrackBackend.Data.Models.User)">
+            <summary>
+            Updates the details of an existing user.
+            </summary>
+            <param name="id">The ID of the user to update.</param>
+            <param name="user">The updated user object.</param>
+            <returns>Returns no content if update is successful, otherwise a bad request.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.DeleteUser(System.String)">
+            <summary>
+            Deletes a user by their ID.
+            </summary>
+            <param name="id">The ID of the user to delete.</param>
+            <returns>Returns no content if deletion is successful.</returns>
+        </member>
         <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.StudentViewModel})">
             <summary>
             Approves student registrations.

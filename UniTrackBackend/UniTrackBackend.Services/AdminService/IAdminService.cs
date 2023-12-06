@@ -1,14 +1,16 @@
-﻿using UniTrackBackend.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.AdminService
 {
     public interface IAdminService
     {
-        Task<User> CreateUserAsync(User user);
-        Task<User> GetUserByIdAsync(int id);
-        Task<IEnumerable<User>> GetAllUsersAsync();
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(int id);
+        Task<IdentityResult> CreateUserAsync(User user);
+        Task<User?> GetUserByIdAsync(string id);
+        IEnumerable<User> GetAllUsers();
+        Task<IdentityResult> UpdateUserAsync(User user);
+
+        Task<IdentityResult> DeleteUserAsync(string id);
         //implement other admin-specific methods
     }
 
