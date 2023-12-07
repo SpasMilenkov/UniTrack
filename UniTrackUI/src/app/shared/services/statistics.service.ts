@@ -4,7 +4,7 @@ import { Statistic } from '../models/statistic';
 @Injectable({
   providedIn: 'root',
 })
-export class EventsService {
+export class StatisticsService {
   getCurrentStudentStatistics(id: string): Statistic {
     return {
       StudentName: 'John Doe',
@@ -14,50 +14,56 @@ export class EventsService {
         'John has shown great improvement in Science but needs to focus more on History.',
       SubjectAvg: [
         {
-          subject: 'Mathematics',
-          grade: 'Good',
+          SubjectName: 'Mathematics',
+          Average: 'Good',
         },
         {
-          subject: 'Science',
-          grade: 'Average',
+          SubjectName: 'Science',
+          Average: 'Average',
         },
         {
-          subject: 'History',
-          grade: 'Excellent',
+          SubjectName: 'History',
+          Average: 'Excellent',
         },
       ],
       DetailedSubjectPerformance: [
         {
-          subject: 'Mathematics',
-          MarksCount: 10,
-          HighestMark: 5.75,
-          LowestMark: 2.52,
+          SubjectName: 'Mathematics',
+          Details: {
+            MarksCount: 10,
+            HighestMark: 5.75,
+            LowestMark: 2.52,
+          },
         },
         {
-          subject: 'Science',
-          MarksCount: 8,
-          HighestMark: 4.8,
-          LowestMark: 3.2,
+          SubjectName: 'Science',
+          Details: {
+            MarksCount: 8,
+            HighestMark: 4.8,
+            LowestMark: 3.2,
+          },
         },
         {
-          subject: 'History',
-          MarksCount: 12,
-          HighestMark: 6.0,
-          LowestMark: 5.25,
+          SubjectName: 'History',
+          Details: {
+            MarksCount: 12,
+            HighestMark: 6.0,
+            LowestMark: 5.25,
+          },
         },
       ],
       ClassAverageComparison: [
         {
-          subject: 'Mathematics',
-          comparison: 4.2,
+          ClassName: 'Mathematics',
+          Average: 4.2,
         },
         {
-          subject: 'Science',
-          comparison: 3.8,
+          ClassName: 'Science',
+          Average: 3.8,
         },
         {
-          subject: 'History',
-          comparison: 4.5,
+          ClassName: 'History',
+          Average: 4.5,
         },
       ],
       Attendance: {
