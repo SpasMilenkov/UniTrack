@@ -10,7 +10,7 @@ public sealed class UnitOfWork : IDisposable
     private EfRepository<Absence>? _absenceRepository;
     private EfRepository<ElectiveSubject>? _electiveSubjectRepository;
     private EfRepository<Grade>? _gradeRepository;
-    private EfRepository<Mark>? _markRepository;
+    private MarkRepository? _markRepository;
     private EfRepository<Parent>? _parentRepository;
     private StudentRepository? _studentRepository;
     private EfRepository<Subject>? _subjectRepository;
@@ -60,11 +60,11 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Mark> MarkRepository
+    public MarkRepository MarkRepository
     {
         get
         {
-            _markRepository ??= new EfRepository<Mark>(_context);
+            _markRepository ??= new MarkRepository(_context);
             return _markRepository;
         }
     }
