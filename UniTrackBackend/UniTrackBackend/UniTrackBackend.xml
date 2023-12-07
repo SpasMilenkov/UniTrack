@@ -272,7 +272,6 @@
             <summary>
             Adds a new student record to the system.
             </summary>
-            <param name="model">The student view model containing the data to be added.</param>
             <returns>The created student record.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.GetStudent(System.Int32)">
