@@ -13,10 +13,10 @@
     <h1 class="title-wrapper text-ut-white m-0 px-3">UniTrack</h1>
   </div>
   <ul class="d-md-flex d-none justify-content-end align-items-center">
-    <li class="li-wrapper">
+    <li class="li-wrapper" routerLink="profile">
       <mat-icon>text_increase</mat-icon>
     </li>
-    <li class="li-wrapper">
+    <li class="li-wrapper" routerLink="statistics">
       <mat-icon>leaderboard</mat-icon>
     </li>
     <li class="li-wrapper">
@@ -39,12 +39,12 @@
   </button>
 </div>
 
-<mat-menu #mobileMenu="matMenu">
+<mat-menu #mobileMenu="matMenu" routerLink="profile">
   <div mat-menu-item>
     <mat-icon>text_increase</mat-icon>
     <span>Grades</span>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item routerLink="statistics">
     <mat-icon>leaderboard</mat-icon>
     <span>Statistics</span>
   </div>
