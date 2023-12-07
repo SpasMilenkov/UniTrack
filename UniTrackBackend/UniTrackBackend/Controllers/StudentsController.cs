@@ -36,8 +36,7 @@ namespace UniTrackBackend.Controllers
         /// <summary>
         /// Adds a new student record to the system.
         /// </summary>
-        /// <param name="model">The student view model containing the data to be added.</param>
-        /// <returns>The created student record.</returns>
+         /// <returns>The created student record.</returns>
         [HttpPost]
         public async Task<IActionResult> AddStudent([FromBody] StudentViewModel model)
         {
