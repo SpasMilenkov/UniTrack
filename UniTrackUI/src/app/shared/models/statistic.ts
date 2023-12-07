@@ -1,25 +1,15 @@
+import { Attendance } from "./attendance";
+import { ClassAverageComparison } from "./class-average-comparison";
+import { DetailedSubjectPerformance } from "./detailed-subject-performance";
+import { SubjectAverage } from "./subject-average";
+
 export interface Statistic {
   StudentName: string;
   StudentId: string;
-  SubjectAvg: {
-    subject: string;
-    grade: string;
-  }[];
+  SubjectAvg: SubjectAverage[];
   OverallAverage: number;
   PerformanceSummary: string;
-  DetailedSubjectPerformance: {
-    subject: string;
-    MarksCount: number;
-    HighestMark: number;
-    LowestMark: number;
-  }[];
-  ClassAverageComparison: {
-    subject: string;
-    comparison: number;
-  }[];
-  Attendance: {
-    TotalAbsence: number;
-    UnExcusedAbsence: number;
-    ExcusedAbsence: number;
-  };
+  DetailedSubjectPerformance: DetailedSubjectPerformance[];
+  ClassAverageComparison: ClassAverageComparison[];
+  Attendance: Attendance;
 }
