@@ -16,31 +16,38 @@ public class AnalysisService : IAnalysisService
         _logger = logger;
     }
 
-    private Dictionary<string, string>? CalculateStudentPerformanceBySubject(Student student)
+    private List<SubjectAverage>? CalculateStudentPerformanceBySubject(Student student)
     {
         try
         {
-            var performance = new Dictionary<string, string>();
+            var performanceList = new List<SubjectAverage>();
+
             var marksGroupedBySubject = student.Marks.GroupBy(m => m.Subject.Name);
 
             foreach (var subjectGroup in marksGroupedBySubject)
             {
                 var subjectName = subjectGroup.Key;
-                var averageMark = Math.Round(subjectGroup.Average(m => m.Value), 2);
+                var averageMark = subjectGroup.Average(m => m.Value);
                 var performanceDescription = GetPerformanceDescription(averageMark);
-                performance[subjectName] = performanceDescription;
+
+                performanceList.Add(new SubjectAverage
+                {
+                    SubjectName = subjectName,
+                    Average = performanceDescription
+                });
             }
 
-            return performance;
+            return performanceList;
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(CalculateStudentPerformanceBySubject)}");
+            _logger.LogError("Error while trying to {CalculateStudentPerformanceBySubject}: {EMessage}", nameof(CalculateStudentPerformanceBySubject), e.Message);
             return null;
         }
     }
 
-    private string GetPerformanceDescription(decimal averageMark)
+
+    private string? GetPerformanceDescription(decimal averageMark)
     {
         try
         {
@@ -55,13 +62,13 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(GetPerformanceDescription)}");
+            _logger.LogError("Error while trying to {GetPerformanceDescription}: {EMessage}", nameof(GetPerformanceDescription), e.Message);
             return null;
         }
 
     }
 
-    private string GeneratePerformanceSummary(StudentAnalysisResultViewModel viewModel)
+    private string? GeneratePerformanceSummary(StudentAnalysisResultViewModel viewModel)
     {
         try
         {
@@ -71,17 +78,17 @@ public class AnalysisService : IAnalysisService
             summary.AppendLine($"Overall Performance: {AssessOverallPerformance(viewModel.OverallAverage)}");
 
             // Strengths and Weaknesses in Each Subject
-            foreach (var subject in viewModel.DetailedSubjectPerformance)
+            foreach (var detailedSubject in viewModel.DetailedSubjectPerformance)
             {
-                var subjectName = subject.Key;
-                var detail = subject.Value;
-                var classAverageForSubject = viewModel.ClassAverageComparison.TryGetValue(subjectName, out var value) 
-                    ? value 
-                    : 0; // Default to 0 if not found
+                var subjectName = detailedSubject.SubjectName;
+                var detail = detailedSubject.Details;
+                var classAverageForSubject = viewModel.ClassAverageComparison
+                    .FirstOrDefault(ca => ca.ClassName == subjectName)?.Average ?? 0m; // Default to 0 if not found
+
                 var subjectPerformance = AssessSubjectPerformance(detail, classAverageForSubject);
                 summary.AppendLine($"{subjectName}: {subjectPerformance}");
             }
-
+ 
             // Attendance
             var attendanceImpact = AssessAttendanceImpact(viewModel.Attendance);
             summary.AppendLine($"Attendance Impact: {attendanceImpact}");
@@ -90,12 +97,12 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(GeneratePerformanceSummary)}");
+            _logger.LogError("Error while trying to {GeneratePerformanceSummaryName}: {EMessage}", nameof(GeneratePerformanceSummary), e.Message);
             return null;
         }
-
     }
-    private string AssessOverallPerformance(decimal overallAverage)
+
+    private string? AssessOverallPerformance(decimal overallAverage)
     {
         try
         {
@@ -109,13 +116,13 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(AssessOverallPerformance)}");
+            _logger.LogError("Error while trying to {AssessOverallPerformance}: {EMessage}", nameof(AssessOverallPerformance), e.Message);
             return null;
         }
 
     }
 
-    private string AssessSubjectPerformance(SubjectDetail detail, decimal classAvg)
+    private string? AssessSubjectPerformance(SubjectDetail detail, decimal classAvg)
     {
         try
         {
@@ -135,13 +142,13 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(AssessSubjectPerformance)}");
+            _logger.LogError("Error while trying to {AssessSubjectPerformance}: {EMessage}", nameof(AssessSubjectPerformance), e.Message);
             return null;
         }
 
     }
 
-    private string AssessAttendanceImpact(AttendanceRecord attendance)
+    private string? AssessAttendanceImpact(AttendanceRecord attendance)
     {
         try
         {
@@ -155,17 +162,17 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(AssessAttendanceImpact)}");
+            _logger.LogError("Error while trying to {AssessAttendanceImpact}: {EMessage}", nameof(AssessAttendanceImpact), e.Message);
             return null;
         }
 
     }
 
-    private Dictionary<string, SubjectDetail> CalculateSubjectPerformanceDetails(Student student)
+    private List<DetailedSubjectPerformance>? CalculateSubjectPerformanceDetails(Student student)
     {
         try
         {
-            var subjectDetails = new Dictionary<string, SubjectDetail>();
+            var detailedPerformanceList = new List<DetailedSubjectPerformance>();
 
             var marksGroupedBySubject = student.Marks.GroupBy(m => m.Subject.Name);
 
@@ -175,24 +182,28 @@ public class AnalysisService : IAnalysisService
                 var subjectDetail = new SubjectDetail
                 {
                     MarksCount = marks.Count,
-                    HighestMark = Math.Round(marks.Max(m => m.Value), 2),
-                    LowestMark = Math.Round(marks.Min(m => m.Value), 2) 
+                    HighestMark = marks.Max(m => m.Value),
+                    LowestMark = marks.Min(m => m.Value)
                 };
 
-                subjectDetails[subjectGroup.Key] = subjectDetail;
+                detailedPerformanceList.Add(new DetailedSubjectPerformance
+                {
+                    SubjectName = subjectGroup.Key,
+                    Details = subjectDetail
+                });
             }
 
-            return subjectDetails;
+            return detailedPerformanceList;
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(CalculateSubjectPerformanceDetails)}");
+            _logger.LogError("Error while trying to {CalculateSubjectPerformanceDetails}: {EMessage}", nameof(CalculateSubjectPerformanceDetails), e.Message);
             return null;
         }
-
     }
 
-    private AttendanceRecord CalculateAttendance(Student student)
+
+    private AttendanceRecord? CalculateAttendance(Student student)
     {
         try
         {
@@ -209,7 +220,7 @@ public class AnalysisService : IAnalysisService
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(CalculateAttendance)}");
+            _logger.LogError("Error while trying to {CalculateAttendance}: {EMessage}", nameof(CalculateAttendance), e.Message);
             return null;
         }
 
@@ -220,15 +231,17 @@ public class AnalysisService : IAnalysisService
         try
         {
             var student = await _unitOfWork.StudentRepository.GetStudentWithDetailsAsync(studentId);
-            if (student is null)
-                return null;
+            if (student is null) return null;
 
             var overallAvg = student.Marks.Select(m => m.Value).Average();
-            var successPerSubject = CalculateStudentPerformanceBySubject(student)!;
+            var successPerSubject = CalculateStudentPerformanceBySubject(student);
+            if (successPerSubject == null) return null;
+
             var detailedSubjectPerformance = CalculateSubjectPerformanceDetails(student);
+            if (detailedSubjectPerformance == null) return null;
+
             var attendanceRecord = CalculateAttendance(student);
-            if (successPerSubject is null)
-                return null;
+            if (attendanceRecord == null) return null;
 
             // Calculate class averages
             var classAverages = await _unitOfWork.MarkRepository.CalculateClassAverages(student.GradeId);
@@ -241,19 +254,20 @@ public class AnalysisService : IAnalysisService
                 ClassAverageComparison = classAverages,
                 OverallAverage = Math.Round(overallAvg, 2),
                 Attendance = attendanceRecord,
-                PerformanceSummary = null!
+                PerformanceSummary = null! // Placeholder, will be set next
             };
 
             var perfSummary = GeneratePerformanceSummary(model);
-            model.PerformanceSummary = perfSummary;
+            if (perfSummary != null) model.PerformanceSummary = perfSummary;
 
             return model;
         }
-        catch (Exception  e)
+        catch (Exception e)
         {
-            _logger.LogError($"Error while trying to {nameof(GenerateAnalysisModel)}");
+            _logger.LogError("Error while trying to {GenerateAnalysisModel}: {EMessage}", nameof(GenerateAnalysisModel), e.Message);
             return null;
         }
 
     }
+
 }
