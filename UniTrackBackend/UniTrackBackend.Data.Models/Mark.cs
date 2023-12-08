@@ -10,5 +10,6 @@ public class Mark
     public Teacher Teacher { get; set; } = null!;
     public int SubjectId { get; set; }
     public Subject Subject { get; set; } = null!;
-    public DateTime GradedOn { get; set; }  
+    public DateTime GradedOn { get; set; }
+    public string Topic { get; set; } = null!;
 }

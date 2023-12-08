@@ -270,6 +270,10 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("Value")
                         .HasColumnType("numeric");
 
