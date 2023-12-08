@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 
@@ -13,13 +14,20 @@ public class MarkRepository :EfRepository<Mark>
         _context = context;
     }
     
-    public async Task<Dictionary<string, decimal>> CalculateClassAverages(int gradeId)
+    public async Task<List<ClassAverage>> CalculateClassAverages(int gradeId)
     {
-        return await _context.Marks
+        var classAverages = await _context.Marks
             .Include(mark => mark.Student)
             .Where(mark => mark.Student.GradeId == gradeId)
             .GroupBy(mark => mark.Subject.Name)
-            .Select(group => new { Subject = group.Key, Average = group.Average(mark => mark.Value) })
-            .ToDictionaryAsync(g => g.Subject, g => Math.Round(g.Average, 2));
+            .Select(group => new ClassAverage
+            {
+                ClassName = group.Key,
+                Average = Math.Round(group.Average(mark => mark.Value), 2)
+            })
+            .ToListAsync();
+
+        return classAverages;
     }
+
 }
