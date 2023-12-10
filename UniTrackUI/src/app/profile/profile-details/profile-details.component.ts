@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
 import { Profile } from 'src/app/shared/models/profile';
 import { StudentProfile } from 'src/app/shared/models/student-profile';
+import { TeacherProfile } from 'src/app/shared/models/teacher-profile';
 
 @Component({
   selector: 'app-profile-details',
@@ -19,4 +20,13 @@ export class ProfileDetailsComponent {
   getStudentProfile(): StudentProfile {
     return this.profile as StudentProfile;
   }
+
+  getTeacherProfile(): TeacherProfile {
+    return this.profile as TeacherProfile;
+  }
+
+  getTeacherClasses(): string {
+    const teacher= this.getTeacherProfile();
+    return teacher.classes.map(({classId})=>classId).join(', ');
+  }    
 }
