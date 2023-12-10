@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { StudentsListModule } from './students-list/students-list.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { StudentsListModule } from './students-list/students-list.module';
     SharedModule,
     AppRoutingModule,
     StudentsListModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
