@@ -32,3 +32,4 @@ export class ProfileComponent {
     return this.profile as StudentProfile;
   }
 }
+//TODO: Add radio button for absences

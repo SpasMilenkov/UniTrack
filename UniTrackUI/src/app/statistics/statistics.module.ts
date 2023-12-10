@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatisticsLayoutComponent } from './statistics-layout/statistics-layout.component';
+import { PrimeNgModule } from '../shared/prime-ng.module';
 
 
 
@@ -9,7 +10,8 @@ import { StatisticsLayoutComponent } from './statistics-layout/statistics-layout
     StatisticsLayoutComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    PrimeNgModule
   ]
 })
 export class StatisticsModule { }

@@ -1,0 +1,6 @@
+@use 'colors';
+
+.main-wrapper{
+  background-color: colors.$color-ut-accent-100;
+  min-height: 60vh;
+}
