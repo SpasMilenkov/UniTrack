@@ -206,6 +206,30 @@ namespace UniTrackBackend.Data.Migrations
                     b.ToTable("Absences");
                 });
 
+            modelBuilder.Entity("UniTrackBackend.Data.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Admins");
+                });
+
             modelBuilder.Entity("UniTrackBackend.Data.Models.ElectiveSubject", b =>
                 {
                     b.Property<int>("Id")
@@ -342,7 +366,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SchoolId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("integer");
 
                     b.Property<int>("StudentNumber")
@@ -398,7 +422,7 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("SchoolId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -590,6 +614,25 @@ namespace UniTrackBackend.Data.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("UniTrackBackend.Data.Models.Admin", b =>
+                {
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("School");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
                     b.HasOne("UniTrackBackend.Data.Models.Teacher", "ClassTeacher")
@@ -659,9 +702,11 @@ namespace UniTrackBackend.Data.Migrations
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
-                    b.HasOne("UniTrackBackend.Data.Models.School", null)
-                        .WithMany("Students")
-                        .HasForeignKey("SchoolId");
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
@@ -670,6 +715,8 @@ namespace UniTrackBackend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Grade");
+
+                    b.Navigation("School");
 
                     b.Navigation("User");
                 });
@@ -683,15 +730,19 @@ namespace UniTrackBackend.Data.Migrations
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Teacher", b =>
                 {
-                    b.HasOne("UniTrackBackend.Data.Models.School", null)
-                        .WithMany("Teachers")
-                        .HasForeignKey("SchoolId");
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
                         .HasForeignKey("UniTrackBackend.Data.Models.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("School");
 
                     b.Navigation("User");
                 });
@@ -711,13 +762,6 @@ namespace UniTrackBackend.Data.Migrations
             modelBuilder.Entity("UniTrackBackend.Data.Models.Parent", b =>
                 {
                     b.Navigation("Children");
-                });
-
-            modelBuilder.Entity("UniTrackBackend.Data.Models.School", b =>
-                {
-                    b.Navigation("Students");
-
-                    b.Navigation("Teachers");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
