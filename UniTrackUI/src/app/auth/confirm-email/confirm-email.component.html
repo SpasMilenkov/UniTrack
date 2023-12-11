@@ -1,0 +1,33 @@
+<form
+  [formGroup]="authForm"
+  (ngSubmit)="onSubmit()"
+  class="form-wrapper d-flex flex-column"
+>
+  <h1 class="fs-2 text-ut-white">Confirm Email</h1>
+  <mat-form-field appearance="outline" class="without-space-after pt-3">
+    <mat-label>Email</mat-label>
+    <input formControlName="email" matInput />
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      authForm.get('email')?.touched &&
+      authForm.get('email')?.hasError('required')
+    "
+  >
+    Please enter your email address.
+  </mat-error>
+  <mat-error
+    *ngIf="
+      authForm.get('email')?.touched &&
+      authForm.get('email')?.hasError('pattern')
+    "
+  >
+    Please enter a valid email address.
+  </mat-error>
+  <a class="text-end text-ut-accent mt-2" routerLink="../login">
+    Already have an account?&nbsp;<span class="fw-bold">Log in here</span>.</a
+  >
+  <button class="mt-4 accent-btn-lg" mat-raised-button color="primary">
+    Submit
+  </button>
+</form>
