@@ -12,7 +12,6 @@ public class UniTrackDbContext : IdentityDbContext<User>
     }
 
     public DbSet<Absence> Absences { get; set; } = null!;
-    public DbSet<ElectiveSubject> ElectiveSubjects { get; set; } = null!;
     public DbSet<Grade> Grades { get; set; } = null!;
     public DbSet<Mark> Marks { get; set; } = null!;
     public DbSet<Parent> Parents { get; set; } = null!;

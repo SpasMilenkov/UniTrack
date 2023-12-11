@@ -8,7 +8,6 @@ public sealed class UnitOfWork : IDisposable
 {
     private readonly UniTrackDbContext _context;
     private EfRepository<Absence>? _absenceRepository;
-    private EfRepository<ElectiveSubject>? _electiveSubjectRepository;
     private EfRepository<Grade>? _gradeRepository;
     private MarkRepository? _markRepository;
     private EfRepository<Parent>? _parentRepository;
@@ -39,16 +38,6 @@ public sealed class UnitOfWork : IDisposable
             _absenceRepository ??= new EfRepository<Absence>(_context);
 
             return _absenceRepository;
-        }
-    }
-
-    public EfRepository<ElectiveSubject> ElectiveSubjectRepository
-    {
-        get
-        {
-            _electiveSubjectRepository ??= new EfRepository<ElectiveSubject>(_context);
-
-            return _electiveSubjectRepository;
         }
     }
 
