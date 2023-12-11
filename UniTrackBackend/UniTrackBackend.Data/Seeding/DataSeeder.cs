@@ -44,6 +44,7 @@ public static class DataSeeder
         
         await SeedUsersAsync();
         await SeedRolesAsync(roleManager);
+        await SeedSchoolsAsync(unitOfWork: unitOfWork);
         await SeedTeachersAsync(unitOfWork);
         await SeedGradesAsync(unitOfWork);
         await SeedStudentsAsync(unitOfWork);
@@ -94,11 +95,18 @@ public static class DataSeeder
     {
         var user = await _userManager.FindByEmailAsync("user98@example.com");
         var user2 = await _userManager.FindByEmailAsync("user97@example.com");
-        // Assuming User IDs are already known or created
+        var school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
+
+        if (school is null)
+        {
+            await SeedSchoolsAsync(unitOfWork);
+            school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
+        }
+        
         var teachers = new List<Teacher>
         {
-            new Teacher { UserId = user!.Id },
-            new Teacher { UserId = user2!.Id }
+            new Teacher { UserId = user!.Id, SchoolId = school!.Id},
+            new Teacher { UserId = user2!.Id, SchoolId = school.Id}
         };
 
         foreach (var teacher in teachers)
@@ -139,6 +147,14 @@ public static class DataSeeder
         var user = await _userManager.FindByEmailAsync("user96@example.com");
         var user2 = await _userManager.FindByEmailAsync("user95@example.com");
         var grade = await unitOfWork.GradeRepository.FirstOrDefaultAsync(g => g.Name == "Grade 10");
+        var school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
+
+        if (school is null)
+        {
+            await SeedSchoolsAsync(unitOfWork);
+            school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
+        }
+        
         if (grade is null)
         {
             await SeedGradesAsync(unitOfWork);
@@ -147,8 +163,8 @@ public static class DataSeeder
         // Assuming User IDs and Grade IDs are already known or created
         var students = new List<Student>
         {
-            new Student { UserId = user!.Id, GradeId = grade!.Id},
-            new Student { UserId = user2!.Id, GradeId = grade.Id}
+            new Student { UserId = user!.Id, GradeId = grade!.Id, SchoolId = school!.Id},
+            new Student { UserId = user2!.Id, GradeId = grade.Id, SchoolId = school.Id}
         };
 
         foreach (var student in students)
@@ -275,29 +291,6 @@ public static class DataSeeder
         }
         await unitOfWork.SaveAsync();
     }
-    
-    //Put on hold for now
-    
-    // private static async Task SeedElectiveSubjectsAsync(UnitOfWork unitOfWork)
-    // {
-    //     var result = await unitOfWork.ElectiveSubjectRepository.GetAllAsync();
-    //     if (!result.Any())
-    //     {
-    //         var electiveSubjects = new List<ElectiveSubject>
-    //         {
-    //             new ElectiveSubject { Name = "Advanced Mathematics"},
-    //             new ElectiveSubject { Name = "Environmental Science" },
-    //         };
-    //
-    //         foreach (var electiveSubject in electiveSubjects)
-    //         {
-    //             if (await unitOfWork.ElectiveSubjectRepository.FirstOrDefaultAsync(es => es.Name == electiveSubject.Name) == null)
-    //             {
-    //                 await unitOfWork.ElectiveSubjectRepository.AddAsync(electiveSubject);
-    //             }
-    //         }
-    //     }
-    // }
 
     private static async Task SeedAbsencesAsync(UnitOfWork unitOfWork)
     {
@@ -356,4 +349,23 @@ public static class DataSeeder
         }
         await unitOfWork.SaveAsync();
     }
+
+    private static async Task SeedSchoolsAsync(UnitOfWork unitOfWork)
+    {
+        var schools = new List<School>
+        {
+            new School { Name = "Eg Bertolt Brecht" },
+            new School { Name = "MG Pz" },
+        };
+
+        foreach (var school in schools)
+        {
+            if (await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == school.Name) == null)
+            {
+                await unitOfWork.SchoolRepository.AddAsync(school);
+            }
+        }
+        await unitOfWork.SaveAsync();
+    }
+
 }
