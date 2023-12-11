@@ -1,9 +1,45 @@
 <form
   [formGroup]="authForm"
-  (ngSubmit)="onLogin()"
+  (ngSubmit)="onSignup()"
   class="form-wrapper d-flex flex-column"
 >
   <h1 class="fs-2 text-ut-white">Signup</h1>
+  <mat-form-field appearance="outline" class="without-space-after pt-3">
+    <mat-label>First Name</mat-label>
+    <input formControlName="firstName" matInput />
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      authForm.get('firstName')?.touched &&
+      authForm.get('firstName')?.hasError('required')
+    "
+  >
+    Please enter your first name.
+  </mat-error>
+  <mat-form-field appearance="outline" class="without-space-after pt-3">
+    <mat-label>Last name</mat-label>
+    <input formControlName="lastName" matInput />
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      authForm.get('lastName')?.touched &&
+      authForm.get('lastName')?.hasError('required')
+    "
+  >
+    Please enter your last name.
+  </mat-error>
+  <mat-form-field appearance="outline" class="without-space-after pt-3">
+    <mat-label>Username</mat-label>
+    <input formControlName="userName" matInput />
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      authForm.get('userName')?.touched &&
+      authForm.get('userName')?.hasError('required')
+    "
+  >
+    Please enter your username.
+  </mat-error>
   <mat-form-field appearance="outline" class="without-space-after pt-3">
     <mat-label>Email</mat-label>
     <input formControlName="email" matInput />

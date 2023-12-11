@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { EventCardComponent } from './components/event-card/event-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddGradeAbsenceDialogComponent } from './components/add-grade-absence-dialog/add-grade-absence-dialog.component';
+import { PrimeNgModule } from './prime-ng.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { AddGradeAbsenceDialogComponent } from './components/add-grade-absence-d
   imports: [
     CommonModule,
     MaterialModule,
+    PrimeNgModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule

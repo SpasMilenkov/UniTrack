@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { User } from 'src/app/shared/models/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
 
 @Component({
@@ -10,15 +12,18 @@ import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
 export class SignupComponent implements OnInit {
   authForm = this.fb.group(
     {
-      email: this.fb.control(null, [
+      firstName: this.fb.control('', Validators.required),
+      lastName: this.fb.control('', Validators.required),
+      userName: this.fb.control('', Validators.required),
+      email: this.fb.control('', [
         Validators.required,
         Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
       ]),
-      password: this.fb.control(null, [
+      password: this.fb.control('', [
         Validators.required,
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
       ]),
-      confirmPassword: this.fb.control(null, Validators.required),
+      confirmPassword: this.fb.control('', Validators.required),
     },
     {
       validators: differentPasswordsValidator(),
@@ -26,13 +31,20 @@ export class SignupComponent implements OnInit {
   );
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {}
 
-  onLogin(): void {
+  onSignup(): void {
     this.authForm.markAllAsTouched();
     console.log(this.authForm.value);
+
+    if(this.authForm.valid){
+      this.authService.signup(this.authForm.getRawValue() as User);
+    }
   }
 
   toggleHidePassword(event: any): void{
