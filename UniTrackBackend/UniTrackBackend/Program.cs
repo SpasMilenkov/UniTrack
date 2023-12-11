@@ -10,6 +10,7 @@ using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.Messaging;
 using UniTrackBackend.Services.StudentService;
 using UniTrackBackend.Services.AnalysisService;
+using UniTrackBackend.Services.RecommendationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddScoped<IAnalysisService, AnalysisService>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 
 builder.Services.AddControllers();
 

@@ -31,7 +31,6 @@ public class StudentRepository: EfRepository<Student>
             await _context.Entry(student).Collection(s => s.Absences)
                 .Query()
                 .Include(a => a.Subject) // Eagerly load Subject
-                .Where(a => a.Time > DateTime.UtcNow.AddDays(-30)) // Example filter
                 .LoadAsync();
 
             // Load Marks - Similar considerations as Absences

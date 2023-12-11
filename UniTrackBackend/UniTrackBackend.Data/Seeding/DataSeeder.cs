@@ -203,39 +203,39 @@ public static class DataSeeder
         {
             new Mark
             {
-                Value = 3, StudentId = student1!.Id, TeacherId = teacher1!.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.ToUniversalTime()
+                Value = 3, StudentId = student1!.Id, TeacherId = teacher1!.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 4, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(1).ToUniversalTime()
+                Value = 4, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(1).ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 5, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(2).ToUniversalTime()
+                Value = 5, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(2).ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 6, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(3).ToUniversalTime()
+                Value = 6, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(3).ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 2, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(4).ToUniversalTime()
+                Value = 2, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(4).ToUniversalTime(), Topic = "squareRoots"
             },
             new Mark
             {
-                Value = 4, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(5).ToUniversalTime()
+                Value = 4, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(5).ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 3, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(6).ToUniversalTime()
+                Value = 3, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(6).ToUniversalTime(), Topic = "functions"
             },
             new Mark
             {
-                Value = 6, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(7).ToUniversalTime()
+                Value = 6, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(7).ToUniversalTime(), Topic = "calculus"
             },
             new Mark
             {
-                Value = 5, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(8).ToUniversalTime()
+                Value = 5, StudentId = student1.Id, TeacherId = teacher1.Id, SubjectId = subject.Id, GradedOn = DateTime.Now.AddDays(8).ToUniversalTime(), Topic = "functions"
             },
         };
 
