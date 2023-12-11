@@ -7,6 +7,7 @@ import { MaterialModule } from '../shared/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 
 
@@ -15,7 +16,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     AuthLayoutComponent,
     LoginComponent,
     SignupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ConfirmEmailComponent
   ],
   exports: [
     AuthLayoutComponent,
