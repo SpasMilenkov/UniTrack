@@ -16,6 +16,7 @@ public sealed class UnitOfWork : IDisposable
     private EfRepository<Subject>? _subjectRepository;
     private EfRepository<Teacher>? _teacherRepository;
     private EfRepository<School>? _schoolRepository;
+    private EfRepository<Admin>? _adminRepository;
     
     public UnitOfWork(UniTrackDbContext context)
     {
@@ -123,7 +124,15 @@ public sealed class UnitOfWork : IDisposable
         }
         _disposed = true;
     }
+    public EfRepository<Admin> AdminRepository
+    {
+        get
+        {
+            _adminRepository ??= new EfRepository<Admin>(_context);
 
+            return _adminRepository;
+        }
+    }
     public void Dispose()
     {
         Dispose(true);

@@ -20,7 +20,7 @@ public class UniTrackDbContext : IdentityDbContext<User>
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<Teacher> Teachers { get; set; } = null!;
     public DbSet<School> Schools { get; set; } = null!;
-    
+    public DbSet<Admin> Admins { get; set; } = null!;
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         

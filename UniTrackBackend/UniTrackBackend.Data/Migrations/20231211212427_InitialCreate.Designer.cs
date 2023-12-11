@@ -12,8 +12,8 @@ using UniTrackBackend.Data.Database;
 namespace UniTrackBackend.Data.Migrations
 {
     [DbContext(typeof(UniTrackDbContext))]
-    [Migration("20231119132923_MainDbSetup")]
-    partial class MainDbSetup
+    [Migration("20231211212427_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,7 +180,13 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Excused")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TeacherId")
@@ -189,13 +195,42 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
 
+                    b.HasIndex("SubjectId");
+
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Absences");
+                });
+
+            modelBuilder.Entity("UniTrackBackend.Data.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.ElectiveSubject", b =>
@@ -223,6 +258,9 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ClassTeacherId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ElectiveSubjectId")
                         .HasColumnType("integer");
 
@@ -231,6 +269,8 @@ namespace UniTrackBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassTeacherId");
 
                     b.HasIndex("ElectiveSubjectId");
 
@@ -248,9 +288,6 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime>("GradedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Points")
-                        .HasColumnType("numeric");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
@@ -259,6 +296,9 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -291,6 +331,23 @@ namespace UniTrackBackend.Data.Migrations
                     b.ToTable("Parents");
                 });
 
+            modelBuilder.Entity("UniTrackBackend.Data.Models.School", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schools");
+                });
+
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -308,6 +365,12 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentNumber")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -319,6 +382,8 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasIndex("GradeId");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("SchoolId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -356,11 +421,16 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -375,6 +445,10 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("AvatarUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -520,6 +594,12 @@ namespace UniTrackBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniTrackBackend.Data.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.Teacher", "Teacher")
                         .WithMany("Absences")
                         .HasForeignKey("TeacherId")
@@ -528,14 +608,43 @@ namespace UniTrackBackend.Data.Migrations
 
                     b.Navigation("Student");
 
+                    b.Navigation("Subject");
+
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("UniTrackBackend.Data.Models.Admin", b =>
+                {
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("School");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
+                    b.HasOne("UniTrackBackend.Data.Models.Teacher", "ClassTeacher")
+                        .WithMany()
+                        .HasForeignKey("ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.ElectiveSubject", null)
                         .WithMany("Grades")
                         .HasForeignKey("ElectiveSubjectId");
+
+                    b.Navigation("ClassTeacher");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
@@ -592,6 +701,12 @@ namespace UniTrackBackend.Data.Migrations
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
                         .HasForeignKey("UniTrackBackend.Data.Models.Student", "UserId")
@@ -599,6 +714,8 @@ namespace UniTrackBackend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Grade");
+
+                    b.Navigation("School");
 
                     b.Navigation("User");
                 });
@@ -612,11 +729,19 @@ namespace UniTrackBackend.Data.Migrations
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Teacher", b =>
                 {
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
                         .HasForeignKey("UniTrackBackend.Data.Models.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("School");
 
                     b.Navigation("User");
                 });
