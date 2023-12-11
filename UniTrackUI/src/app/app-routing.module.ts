@@ -6,6 +6,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { StudentsListComponent } from './students-list/students-list.component';
+import { ConfirmEmailComponent } from './auth/confirm-email/confirm-email.component';
 
 const routes: Routes =  [
   {
@@ -15,6 +16,7 @@ const routes: Routes =  [
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
       { path: 'reset-password', component: ResetPasswordComponent },
+      { path: 'confirm-email', component: ConfirmEmailComponent },
     ],
   },
   { path: 'profile', component: ProfileComponent},
