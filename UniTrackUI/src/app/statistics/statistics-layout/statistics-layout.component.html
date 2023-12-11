@@ -1,7 +1,60 @@
-<div class="main-wrapper m-5">
+<div class="main-wrapper rounded m-5 p-3">
   <div class="row">
-    <div class="col-3">
-      <p-chart type="pie" [data]="attendanceData" [options]="options"></p-chart>
+    <h1 class="fw-bold text-ut-dark-grey my-3">Statistics for {{ statisticObj.StudentName }}:</h1>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="row">
+        <div class="mb-4">
+          <h1
+            class="rounded p-2 h-100 bg-ut-primary text-ut-white d-flex align-items-center justify-content-center"
+          >
+            <span class="fw-bold text-ut-accent pe-2">Overall Average:</span>
+            {{ statisticObj.OverallAverage }}
+          </h1>
+        </div>
+        <div class="mb-5">
+          <h1
+            class="rounded p-2 h-100 bg-ut-accent text-ut-white d-flex align-items-center justify-content-start"
+          >
+            <span class="fw-bold text-ut-primary pe-2">Performance:</span>
+            {{ statisticObj.PerformanceSummary }}
+          </h1>
+        </div>
+        <div class="mb-5 d-flex justify-content-around align-items-center">
+          <h2 class="fw-bold text-ut-dark-grey">Student's attendance:</h2>
+          <p-chart
+            type="pie"
+            [data]="attendanceData"
+            [options]="pieOptions"
+          ></p-chart>
+        </div>
+        <div class="mb-5">
+          <h2 class="fw-bold text-ut-dark-grey">Subjects Average:</h2>
+          <p-chart
+            type="bar"
+            [data]="subjectAvgData"
+            [options]="basicOptions"
+          ></p-chart>
+        </div>
+        <div class="mb-5">
+          <h2 class="fw-bold text-ut-dark-grey">Detailed Subjects:</h2>
+          <p-chart
+            type="bar"
+            [data]="detailedSubjectData"
+            [options]="barOptions"
+          ></p-chart>
+        </div>
+        <div class="mb-5">
+          <h2 class="fw-bold text-ut-dark-grey">Class Average Comparison:</h2>
+          <p-chart
+            type="line"
+            [data]="classAvgComparisonData"
+            [options]="lineOptions"
+          ></p-chart>
+        </div>
+      </div>
     </div>
+    <div class="col-4"></div>
   </div>
 </div>

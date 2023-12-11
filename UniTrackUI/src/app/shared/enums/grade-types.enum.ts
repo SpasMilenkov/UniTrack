@@ -1,7 +1,7 @@
 export enum GradeTypes {
-  'F' = 2,
-  'D' = 3,
-  'C' = 4,
-  'B' = 5,
-  'A' = 6
+  'Struggling' = 2,
+  'Below Average' = 3,
+  'Average' = 4,
+  'Good' = 5,
+  'Excellent' = 6
 }

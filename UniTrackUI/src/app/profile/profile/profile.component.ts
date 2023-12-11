@@ -32,6 +32,3 @@ export class ProfileComponent {
     return this.profile as StudentProfile;
   }
 }
-//TODO: Add radio button for absences
-//TODO: Admin approval table with selection (add tables for approved and disapproved students/teachers)
-//TODO: Add/edit profile picture
