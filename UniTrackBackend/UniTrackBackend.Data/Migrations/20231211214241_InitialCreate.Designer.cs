@@ -12,7 +12,11 @@ using UniTrackBackend.Data.Database;
 namespace UniTrackBackend.Data.Migrations
 {
     [DbContext(typeof(UniTrackDbContext))]
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
     [Migration("20231211212427_InitialCreate")]
+========
+    [Migration("20231211214241_InitialCreate")]
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -209,6 +213,7 @@ namespace UniTrackBackend.Data.Migrations
                     b.ToTable("Absences");
                 });
 
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
             modelBuilder.Entity("UniTrackBackend.Data.Models.Admin", b =>
                 {
                     b.Property<int>("Id")
@@ -250,6 +255,8 @@ namespace UniTrackBackend.Data.Migrations
                     b.ToTable("ElectiveSubjects");
                 });
 
+========
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
                     b.Property<int>("Id")
@@ -259,9 +266,12 @@ namespace UniTrackBackend.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClassTeacherId")
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                         .HasColumnType("integer");
 
                     b.Property<int?>("ElectiveSubjectId")
+========
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -271,8 +281,11 @@ namespace UniTrackBackend.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClassTeacherId");
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
 
                     b.HasIndex("ElectiveSubjectId");
+========
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
 
                     b.ToTable("Grades");
                 });
@@ -356,16 +369,17 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ElectiveSubjectId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("GradeId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                     b.Property<int>("SchoolId")
+========
+                    b.Property<int?>("SchoolId")
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
                         .HasColumnType("integer");
 
                     b.Property<int>("StudentNumber")
@@ -376,8 +390,6 @@ namespace UniTrackBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ElectiveSubjectId");
 
                     b.HasIndex("GradeId");
 
@@ -421,7 +433,11 @@ namespace UniTrackBackend.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                     b.Property<int>("SchoolId")
+========
+                    b.Property<int?>("SchoolId")
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -640,10 +656,13 @@ namespace UniTrackBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                     b.HasOne("UniTrackBackend.Data.Models.ElectiveSubject", null)
                         .WithMany("Grades")
                         .HasForeignKey("ElectiveSubjectId");
 
+========
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
                     b.Navigation("ClassTeacher");
                 });
 
@@ -687,10 +706,6 @@ namespace UniTrackBackend.Data.Migrations
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
                 {
-                    b.HasOne("UniTrackBackend.Data.Models.ElectiveSubject", null)
-                        .WithMany("Students")
-                        .HasForeignKey("ElectiveSubjectId");
-
                     b.HasOne("UniTrackBackend.Data.Models.Grade", "Grade")
                         .WithMany()
                         .HasForeignKey("GradeId")
@@ -701,11 +716,17 @@ namespace UniTrackBackend.Data.Migrations
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                     b.HasOne("UniTrackBackend.Data.Models.School", "School")
                         .WithMany()
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+========
+                    b.HasOne("UniTrackBackend.Data.Models.School", null)
+                        .WithMany("Students")
+                        .HasForeignKey("SchoolId");
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
 
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
@@ -729,11 +750,17 @@ namespace UniTrackBackend.Data.Migrations
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Teacher", b =>
                 {
+<<<<<<<< HEAD:UniTrackBackend/UniTrackBackend.Data/Migrations/20231211212427_InitialCreate.Designer.cs
                     b.HasOne("UniTrackBackend.Data.Models.School", "School")
                         .WithMany()
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+========
+                    b.HasOne("UniTrackBackend.Data.Models.School", null)
+                        .WithMany("Teachers")
+                        .HasForeignKey("SchoolId");
+>>>>>>>> a0d2b16 (Remove elective subject entity):UniTrackBackend/UniTrackBackend.Data/Migrations/20231211214241_InitialCreate.Designer.cs
 
                     b.HasOne("UniTrackBackend.Data.Models.User", "User")
                         .WithOne()
@@ -746,13 +773,6 @@ namespace UniTrackBackend.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UniTrackBackend.Data.Models.ElectiveSubject", b =>
-                {
-                    b.Navigation("Grades");
-
-                    b.Navigation("Students");
-                });
-
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
                     b.Navigation("Subjects");
@@ -761,6 +781,13 @@ namespace UniTrackBackend.Data.Migrations
             modelBuilder.Entity("UniTrackBackend.Data.Models.Parent", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("UniTrackBackend.Data.Models.School", b =>
+                {
+                    b.Navigation("Students");
+
+                    b.Navigation("Teachers");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Student", b =>
