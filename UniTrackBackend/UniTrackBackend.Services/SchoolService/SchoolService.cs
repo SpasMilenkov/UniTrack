@@ -76,7 +76,7 @@ namespace UniTrackBackend.Services
                 var school = await _context.SchoolRepository.GetByIdAsync(id);
                 if (school == null) return false;
 
-                await _context.MarkRepository.DeleteAsync(id);
+                await _context.SchoolRepository.DeleteAsync(id);
                 return true;
             }
             catch (Exception e)
