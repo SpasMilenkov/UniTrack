@@ -1,0 +1,14 @@
+@use 'colors';
+
+.material-wrapper {
+    width: 100%;
+    background-color: colors.$color-ut-white;
+    border-radius: 8px;
+    box-shadow: 5px 5px 5px colors.$ut-shadow-regular ;
+    color: colors.$color-ut-dark-grey;
+
+    .image-wrapper {
+        width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+}

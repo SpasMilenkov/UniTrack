@@ -3,6 +3,7 @@ import { GradeTypes } from 'src/app/shared/enums/grade-types.enum';
 import { Attendance } from 'src/app/shared/models/attendance';
 import { ClassAverageComparison } from 'src/app/shared/models/class-average-comparison';
 import { DetailedSubjectPerformance } from 'src/app/shared/models/detailed-subject-performance';
+import { RecommendedMaterial } from 'src/app/shared/models/recommended-material';
 import { Statistic } from 'src/app/shared/models/statistic';
 import { SubjectAverage } from 'src/app/shared/models/subject-average';
 import { StatisticsService } from 'src/app/shared/services/statistics.service';
@@ -23,10 +24,13 @@ export class StatisticsLayoutComponent implements OnInit {
   detailedSubjectData: any;
   classAvgComparisonData: any;
 
+  recommendedMaterials: RecommendedMaterial[] = [];
+
   constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
     this.statisticObj = this.statisticsService.getCurrentStudentStatistics('');
+    this.recommendedMaterials = this.statisticsService.getRecommendedMaterials();
 
     const {
       Attendance: attendance,

@@ -23,7 +23,8 @@ import { RecommendedMaterialCardComponent } from './components/recommended-mater
     HeaderComponent,
     FooterComponent,
     EventCardComponent,
-    AddGradeAbsenceDialogComponent
+    AddGradeAbsenceDialogComponent,
+    RecommendedMaterialCardComponent
   ],
   imports: [
     CommonModule,
