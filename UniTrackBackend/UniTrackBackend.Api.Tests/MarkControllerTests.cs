@@ -1,5 +1,5 @@
+using FakeItEasy;
 using Microsoft.AspNetCore.Mvc; 
-using Moq;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
@@ -10,28 +10,25 @@ namespace UniTrackBackend.Api.Tests;
 
 public class MarkControllerTests
 {
-    private readonly Mock<IMarkService> _mockService;
+    private readonly IMarkService _fakeService;
     private readonly MarkController _controller;
-    private readonly Mock<IMapper> _mapper;
+    private readonly IMapper _fakeMapper;
     public MarkControllerTests()
     {
-        _mockService = new Mock<IMarkService>();
-        _mapper = new Mock<IMapper>();
-        _controller = new MarkController(_mockService.Object, _mapper.Object);
-        
+        _fakeService = A.Fake<IMarkService>();
+        _fakeMapper = A.Fake<IMapper>();
+        _controller = new MarkController(_fakeService, _fakeMapper);
     }
+
     [Fact]
     public async Task AddMark_ValidMarkViewModel_ReturnsCreatedAtActionResult()
     {
         // Arrange
         var model = new MarkViewModel() { Id = 1 /*, other properties if necessary */ };
         var mark = new Mark() { Id = 1 /*, map other properties from model */ };
-    
-        // Set up the mapper to convert MarkViewModel to Mark
-        _mapper.Setup(m => m.MapMark(It.IsAny<MarkViewModel>())).Returns(mark);
 
-        // Set up the service to return the Mark object
-        _mockService.Setup(s => s.AddMarkAsync(It.IsAny<Mark>())).ReturnsAsync(mark);
+        A.CallTo(() => _fakeMapper.MapMark(A<MarkViewModel>.Ignored)).Returns(mark);
+        A.CallTo(() => _fakeService.AddMarkAsync(A<Mark>.Ignored)).Returns(mark);
 
         // Act
         var result = await _controller.AddMark(model);
@@ -54,7 +51,7 @@ public class MarkControllerTests
     public async Task GetMark_ExistingId_ReturnsOkObjectResult()
     {
         var mark = new Mark { /* set properties */ };
-        _mockService.Setup(s => s.GetMarkByIdAsync(It.IsAny<int>())).ReturnsAsync(mark);
+        A.CallTo(() => _fakeService.GetMarkByIdAsync(A<int>.Ignored)).Returns(mark);
 
         var result = await _controller.GetMark(1); // Assuming '1' is a valid ID
 
@@ -65,7 +62,7 @@ public class MarkControllerTests
     [Fact]
     public async Task GetMark_NonExistingId_ReturnsNotFoundResult()
     {
-        _mockService.Setup(s => s.GetMarkByIdAsync(It.IsAny<int>())).ReturnsAsync((Mark)null);
+        A.CallTo(() => _fakeService.GetMarkByIdAsync(A<int>.Ignored)).Returns((Mark)null);
 
         var result = await _controller.GetMark(999); // Assuming '999' is an invalid ID
 
@@ -76,7 +73,7 @@ public class MarkControllerTests
     public async Task GetAllMarks_ReturnsOkObjectResultWithMarks()
     {
         var marks = new List<Mark> { /* populate list with marks */ };
-        _mockService.Setup(s => s.GetAllMarksAsync()).ReturnsAsync(marks);
+        A.CallTo(() => _fakeService.GetAllMarksAsync()).Returns(marks);
 
         var result = await _controller.GetAllMarks();
 
@@ -87,7 +84,7 @@ public class MarkControllerTests
     public async Task GetMarksByStudent_ValidStudentId_ReturnsOkObjectResult()
     {
         var marks = new List<Mark> { /* populate list with marks */ };
-        _mockService.Setup(s => s.GetMarksByStudentAsync(It.IsAny<int>())).ReturnsAsync(marks);
+        A.CallTo(() => _fakeService.GetMarksByStudentAsync(A<int>.Ignored)).Returns(marks);
 
         var result = await _controller.GetMarksByStudent(1); // Valid student ID
 
@@ -98,7 +95,7 @@ public class MarkControllerTests
     [Fact]
     public async Task GetMarksByStudent_InvalidStudentId_ReturnsEmptyList()
     {
-        _mockService.Setup(s => s.GetMarksByStudentAsync(It.IsAny<int>())).ReturnsAsync(new List<Mark>());
+        A.CallTo(() => _fakeService.GetMarksByStudentAsync(A<int>.Ignored)).Returns(new List<Mark>());
 
         var result = await _controller.GetMarksByStudent(999); // Invalid student ID
 
@@ -109,7 +106,7 @@ public class MarkControllerTests
     public async Task GetMarksByTeacher_ValidTeacherId_ReturnsOkObjectResult()
     {
         var marks = new List<Mark> { /* populate list with marks */ };
-        _mockService.Setup(s => s.GetMarksByTeacherAsync(It.IsAny<int>())).ReturnsAsync(marks);
+        A.CallTo(() => _fakeService.GetMarksByTeacherAsync(A<int>.Ignored)).Returns(marks);
 
         var result = await _controller.GetMarksByTeacher(1); // Valid teacher ID
 
@@ -120,7 +117,7 @@ public class MarkControllerTests
     [Fact]
     public async Task GetMarksByTeacher_InvalidTeacherId_ReturnsEmptyList()
     {
-        _mockService.Setup(s => s.GetMarksByTeacherAsync(It.IsAny<int>())).ReturnsAsync(new List<Mark>());
+        A.CallTo(() => _fakeService.GetMarksByTeacherAsync(A<int>.Ignored)).Returns(new List<Mark>());
 
         var result = await _controller.GetMarksByTeacher(999); // Invalid teacher ID
 
@@ -131,7 +128,7 @@ public class MarkControllerTests
     public async Task GetMarksBySubject_ValidSubjectId_ReturnsOkObjectResult()
     {
         var marks = new List<Mark> { /* populate list with marks */ };
-        _mockService.Setup(s => s.GetMarksBySubjectAsync(It.IsAny<int>())).ReturnsAsync(marks);
+        A.CallTo(() => _fakeService.GetMarksBySubjectAsync(A<int>.Ignored)).Returns(marks);
 
         var result = await _controller.GetMarksBySubject(1); // Valid subject ID
 
@@ -143,8 +140,8 @@ public class MarkControllerTests
     {
         var model = new MarkViewModel(){Id = 1};
         var mark = new Mark() { Id = 1, /* Other properties */ };
-                _mapper.Setup(s => s.MapMark(It.IsAny<MarkViewModel>())).Returns(mark);
-        _mockService.Setup(s => s.UpdateMarkAsync(It.IsAny<Mark>())).ReturnsAsync(mark);
+        A.CallTo(() => _fakeMapper.MapMark(A<MarkViewModel>.Ignored)).Returns(mark);
+        A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.Ignored)).Returns(mark);
         var result = await _controller.UpdateMark(1, model);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -165,7 +162,7 @@ public class MarkControllerTests
     public async Task UpdateMark_NonExistingMark_ReturnsNotFound()
     {
         var mark = new MarkViewModel() { Id = 999, /* Other properties */ };
-        _mockService.Setup(s => s.UpdateMarkAsync(It.IsAny<Mark>())).ReturnsAsync((Mark)null);
+        A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.That.Matches(m => m.Id == mark.Id))).Returns((Mark)null);
 
         var result = await _controller.UpdateMark(999, mark);
 
@@ -175,7 +172,8 @@ public class MarkControllerTests
     [Fact]
     public async Task DeleteMark_ExistingId_ReturnsOkResult()
     {
-        _mockService.Setup(s => s.DeleteMarkAsync(It.IsAny<int>())).ReturnsAsync(true);
+        A.CallTo(() => _fakeService.DeleteMarkAsync(A<int>.That.IsEqualTo(1))).Returns(true);
+
 
         var result = await _controller.DeleteMark(1);
 
@@ -186,8 +184,7 @@ public class MarkControllerTests
     [Fact]
     public async Task DeleteMark_NonExistingId_ReturnsNotFoundResult()
     {
-        // Assuming DeleteMarkAsync throws an exception or similar for non-existing IDs
-        _mockService.Setup(s => s.DeleteMarkAsync(It.IsAny<int>())).Throws(new KeyNotFoundException());
+        A.CallTo(() => _fakeService.DeleteMarkAsync(A<int>.That.IsEqualTo(999))).Throws(new KeyNotFoundException());
 
         var result = await _controller.DeleteMark(999);
 
