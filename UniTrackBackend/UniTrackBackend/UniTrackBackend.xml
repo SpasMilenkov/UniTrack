@@ -4,6 +4,46 @@
         <name>UniTrackBackend</name>
     </assembly>
     <members>
+        <member name="T:UniTrackBackend.Controllers.AbsencesController">
+            <summary>
+            Handles actions related to student absences.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.PostAbsence(UniTrackBackend.Data.Models.Absence)">
+            <summary>
+            Records a new absence.
+            </summary>
+            <param name="absence">The absence details to record.</param>
+            <returns>The created absence record.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAllAbsences">
+            <summary>
+            Retrieves all recorded absences.
+            </summary>
+            <returns>A list of all absences.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceById(System.Int32)">
+            <summary>
+            Retrieves a specific absence by its ID.
+            </summary>
+            <param name="id">The ID of the absence to retrieve.</param>
+            <returns>The absence record if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.UpdateAbsence(System.Int32,UniTrackBackend.Data.Models.Absence)">
+            <summary>
+            Updates an existing absence record.
+            </summary>
+            <param name="id">The ID of the absence to update.</param>
+            <param name="absence">The updated absence details.</param>
+            <returns>Returns no content if the update is successful, otherwise a bad request.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.DeleteAbsence(System.Int32)">
+            <summary>
+            Deletes a specific absence record by its ID.
+            </summary>
+            <param name="id">The ID of the absence to delete.</param>
+            <returns>Returns no content if the deletion is successful.</returns>
+        </member>
         <member name="T:UniTrackBackend.Controllers.AdminController">
             <summary>
             Handles administrative actions such as managing users.
@@ -43,6 +83,18 @@
             </summary>
             <param name="id">The ID of the user to delete.</param>
             <returns>Returns no content if deletion is successful.</returns>
+        </member>
+        <member name="T:UniTrackBackend.Controllers.AnalysisController">
+            <summary>
+            Handles analysis of student data.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AnalysisController.GetAnalysis(System.Int32)">
+            <summary>
+            Generates an analysis for a given student based on their ID.
+            </summary>
+            <param name="studentId">The ID of the student for whom the analysis is to be generated.</param>
+            <returns>An analysis model if successful, otherwise a bad request response.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.StudentViewModel})">
             <summary>
@@ -254,6 +306,58 @@
             <param name="id">The ID of the mark to delete.</param>
             <returns>No content on successful deletion, NotFound if the mark does not exist.</returns>
         </member>
+        <member name="T:UniTrackBackend.Controllers.RecommendationController">
+            <summary>
+            Handles the recommendation process for students.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.RecommendationController.GetAnalysis(System.Int32)">
+            <summary>
+            Retrieves recommendations based on a student's ID.
+            </summary>
+            <param name="studentId">The ID of the student for whom recommendations are being requested.</param>
+            <returns>A list of recommendations if available, otherwise a bad request response.</returns>
+        </member>
+        <member name="T:UniTrackBackend.Controllers.SchoolController">
+            <summary>
+            Handles school-related actions such as managing school records.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.SchoolController.AddSchool(UniTrackBackend.Api.ViewModels.SchoolViewModel)">
+            <summary>
+            Adds a new school.
+            </summary>
+            <param name="model">The school view model to create a new school.</param>
+            <returns>Returns the created school object.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.SchoolController.GetSchool(System.Int32)">
+            <summary>
+            Retrieves a specific school by its ID.
+            </summary>
+            <param name="id">The ID of the school to retrieve.</param>
+            <returns>The school object if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.SchoolController.GetAllSchools">
+            <summary>
+            Retrieves all schools.
+            </summary>
+            <returns>A list of all schools.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.SchoolController.UpdateSchool(System.Int32,UniTrackBackend.Api.ViewModels.SchoolViewModel)">
+            <summary>
+            Updates the details of an existing school.
+            </summary>
+            <param name="id">The ID of the school to update.</param>
+            <param name="model">The updated school view model.</param>
+            <returns>Returns updated school object if successful, otherwise a bad request or not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.SchoolController.DeleteSchool(System.Int32)">
+            <summary>
+            Deletes a school by its ID.
+            </summary>
+            <param name="id">The ID of the school to delete.</param>
+            <returns>Returns no content if deletion is successful, otherwise not found.</returns>
+        </member>
         <member name="T:UniTrackBackend.Controllers.StudentController">
             <summary>
             The StudentController manages student-related operations within the system.
@@ -301,6 +405,46 @@
             </summary>
             <param name="id">The ID of the student to delete.</param>
             <returns>A NoContent result indicating successful deletion, or NotFound if the student does not exist.</returns>
+        </member>
+        <member name="T:UniTrackBackend.Controllers.TeacherController">
+            <summary>
+            Handles teacher-related actions such as managing teacher records.
+            </summary>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.GetAllTeachers">
+            <summary>
+            Retrieves all teachers.
+            </summary>
+            <returns>A list of all teachers.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.GetTeacher(System.Int32)">
+            <summary>
+            Retrieves a specific teacher by their ID.
+            </summary>
+            <param name="id">The ID of the teacher to retrieve.</param>
+            <returns>The teacher object if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.AddTeacher(UniTrackBackend.Data.Models.Teacher)">
+            <summary>
+            Adds a new teacher.
+            </summary>
+            <param name="teacher">The teacher object to add.</param>
+            <returns>Returns the created teacher object.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Data.Models.Teacher)">
+            <summary>
+            Updates an existing teacher's details.
+            </summary>
+            <param name="id">The ID of the teacher to update.</param>
+            <param name="teacher">The updated teacher object.</param>
+            <returns>Returns no content if update is successful, otherwise a bad request.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.DeleteTeacher(System.Int32)">
+            <summary>
+            Deletes a teacher by their ID.
+            </summary>
+            <param name="id">The ID of the teacher to delete.</param>
+            <returns>Returns no content if deletion is successful.</returns>
         </member>
     </members>
 </doc>
