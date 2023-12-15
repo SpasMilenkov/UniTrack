@@ -1,5 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using UniTrackBackend.Api.ViewModels;
@@ -12,6 +13,16 @@ namespace UniTrackBackend.Api.Tests;
 
 public class AuthControllerTests
 {
+    private IRequestCookieCollection CreateFakeCookieCollection(Dictionary<string, string> cookies)
+    {
+        var fakeCookies = A.Fake<IRequestCookieCollection>();
+        foreach (var cookie in cookies)
+        {
+            A.CallTo(() => fakeCookies[cookie.Key]).Returns(cookie.Value);
+        }
+        return fakeCookies;
+    }
+
     private readonly IAuthService _fakeAuthService;
     private readonly IEmailService _fakeEmailService;
     private readonly AuthController _controller;
@@ -227,6 +238,159 @@ public class AuthControllerTests
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);
     }
+    [Fact]
+    public async Task RefreshToken_ValidRefreshToken_ReturnsNewTokens()
+    {
+        var validRefreshToken = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+        var newAccessToken = "newAccessToken";
+        var newRefreshToken = "newRefreshToken";
 
+        var cookies = new Dictionary<string, string> { { "RefreshToken", validRefreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
 
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(validRefreshToken)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.GenerateJwtToken(fakeUser)).Returns(newAccessToken);
+        A.CallTo(() => _fakeAuthService.GenerateRefreshToken(fakeUser)).Returns(newRefreshToken);
+
+        var result = await _controller.RefreshToken();
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task RefreshToken_InvalidRefreshToken_ReturnsBadRequest()
+    {
+        var invalidRefreshToken = "invalidToken";
+        var cookies = new Dictionary<string, string> { { "RefreshToken", invalidRefreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
+
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(invalidRefreshToken)).Returns((User)null);
+
+        var result = await _controller.RefreshToken();
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+    [Fact]
+    public async Task Logout_ValidRequest_ExecutesSuccessfully()
+    {
+        var refreshToken = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+
+        var cookies = new Dictionary<string, string> { { "RefreshToken", refreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
+
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(refreshToken)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.LogoutUser(fakeUser)).Returns(Task.CompletedTask);
+
+        var result = await _controller.Logout();
+
+        Assert.IsType<OkResult>(result);
+    }
+    [Fact]
+    public async Task ConfirmEmail_ValidParameters_ReturnsSuccess()
+    {
+        var userId = "validUserId";
+        var token = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+        var identityResult = IdentityResult.Success;
+
+        A.CallTo(() => _fakeAuthService.GetUserById(userId)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.ConfirmEmail(fakeUser, token)).Returns(identityResult);
+
+        var result = await _controller.ConfirmEmail(userId, token);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ConfirmEmail_InvalidParameters_ReturnsBadRequest()
+    {
+        var userId = "invalidUserId";
+        var token = "invalidToken";
+
+        A.CallTo(() => _fakeAuthService.GetUserById(userId)).Returns((User)null);
+
+        var result = await _controller.ConfirmEmail(userId, token);
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+    [Fact]
+    public async Task ForgotPassword_ValidEmail_SendsResetLink()
+    {
+        var email = "user@example.com";
+        var fakeUser = new User
+        {
+            Email = email,
+            FirstName = null,
+            LastName = null /* other properties */
+        };
+        var token = "resetToken";
+
+        A.CallTo(() => _fakeAuthService.GetUserByEmail(email)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.GenerateForgottenPasswordLink(fakeUser)).Returns(token);
+
+        var result = await _controller.ForgotPassword(email);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ForgotPassword_InvalidEmail_ReturnsNotFound()
+    {
+        var email = "invalid@example.com";
+
+        A.CallTo(() => _fakeAuthService.GetUserByEmail(email)).Returns((User)null);
+
+        var result = await _controller.ForgotPassword(email);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+    [Fact]
+    public async Task ResetPassword_ValidData_ResetsPassword()
+    {
+        var model = new ResetPasswordModel
+        {
+            Email = null,
+            NewPassword = null,
+            Token = null
+        };
+        var identityResult = IdentityResult.Success;
+
+        A.CallTo(() => _fakeAuthService.ResetPassword(model)).Returns(identityResult);
+
+        var result = await _controller.ResetPassword(model);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ResetPassword_InvalidData_ReturnsBadRequest()
+    {
+        var model = new ResetPasswordModel
+        {
+            Email = null,
+            NewPassword = null,
+            Token = null
+        };
+        var identityResult = IdentityResult.Failed(/* Identity errors */);
+
+        A.CallTo(() => _fakeAuthService.ResetPassword(model)).Returns(identityResult);
+
+        var result = await _controller.ResetPassword(model);
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
 }
