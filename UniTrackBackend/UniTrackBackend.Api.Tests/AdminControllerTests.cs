@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FakeItEasy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services.AdminService;
-using Xunit;
 
 namespace UniTrackBackend.Api.Tests
 {
@@ -14,7 +13,7 @@ namespace UniTrackBackend.Api.Tests
         public async Task CreateUser_ReturnsAppropriateResponse()
         {
             // Arrange
-            var mockAdminService = new Mock<IAdminService>();
+            var fakeAdminService = A.Fake<IAdminService>();
             var user = new User
             {
                 Id = "1",
@@ -27,9 +26,9 @@ namespace UniTrackBackend.Api.Tests
             };
 
             var identityResult = IdentityResult.Success;
-            mockAdminService.Setup(s => s.CreateUserAsync(It.IsAny<User>())).ReturnsAsync((identityResult));
+            A.CallTo(() => fakeAdminService.CreateUserAsync(A<User>.Ignored)).Returns(identityResult);
 
-            var controller = new AdminController(mockAdminService.Object);
+            var controller = new AdminController(fakeAdminService);
 
             // Act
             var result = await controller.CreateUser(user);
@@ -51,7 +50,7 @@ namespace UniTrackBackend.Api.Tests
         public async Task GetUser_ReturnsCorrectUser()
         {
             // Arrange
-            var mockAdminService = new Mock<IAdminService>();
+            var fakeAdminService = A.Fake<IAdminService>();
             var user = new User
             {
                 Id = "2",
@@ -62,9 +61,9 @@ namespace UniTrackBackend.Api.Tests
                 RefreshToken = "SomeRefreshToken",
                 RefreshTokenValidity = DateTime.UtcNow.AddDays(7)
             };
-            mockAdminService.Setup(s => s.GetUserByIdAsync(It.IsAny<string>())).ReturnsAsync(user);
+            A.CallTo(() => fakeAdminService.GetUserByIdAsync(A<string>.Ignored)).Returns(user);
 
-            var controller = new AdminController(mockAdminService.Object);
+            var controller = new AdminController(fakeAdminService);
 
             // Act
             var result = await controller.GetUser(user.Id);
@@ -78,7 +77,7 @@ namespace UniTrackBackend.Api.Tests
         public async Task GetAllUsers_ReturnsAllUsers()
         {
             // Arrange
-            var mockAdminService = new Mock<IAdminService>();
+            var fakeAdminService = A.Fake<IAdminService>();
             var users = new List<User>
             {
                 new User
@@ -110,9 +109,9 @@ namespace UniTrackBackend.Api.Tests
                     LastName = "Brown"
                 }
             };
-            mockAdminService.Setup(s => s.GetAllUsers()).Returns(users);
+            A.CallTo(() => fakeAdminService.GetAllUsers()).Returns(users);
 
-            var controller = new AdminController(mockAdminService.Object);
+            var controller = new AdminController(fakeAdminService);
 
             // Act
             var result = await controller.GetAllUsers();
@@ -126,7 +125,7 @@ namespace UniTrackBackend.Api.Tests
         public async Task UpdateUser_ReturnsAppropriateResponse()
         {
             // Arrange
-            var mockAdminService = new Mock<IAdminService>();
+            var fakeAdminService = A.Fake<IAdminService>();
             var user = new User
             {
                 Id = "3",
@@ -138,9 +137,9 @@ namespace UniTrackBackend.Api.Tests
                 RefreshTokenValidity = DateTime.UtcNow.AddDays(-1)
             };
             var identityResult = IdentityResult.Success;
-            mockAdminService.Setup(s => s.UpdateUserAsync(It.IsAny<User>())).ReturnsAsync(identityResult);
+            A.CallTo(() => fakeAdminService.UpdateUserAsync(A<User>.Ignored)).Returns(identityResult);
 
-            var controller = new AdminController(mockAdminService.Object);
+            var controller = new AdminController(fakeAdminService);
 
             // Act
             var result = await controller.UpdateUser(user.Id, user);
@@ -161,11 +160,11 @@ namespace UniTrackBackend.Api.Tests
         public async Task DeleteUser_ReturnsAppropriateResponse()
         {
             // Arrange
-            var mockAdminService = new Mock<IAdminService>();
+            var fakeAdminService = A.Fake<IAdminService>();
             var identityResult = IdentityResult.Success;
-            mockAdminService.Setup(s => s.DeleteUserAsync(It.IsAny<string>())).ReturnsAsync(identityResult);
+            A.CallTo(() => fakeAdminService.DeleteUserAsync(A<string>.Ignored)).Returns(identityResult);
 
-            var controller = new AdminController(mockAdminService.Object);
+            var controller = new AdminController(fakeAdminService);
 
             // Act
             var result = await controller.DeleteUser("1"); // Use a test user ID

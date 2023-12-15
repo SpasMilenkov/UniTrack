@@ -72,6 +72,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
+        if (!ModelState.IsValid)
+            return BadRequest("User registration failed");
         try
         {
             var user = await _authService.RegisterUser(model);
