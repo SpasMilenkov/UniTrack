@@ -12,8 +12,10 @@ public class Mapper : IMapper
     {
         _logger = logger;
     }
-    public Mark? MapMark(MarkViewModel model)
+    public Mark? MapMark(MarkViewModel? model)
     {
+        if (model is null)
+            return null;
         try
         {
             var mark = new Mark
