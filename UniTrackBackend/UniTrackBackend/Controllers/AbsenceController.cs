@@ -54,8 +54,8 @@ namespace UniTrackBackend.Controllers
         public async Task<ActionResult<Absence>> GetAbsenceById(int id)
         {
             var absence = await _absenceService.GetAbsencesByStudentIdAsync(id);
-            if (absence == null) return NotFound();
-            return Ok(absence);
+            if (absence == null) return NotFound("Student not found");
+            return !absence.Any() ? Ok("No absences found") : Ok(absence);
         }
 
         /// <summary>

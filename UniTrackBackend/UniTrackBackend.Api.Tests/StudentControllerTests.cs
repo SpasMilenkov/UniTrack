@@ -83,4 +83,69 @@ public class StudentControllerTests
 
         Assert.IsType<NotFoundResult>(result);
     }
+    [Fact]
+    public async Task UpdateStudent_ValidData_ReturnsNoContent()
+    {
+        var fakeService = A.Fake<IStudentService>();
+        var fakeMapper = A.Fake<IMapper>();
+        var model = new StudentViewModel
+        {
+            StudentId = 1,
+            Name = null,
+            Grade = null,
+            Email = null /* Other properties */
+        };
+        var student = new Student { /* Properties mapped from model */ };
+
+        A.CallTo(() => fakeMapper.MapStudent(model)).Returns(student);
+        A.CallTo(() => fakeService.UpdateStudentAsync(student)).Returns(Task.CompletedTask);
+
+        var controller = new StudentController(fakeService, fakeMapper);
+
+        var result = await controller.UpdateStudent(model.StudentId, model);
+
+        Assert.IsType<NoContentResult>(result);
+    }
+    [Fact]
+    public async Task UpdateStudent_IdMismatch_ReturnsBadRequest()
+    {
+        var controller = new StudentController(A.Fake<IStudentService>(), A.Fake<IMapper>());
+        var model = new StudentViewModel
+        {
+            StudentId = 2,
+            Name = null,
+            Grade = null,
+            Email = null /* Other properties */
+        };
+
+        var result = await controller.UpdateStudent(1, model);
+
+        Assert.IsType<BadRequestResult>(result);
+    }
+    [Fact]
+    public async Task AddStudent_ValidData_ReturnsCreatedAtActionResult()
+    {
+        var fakeService = A.Fake<IStudentService>();
+        var fakeMapper = A.Fake<IMapper>();
+        var model = new StudentViewModel
+        {
+            StudentId = 3,
+            Name = null,
+            Grade = null,
+            Email = null
+        };
+        var student = new Student { /* Properties mapped from model */ };
+        var createdStudent = new Student { Id = 1, /* Other properties */ };
+
+        A.CallTo(() => fakeMapper.MapStudent(model)).Returns(student);
+        A.CallTo(() => fakeService.AddStudentAsync(student)).Returns(createdStudent);
+
+        var controller = new StudentController(fakeService, fakeMapper);
+
+        var result = await controller.AddStudent(model);
+
+        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+        Assert.Equal(createdStudent, createdAtActionResult.Value);
+    }
+
 }

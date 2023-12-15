@@ -27,8 +27,6 @@ namespace UniTrackBackend.Services.AbsenceService
         public async Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId)
         {
             return await _context.AbsenceRepository.GetAsync(a => a.Student.Id == studentId);
-                                 
-                                 
         }
 
         public async Task UpdateAbsenceAsync(Absence updatedAbsence)
