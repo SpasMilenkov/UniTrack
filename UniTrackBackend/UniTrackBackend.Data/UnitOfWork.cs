@@ -1,10 +1,11 @@
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Repositories;
 
 namespace UniTrackBackend.Data;
 
-public sealed class UnitOfWork : IDisposable
+public class UnitOfWork : IDisposable, IUnitOfWork
 {
     private readonly UniTrackDbContext _context;
     private EfRepository<Absence>? _absenceRepository;
@@ -21,7 +22,7 @@ public sealed class UnitOfWork : IDisposable
     {
         _context = context;
     }
-    public EfRepository<School> SchoolRepository
+    public IRepository<School> SchoolRepository
     {
         get
         {
@@ -31,7 +32,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Absence> AbsenceRepository
+    public IRepository<Absence> AbsenceRepository
     {
         get
         {
@@ -41,7 +42,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Grade> GradeRepository
+    public IRepository<Grade> GradeRepository
     {
         get
         {
@@ -50,7 +51,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public MarkRepository MarkRepository
+    public IMarkRepository MarkRepository
     {
         get
         {
@@ -59,7 +60,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Parent> ParentRepository
+    public IRepository<Parent> ParentRepository
     {
         get
         {
@@ -68,7 +69,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public StudentRepository StudentRepository
+    public IStudentRepository StudentRepository
     {
         get
         {
@@ -77,7 +78,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Subject> SubjectRepository
+    public IRepository<Subject> SubjectRepository
     {
         get
         {
@@ -86,7 +87,7 @@ public sealed class UnitOfWork : IDisposable
         }
     }
 
-    public EfRepository<Teacher> TeacherRepository
+    public IRepository<Teacher> TeacherRepository
     {
         get
         {
@@ -113,7 +114,7 @@ public sealed class UnitOfWork : IDisposable
         }
         _disposed = true;
     }
-    public EfRepository<Admin> AdminRepository
+    public IRepository<Admin> AdminRepository
     {
         get
         {
