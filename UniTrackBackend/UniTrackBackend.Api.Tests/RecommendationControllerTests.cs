@@ -2,7 +2,7 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Controllers;
-using UniTrackBackend.Services.RecommendationService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Api.Tests;
 

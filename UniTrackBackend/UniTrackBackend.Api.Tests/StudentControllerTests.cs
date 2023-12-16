@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
-using UniTrackBackend.Services.StudentService;
 
 namespace UniTrackBackend.Api.Tests;
 
