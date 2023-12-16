@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.AdminService
+namespace UniTrackBackend.Services
 {
     public interface IAdminService
     {

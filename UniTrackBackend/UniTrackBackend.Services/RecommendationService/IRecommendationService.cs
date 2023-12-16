@@ -1,6 +1,6 @@
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
 
-namespace UniTrackBackend.Services.RecommendationService;
+namespace UniTrackBackend.Services;
 
 public interface IRecommendationService
 {

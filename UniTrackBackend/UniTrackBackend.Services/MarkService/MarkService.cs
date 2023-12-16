@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.MarkService
+namespace UniTrackBackend.Services
 {
     public class MarkService : IMarkService
     {
-        private readonly UnitOfWork _context;
+        private readonly IUnitOfWork _context;
         private readonly ILogger<MarkService> _logger;
 
-        public MarkService(UnitOfWork context, ILogger<MarkService> logger)
+        public MarkService(IUnitOfWork context, ILogger<MarkService> logger)
         {
             _context = context;
             _logger = logger;
