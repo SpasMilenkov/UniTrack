@@ -236,7 +236,7 @@
             the IMarkService for business logic operations and IMapper for object mapping between view models and data models.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.MarkController.#ctor(UniTrackBackend.Services.MarkService.IMarkService,UniTrackBackend.Services.Mappings.IMapper)">
+        <member name="M:UniTrackBackend.Controllers.MarkController.#ctor(UniTrackBackend.Services.IMarkService,UniTrackBackend.Services.Mappings.IMapper)">
             <summary>
             Initializes a new instance of the MarkController.
             </summary>
@@ -365,7 +365,7 @@
             The controller interacts with the IStudentService to handle business logic and uses IMapper for model mapping.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.StudentService.IStudentService,UniTrackBackend.Services.Mappings.IMapper)">
+        <member name="M:UniTrackBackend.Controllers.StudentController.#ctor(UniTrackBackend.Services.IStudentService,UniTrackBackend.Services.Mappings.IMapper)">
             <summary>
             Initializes a new instance of the StudentController with the required services.
             </summary>

@@ -1,6 +1,6 @@
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
 
-namespace UniTrackBackend.Services.AnalysisService;
+namespace UniTrackBackend.Services;
 
 public interface IAnalysisService
 {

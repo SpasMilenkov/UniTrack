@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Services.RecommendationService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Controllers
 {

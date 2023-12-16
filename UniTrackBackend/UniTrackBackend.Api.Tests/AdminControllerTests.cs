@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.AdminService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Api.Tests
 {

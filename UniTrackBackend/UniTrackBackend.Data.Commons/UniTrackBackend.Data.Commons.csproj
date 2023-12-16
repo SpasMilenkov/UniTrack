@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UniTrackBackend.Api.ViewModels\UniTrackBackend.Api.ViewModels.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj" />
+    </ItemGroup>
+
 </Project>

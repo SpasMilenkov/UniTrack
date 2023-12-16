@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.Auth;
-using UniTrackBackend.Services.Messaging;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Api.Tests;
 

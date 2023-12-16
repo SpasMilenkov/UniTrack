@@ -2,7 +2,7 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.AbsenceService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Api.Tests;
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using MimeKit;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.Messaging;
+namespace UniTrackBackend.Services;
 
 public class EmailService : IEmailService
 {

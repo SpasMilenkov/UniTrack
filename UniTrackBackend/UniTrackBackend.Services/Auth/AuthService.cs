@@ -13,7 +13,7 @@ using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.Auth;
+namespace UniTrackBackend.Services;
 
 public class AuthService : IAuthService
 {

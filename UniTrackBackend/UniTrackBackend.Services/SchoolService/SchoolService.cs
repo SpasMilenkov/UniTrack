@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services
 {
     public class SchoolService : ISchoolService
     {
-        private readonly UnitOfWork _context;
+        private readonly IUnitOfWork _context;
         private readonly ILogger<SchoolService> _logger;
 
-        public SchoolService(UnitOfWork context, ILogger<SchoolService> logger)
+        public SchoolService(IUnitOfWork context, ILogger<SchoolService> logger)
         {
             _context = context;
             _logger = logger;
