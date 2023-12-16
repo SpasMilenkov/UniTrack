@@ -19,13 +19,16 @@
           >
         </mat-select>
       </mat-form-field>
-      <mat-label *ngIf="data.type === types.ADD_GRADE">Write grade</mat-label>
-      <mat-form-field
-        appearance="outline"
-        *ngIf="data.type === types.ADD_GRADE"
-      >
-        <input type="number" formControlName="grade" matInput />
-      </mat-form-field>
+      <ng-container *ngIf="data.type === types.ADD_GRADE">
+        <mat-label>Write grade</mat-label>
+        <mat-form-field appearance="outline">
+          <input type="number" formControlName="grade" matInput />
+        </mat-form-field>
+        <mat-label>Add a topic</mat-label>
+        <mat-form-field appearance="outline">
+          <textarea type="text" formControlName="topic" matInput></textarea>
+        </mat-form-field>
+      </ng-container>
       <mat-label>Enter a date</mat-label>
       <mat-form-field appearance="outline">
         <mat-label>Choose a date</mat-label>
@@ -39,7 +42,13 @@
       </mat-form-field>
     </div>
     <div mat-dialog-actions class="d-flex flex-column">
-      <button mat-raised-button mat-dialog-close class="my-2 accent-btn-lg cancel-btn">Cancel</button>
+      <button
+        mat-raised-button
+        mat-dialog-close
+        class="my-2 accent-btn-lg cancel-btn"
+      >
+        Cancel
+      </button>
       <button
         mat-raised-button
         cdkFocusInitial
