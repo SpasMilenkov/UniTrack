@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Data.Repositories;
 
-public class StudentRepository: EfRepository<Student>
+public class StudentRepository: EfRepository<Student>, IStudentRepository
 {
     private readonly UniTrackDbContext _context;
 
