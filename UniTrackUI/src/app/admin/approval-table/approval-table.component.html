@@ -3,7 +3,7 @@
     <div class="col-md-5">
       <button
         mat-raised-button
-        class="primary-btn-lg text-ut-white w-100"
+        class="primary-btn-lg text-ut-white w-100 my-2"
         (click)="approve()"
       >
         <mat-icon>done</mat-icon>
@@ -21,91 +21,96 @@
       </button>
     </div>
   </div>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox
-          (change)="$event ? toggleAllRows() : null"
-          [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"
-          [aria-label]="checkboxLabel()"
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? toggleAllRows() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td
+          mat-cell
+          *matCellDef="let user"
+          [ngClass]="{
+            'student-user': user.type === profileTypes.STUDENT,
+            'teacher-user': user.type === profileTypes.TEACHER
+          }"
         >
-        </mat-checkbox>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selection.toggle(row) : null"
-          [checked]="selection.isSelected(row)"
-          [aria-label]="checkboxLabel(row)"
+          {{ user.type }}
+        </td>
+      </ng-container>
+
+      <!-- FirstName Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>First Name</th>
+        <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+      </ng-container>
+
+      <!-- LastName Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Last Name</th>
+        <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+      </ng-container>
+
+      <!-- Approved Column -->
+      <ng-container matColumnDef="approved">
+        <th mat-header-cell *matHeaderCellDef>Approved</th>
+        <td
+          mat-cell
+          *matCellDef="let user"
+          [ngClass]="{
+            'disapproved-user': !user.approved,
+            'approved-user': user.approved
+          }"
         >
-        </mat-checkbox>
-      </td>
-    </ng-container>
+          {{ user.approved ? "Approved" : "Disapproved" }}
+        </td>
+      </ng-container>
 
-    <!-- Email Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
-    </ng-container>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td
+          mat-cell
+          *matCellDef="let user"
+          class="actions-column"
+          [matMenuTriggerFor]="actionsMenu"
+          [matMenuTriggerData]="{ user: user }"
+        >
+          <mat-icon class="add-icon">more_verte</mat-icon>
+        </td>
+      </ng-container>
 
-    <!-- Type Column -->
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef>Type</th>
-      <td
-        mat-cell
-        *matCellDef="let user"
-        [ngClass]="{
-          'student-user': user.type === profileTypes.STUDENT,
-          'teacher-user': user.type === profileTypes.TEACHER
-        }"
-      >
-        {{ user.type }}
-      </td>
-    </ng-container>
-
-    <!-- FirstName Column -->
-    <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef>First Name</th>
-      <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
-    </ng-container>
-
-    <!-- LastName Column -->
-    <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef>Last Name</th>
-      <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
-    </ng-container>
-
-    <!-- Approved Column -->
-    <ng-container matColumnDef="approved">
-      <th mat-header-cell *matHeaderCellDef>Approved</th>
-      <td
-        mat-cell
-        *matCellDef="let user"
-        [ngClass]="{ 'disapproved-user': !user.approved, 'approved-user': user.approved }"
-      >
-        {{ user.approved ? "Approved" : "Disapproved" }}
-      </td>
-    </ng-container>
-
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td
-        mat-cell
-        *matCellDef="let user"
-        class="actions-column"
-        [matMenuTriggerFor]="actionsMenu"
-        [matMenuTriggerData]="{ user: user }"
-      >
-        <mat-icon class="add-icon">more_verte</mat-icon>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </ng-container>
 <mat-menu #actionsMenu="matMenu">
   <ng-template matMenuContent let-user="user">
