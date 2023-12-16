@@ -31,6 +31,7 @@ export class UserService {
           teacherId: '11111',
           teacherFirstName: 'John',
           teacherLastName: 'Doe',
+          topic: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'
         },
         {
           subject: 'Science',
@@ -39,6 +40,7 @@ export class UserService {
           teacherId: '11111',
           teacherFirstName: 'John',
           teacherLastName: 'Doe',
+          topic: 'Dui ut ornare lectus sit. Vel quam elementum pulvinar etiam non quam lacus suspendisse faucibus.'
         },
         {
           subject: 'History',
@@ -47,6 +49,7 @@ export class UserService {
           teacherId: '11111',
           teacherFirstName: 'John',
           teacherLastName: 'Doe',
+          topic: ' Nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit.'
         },
       ],
       absences: [

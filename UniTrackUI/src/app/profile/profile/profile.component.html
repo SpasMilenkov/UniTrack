@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="my-5 p-0">
+        <div class="col-12 my-5">
           <app-grades-table
             *ngIf="profile.type === profileTypes.STUDENT"
             [grades]="getStudentProfile().grades || []"

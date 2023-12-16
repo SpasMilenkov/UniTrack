@@ -7,4 +7,5 @@ export interface Grade {
   teacherId: string;
   teacherFirstName: string;
   teacherLastName: string;
+  topic: string
 }

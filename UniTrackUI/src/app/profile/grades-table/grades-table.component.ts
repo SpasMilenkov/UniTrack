@@ -15,5 +15,6 @@ export class GradesTableComponent {
     'date',
     'teacherFirstName',
     'teacherLastName',
+    'topic'
   ];
 }
