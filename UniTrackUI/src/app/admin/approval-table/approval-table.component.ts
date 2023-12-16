@@ -16,6 +16,7 @@ export class ApprovalTableComponent implements OnInit {
     'type',
     'firstName',
     'lastName',
+    'approved',
     'actions',
   ];
   selection = new SelectionModel<UserRequest>(true, []);
