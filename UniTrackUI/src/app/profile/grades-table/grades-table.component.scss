@@ -1,0 +1,13 @@
+@use "colors";
+
+.mat-mdc-table {
+  background-color: colors.$color-ut-white;
+}
+
+.mat-mdc-header-cell {
+  font-family: "Cabin Sketch", sans-serif !important;
+  font-weight: 900;
+  font-size: 1.1rem;
+  background-color: colors.$color-ut-accent-100 !important;
+  color: colors.$color-ut-accent;
+}
