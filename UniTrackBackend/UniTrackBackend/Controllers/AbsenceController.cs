@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.AbsenceService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Controllers
 {

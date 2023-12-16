@@ -1,17 +1,10 @@
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Seeding;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Middlewares;
 using UniTrackBackend.Services;
-using UniTrackBackend.Services.AnalysisService;
-using UniTrackBackend.Services.ApprovalService;
-using UniTrackBackend.Services.Auth;
 using UniTrackBackend.Services.Mappings;
-using UniTrackBackend.Services.Messaging;
-using UniTrackBackend.Services.StudentService;
-using UniTrackBackend.Services.MarkService;
-using UniTrackBackend.Services.AnalysisService;
-using UniTrackBackend.Services.RecommendationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,12 +28,13 @@ builder.Services.AddJwtToken(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApprovalService, ApprovalService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 builder.Services.AddScoped<IMarkService, MarkService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
 
 builder.Services.AddControllers();
 
@@ -65,6 +59,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-DataSeeder.SeedData(app.Services).Wait();
+// DataSeeder.SeedData(app.Services).Wait();
 
 app.Run();

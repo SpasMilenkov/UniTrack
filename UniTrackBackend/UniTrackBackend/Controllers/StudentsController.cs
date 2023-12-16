@@ -1,10 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
-using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
-using UniTrackBackend.Services.StudentService;
 
 namespace UniTrackBackend.Controllers
 {
