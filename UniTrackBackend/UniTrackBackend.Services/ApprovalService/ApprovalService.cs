@@ -3,18 +3,19 @@ using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;
 
-namespace UniTrackBackend.Services.ApprovalService;
+namespace UniTrackBackend.Services;
 
 public class ApprovalService : IApprovalService
 {
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
     private readonly ILogger<ApprovalService> _logger;
 
-    public ApprovalService(UnitOfWork unitOfWork, UserManager<User> userManager, ILogger<ApprovalService> logger)
+    public ApprovalService(IUnitOfWork unitOfWork, UserManager<User> userManager, ILogger<ApprovalService> logger)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
@@ -105,5 +106,4 @@ public class ApprovalService : IApprovalService
             throw;
         }
     }
-    
 }

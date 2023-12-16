@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
-using UniTrackBackend.Services.MarkService;
 
 namespace UniTrackBackend.Controllers;
 
@@ -41,6 +41,9 @@ public class MarkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddMark([FromBody] MarkViewModel model)
     {
+        if (!ModelState.IsValid || model is null)
+            return BadRequest();
+        
         var mark = _mapper.MapMark(model);
         if (mark is null)
             return BadRequest();
@@ -148,6 +151,9 @@ public class MarkController : ControllerBase
         if (mark is null)
             return NotFound();
         var updatedMark = await _markService.UpdateMarkAsync(mark);
+        
+        if (updatedMark is null || updatedMark.Id != id)
+            return NotFound();
 
         return Ok(updatedMark);
     }

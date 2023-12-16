@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Data.Repositories;
 
-public class MarkRepository :EfRepository<Mark>
+public class MarkRepository :EfRepository<Mark>, IMarkRepository
 {    
     private readonly UniTrackDbContext _context;
 

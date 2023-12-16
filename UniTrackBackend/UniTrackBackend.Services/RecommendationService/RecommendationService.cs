@@ -4,19 +4,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.RecommendationService;
+namespace UniTrackBackend.Services;
 
 public class RecommendationService : IRecommendationService
 {
     private readonly ILogger<RecommendationService> _logger;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     private readonly Dictionary<string, IEnumerable<string>> _subjectToChannel;
     private readonly YouTubeService _youTubeService;
     
-    public RecommendationService(ILogger<RecommendationService> logger, IConfiguration config, UnitOfWork unitOfWork)
+    public RecommendationService(ILogger<RecommendationService> logger, IConfiguration config, IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;

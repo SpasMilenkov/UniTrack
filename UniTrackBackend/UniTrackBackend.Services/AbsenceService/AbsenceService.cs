@@ -1,52 +1,50 @@
 ﻿using UniTrackBackend.Data;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.AbsenceService
+namespace UniTrackBackend.Services;
+
+public class AbsenceService : IAbsenceService
 {
-    public class AbsenceService : IAbsenceService
+    private readonly IUnitOfWork _context;
+
+    public AbsenceService(IUnitOfWork context)
     {
-        private readonly UnitOfWork _context;
+        _context = context;
+    }
 
-        public AbsenceService(UnitOfWork context)
-        {
-            _context = context;
-        }
-
-        public async Task<Absence> AddAbsenceAsync(Absence absence)
-        {
+    public async Task<Absence> AddAbsenceAsync(Absence absence)
+    {
            
-            await _context.AbsenceRepository.AddAsync(absence);
-            return absence;
-        }
+        await _context.AbsenceRepository.AddAsync(absence);
+        return absence;
+    }
 
-        public async Task<IEnumerable<Absence>> GetAbsencesAsync()
-        {
-            return await _context.AbsenceRepository.GetAllAsync();
-        }
+    public async Task<IEnumerable<Absence>> GetAbsencesAsync()
+    {
+        return await _context.AbsenceRepository.GetAllAsync();
+    }
 
-        public async Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId)
-        {
-            return await _context.AbsenceRepository.GetAsync(a => a.Student.Id == studentId);
-                                 
-                                 
-        }
+    public async Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId)
+    {
+        return await _context.AbsenceRepository.GetAsync(a => a.Student.Id == studentId);
+    }
 
-        public async Task UpdateAbsenceAsync(Absence updatedAbsence)
-        {
-            var absence = await _context.AbsenceRepository.GetByIdAsync(updatedAbsence.Id);
-            if (absence == null) throw new ArgumentException("Absence not found");
+    public async Task UpdateAbsenceAsync(Absence updatedAbsence)
+    {
+        var absence = await _context.AbsenceRepository.GetByIdAsync(updatedAbsence.Id);
+        if (absence == null) throw new ArgumentException("Absence not found");
 
-            await _context.AbsenceRepository.UpdateAsync(absence);
-            await _context.SaveAsync();
-        }
+        await _context.AbsenceRepository.UpdateAsync(absence);
+        await _context.SaveAsync();
+    }
 
-        public async Task DeleteAbsenceAsync(int absenceId)
-        {
-            var absence = await _context.AbsenceRepository.GetByIdAsync(absenceId);
-            if (absence == null) throw new ArgumentException("Absence not found");
+    public async Task DeleteAbsenceAsync(int absenceId)
+    {
+        var absence = await _context.AbsenceRepository.GetByIdAsync(absenceId);
+        if (absence == null) throw new ArgumentException("Absence not found");
 
-            await _context.AbsenceRepository.DeleteAsync(absenceId);
-            await _context.SaveAsync();
-        }
+        await _context.AbsenceRepository.DeleteAsync(absenceId);
+        await _context.SaveAsync();
     }
 }

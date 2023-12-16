@@ -1,54 +1,66 @@
+using FakeItEasy;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
-using UniTrackBackend.Services.Auth;
-using UniTrackBackend.Services.Messaging;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Api.Tests;
 
 public class AuthControllerTests
 {
-    private readonly Mock<IAuthService> _mockAuthService;
-    private readonly Mock<IEmailService> _mockEmailService;
+    private IRequestCookieCollection CreateFakeCookieCollection(Dictionary<string, string> cookies)
+    {
+        var fakeCookies = A.Fake<IRequestCookieCollection>();
+        foreach (var cookie in cookies)
+        {
+            A.CallTo(() => fakeCookies[cookie.Key]).Returns(cookie.Value);
+        }
+        return fakeCookies;
+    }
+
+    private readonly IAuthService _fakeAuthService;
+    private readonly IEmailService _fakeEmailService;
     private readonly AuthController _controller;
-    private readonly Mock<HttpContext> _mockHttpContext;
-    private readonly Mock<IUrlHelper> _mockUrlHelper;
-    private readonly Mock<HttpRequest> _mockHttpRequest;
+    private readonly HttpContext _fakeHttpContext;
+    private readonly IUrlHelper _fakeUrlHelper;
+    private readonly HttpRequest _fakeHttpRequest;
+
 
     public AuthControllerTests()
     {
-        _mockAuthService = new Mock<IAuthService>();
-        _mockEmailService = new Mock<IEmailService>();
-        _controller = new AuthController(_mockAuthService.Object, _mockEmailService.Object);
+        _fakeAuthService = A.Fake<IAuthService>();
+        _fakeEmailService = A.Fake<IEmailService>();
+        _controller = new AuthController(_fakeAuthService, _fakeEmailService);
 
         // Mock HttpContext
-        _mockHttpContext = new Mock<HttpContext>();
+        _fakeHttpContext = A.Fake<HttpContext>();
         _controller.ControllerContext = new ControllerContext()
         {
-            HttpContext = _mockHttpContext.Object
+            HttpContext = _fakeHttpContext
         };
 
         // Mock Response
-        var response = new Mock<HttpResponse>();
-        _mockHttpContext.SetupGet(x => x.Response).Returns(response.Object);
+        var response = A.Fake<HttpResponse>();
+        A.CallTo(() => _fakeHttpContext.Response).Returns(response);
 
         // Mock Response.Cookies
-        var cookieCollection = new Mock<IResponseCookies>();
-        response.SetupGet(r => r.Cookies).Returns(cookieCollection.Object);
-        
-        _mockHttpRequest = new Mock<HttpRequest>();
-        _mockUrlHelper = new Mock<IUrlHelper>();
+        var cookieCollection = A.Fake<IResponseCookies>();
+        A.CallTo(() => response.Cookies).Returns(cookieCollection);
 
-        _mockHttpContext.SetupGet(x => x.Request).Returns(_mockHttpRequest.Object);
-        _mockHttpRequest.SetupGet(x => x.Scheme).Returns("http");
+        _fakeHttpRequest = A.Fake<HttpRequest>();
+        _fakeUrlHelper = A.Fake<IUrlHelper>();
 
-        _controller.ControllerContext = new ControllerContext() { HttpContext = _mockHttpContext.Object };
-        _controller.Url = _mockUrlHelper.Object;
+        A.CallTo(() => _fakeHttpContext.Request).Returns(_fakeHttpRequest);
+        A.CallTo(() => _fakeHttpRequest.Scheme).Returns("http");
+
+        _controller.ControllerContext = new ControllerContext() { HttpContext = _fakeHttpContext };
+        _controller.Url = _fakeUrlHelper;
     }
+
 
 
     [Fact]
@@ -63,14 +75,13 @@ public class AuthControllerTests
             FirstName = "string",
             LastName = "string",
         };
+        A.CallTo(() => _fakeAuthService.LoginUser(userModel)).Returns(user);
+        A.CallTo(() => _fakeAuthService.GenerateJwtToken(user)).Returns("fake-jwt-token");
+        A.CallTo(() => _fakeAuthService.GenerateRefreshToken(user)).Returns("fake-refresh-token");
 
-        _mockAuthService.Setup(s => s.LoginUser(userModel)).ReturnsAsync(user);
-        _mockAuthService.Setup(s => s.GenerateJwtToken(user)).Returns("fake-jwt-token");
-        _mockAuthService.Setup(s => s.GenerateRefreshToken(user)).ReturnsAsync("fake-refresh-token");
+        var cookies = A.Fake<IResponseCookies>();
+        A.CallTo(() => _fakeHttpContext.Response.Cookies).Returns(cookies);
 
-        // Mock the cookies setup
-        var cookies = new Mock<IResponseCookies>();
-        _mockHttpContext.SetupGet(x => x.Response.Cookies).Returns(cookies.Object);
 
         // Act
         var result = await _controller.Login(userModel);
@@ -79,8 +90,9 @@ public class AuthControllerTests
         Assert.IsType<OkObjectResult>(result);
 
         // Verify that cookies are set
-        cookies.Verify(c => c.Append(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CookieOptions>()),
-            Times.AtLeastOnce());
+        A.CallTo(() => cookies.Append(A<string>.Ignored, A<string>.Ignored, A<CookieOptions>.Ignored))
+            .MustHaveHappened();
+
     }
 
 
@@ -90,7 +102,7 @@ public class AuthControllerTests
         // Arrange
         var userModel = new LoginViewModel { Email = "wrong@example.com", Password = "Password123" };
 
-        _mockAuthService.Setup(s => s.LoginUser(userModel)).ReturnsAsync(() => null);
+        A.CallTo(() => _fakeAuthService.LoginUser(userModel)).Returns((User)null);
 
         // Act
         var result = await _controller.Login(userModel);
@@ -119,14 +131,13 @@ public class AuthControllerTests
             LastName = "string",
         };
 
-        _mockAuthService.Setup(s => s.RegisterUser(registerModel)).ReturnsAsync(user);
-        _mockAuthService.Setup(s => s.GetEmailConfirmationToken(user)).ReturnsAsync("confirmation-token");
-        _mockAuthService.Setup(s => s.GenerateJwtToken(user)).Returns("fake-jwt-token");
-        _mockAuthService.Setup(s => s.GenerateRefreshToken(user)).ReturnsAsync("fake-refresh-token");
-        _mockAuthService.Setup(s => s.SignInUser(user)).Returns(Task.CompletedTask);
+        A.CallTo(() => _fakeAuthService.RegisterUser(registerModel)).Returns(user);
+        A.CallTo(() => _fakeAuthService.GetEmailConfirmationToken(user)).Returns("confirmation-token");
+        A.CallTo(() => _fakeAuthService.GenerateJwtToken(user)).Returns("fake-jwt-token");
+        A.CallTo(() => _fakeAuthService.GenerateRefreshToken(user)).Returns("fake-refresh-token");
+        A.CallTo(() => _fakeAuthService.SignInUser(user)).Returns(Task.CompletedTask);
 
-        // Mock Url.Action
-        _mockUrlHelper.Setup(x => x.Action(It.IsAny<UrlActionContext>()))
+        A.CallTo(() => _fakeUrlHelper.Action(A<UrlActionContext>.Ignored))
             .Returns("http://fakeurl.com/confirm-email");
 
         // Act
@@ -136,13 +147,14 @@ public class AuthControllerTests
         Assert.IsType<OkObjectResult>(result);
 
         // Verify that Url.Action is called to generate the callback URL
-        _mockUrlHelper.Verify(x => x.Action(It.Is<UrlActionContext>(
-            uac => uac.Values != null &&
-                   uac.Action == "ConfirmEmail" && 
-                   uac.Controller == "Auth" && 
-                   uac.Values.ToString()!.Contains(user.Id) &&
-                   uac.Values.ToString()!.Contains("confirmation-token") &&
-                   uac.Protocol == "http")), Times.Once());
+        A.CallTo(() => _fakeUrlHelper.Action(A<UrlActionContext>.That.Matches(uac =>
+            uac.Values != null &&
+            uac.Action == "ConfirmEmail" && 
+            uac.Controller == "Auth" && 
+            uac.Values.ToString()!.Contains(user.Id) &&
+            uac.Values.ToString()!.Contains("confirmation-token") &&
+            uac.Protocol == "http"))).MustHaveHappenedOnceExactly();
+
     }
 
 
@@ -192,8 +204,8 @@ public class AuthControllerTests
             // Other properties...
         };
 
-        _mockAuthService.Setup(s => s.RegisterUser(registerModel)).ReturnsAsync(user);
-        _mockAuthService.Setup(s => s.GetEmailConfirmationToken(user)).ReturnsAsync(() => null); // Simulate token generation failure
+        A.CallTo(() => _fakeAuthService.RegisterUser(registerModel)).Returns(user);
+        A.CallTo(() => _fakeAuthService.GetEmailConfirmationToken(user)).Returns((string)null);
 
         // Act
         var result = await _controller.Register(registerModel);
@@ -216,7 +228,8 @@ public class AuthControllerTests
             // Other properties...
         };
 
-        _mockAuthService.Setup(s => s.RegisterUser(registerModel))!.ReturnsAsync((User)null); // Simulate email already in use
+        A.CallTo(() => _fakeAuthService.RegisterUser(registerModel))!.Returns((User)null);
+
 
         // Act
         var result = await _controller.Register(registerModel);
@@ -224,6 +237,159 @@ public class AuthControllerTests
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);
     }
+    [Fact]
+    public async Task RefreshToken_ValidRefreshToken_ReturnsNewTokens()
+    {
+        var validRefreshToken = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+        var newAccessToken = "newAccessToken";
+        var newRefreshToken = "newRefreshToken";
 
+        var cookies = new Dictionary<string, string> { { "RefreshToken", validRefreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
 
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(validRefreshToken)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.GenerateJwtToken(fakeUser)).Returns(newAccessToken);
+        A.CallTo(() => _fakeAuthService.GenerateRefreshToken(fakeUser)).Returns(newRefreshToken);
+
+        var result = await _controller.RefreshToken();
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task RefreshToken_InvalidRefreshToken_ReturnsBadRequest()
+    {
+        var invalidRefreshToken = "invalidToken";
+        var cookies = new Dictionary<string, string> { { "RefreshToken", invalidRefreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
+
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(invalidRefreshToken)).Returns((User)null);
+
+        var result = await _controller.RefreshToken();
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+    [Fact]
+    public async Task Logout_ValidRequest_ExecutesSuccessfully()
+    {
+        var refreshToken = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+
+        var cookies = new Dictionary<string, string> { { "RefreshToken", refreshToken } };
+        _fakeHttpContext.Request.Cookies = CreateFakeCookieCollection(cookies);
+
+        A.CallTo(() => _fakeAuthService.GetUserFromRefreshToken(refreshToken)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.LogoutUser(fakeUser)).Returns(Task.CompletedTask);
+
+        var result = await _controller.Logout();
+
+        Assert.IsType<OkResult>(result);
+    }
+    [Fact]
+    public async Task ConfirmEmail_ValidParameters_ReturnsSuccess()
+    {
+        var userId = "validUserId";
+        var token = "validToken";
+        var fakeUser = new User
+        {
+            FirstName = null,
+            LastName = null
+        };
+        var identityResult = IdentityResult.Success;
+
+        A.CallTo(() => _fakeAuthService.GetUserById(userId)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.ConfirmEmail(fakeUser, token)).Returns(identityResult);
+
+        var result = await _controller.ConfirmEmail(userId, token);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ConfirmEmail_InvalidParameters_ReturnsBadRequest()
+    {
+        var userId = "invalidUserId";
+        var token = "invalidToken";
+
+        A.CallTo(() => _fakeAuthService.GetUserById(userId)).Returns((User)null);
+
+        var result = await _controller.ConfirmEmail(userId, token);
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+    [Fact]
+    public async Task ForgotPassword_ValidEmail_SendsResetLink()
+    {
+        var email = "user@example.com";
+        var fakeUser = new User
+        {
+            Email = email,
+            FirstName = null,
+            LastName = null /* other properties */
+        };
+        var token = "resetToken";
+
+        A.CallTo(() => _fakeAuthService.GetUserByEmail(email)).Returns(fakeUser);
+        A.CallTo(() => _fakeAuthService.GenerateForgottenPasswordLink(fakeUser)).Returns(token);
+
+        var result = await _controller.ForgotPassword(email);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ForgotPassword_InvalidEmail_ReturnsNotFound()
+    {
+        var email = "invalid@example.com";
+
+        A.CallTo(() => _fakeAuthService.GetUserByEmail(email)).Returns((User)null);
+
+        var result = await _controller.ForgotPassword(email);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+    [Fact]
+    public async Task ResetPassword_ValidData_ResetsPassword()
+    {
+        var model = new ResetPasswordModel
+        {
+            Email = null,
+            NewPassword = null,
+            Token = null
+        };
+        var identityResult = IdentityResult.Success;
+
+        A.CallTo(() => _fakeAuthService.ResetPassword(model)).Returns(identityResult);
+
+        var result = await _controller.ResetPassword(model);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ResetPassword_InvalidData_ReturnsBadRequest()
+    {
+        var model = new ResetPasswordModel
+        {
+            Email = null,
+            NewPassword = null,
+            Token = null
+        };
+        var identityResult = IdentityResult.Failed(/* Identity errors */);
+
+        A.CallTo(() => _fakeAuthService.ResetPassword(model)).Returns(identityResult);
+
+        var result = await _controller.ResetPassword(model);
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
 }

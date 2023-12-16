@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.Auth;
+namespace UniTrackBackend.Services;
 
 public interface IAuthService
 {

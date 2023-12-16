@@ -2,8 +2,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Infrastructure;
-using UniTrackBackend.Services.Auth;
-using UniTrackBackend.Services.Messaging;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Controllers;
 
@@ -72,6 +71,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
+        if (!ModelState.IsValid)
+            return BadRequest("User registration failed");
         try
         {
             var user = await _authService.RegisterUser(model);

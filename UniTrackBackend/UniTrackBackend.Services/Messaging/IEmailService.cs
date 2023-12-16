@@ -1,6 +1,6 @@
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Services.Messaging;
+namespace UniTrackBackend.Services;
 
 public interface IEmailService
 {

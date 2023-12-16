@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Models.TypeSafe;
-using UniTrackBackend.Services.ApprovalService;
+using UniTrackBackend.Services;
 
 namespace UniTrackBackend.Controllers
 {
@@ -39,7 +39,7 @@ namespace UniTrackBackend.Controllers
             var result = await _approvalService.ApproveStudentsAsync(models);
             if (!result)
                 return new BadRequestResult();
-            return Ok("Student approved");
+            return Ok("Students approved");
         }
 
         /// <summary>
@@ -59,7 +59,10 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ApproveTeachers(List<TeacherViewModel> models)
         {
-            return Ok("Teacher approved");
+            var result = await _approvalService.ApproveTeachersAsync(models);
+            if (!result)
+                return new BadRequestResult();
+            return Ok("Teachers approved");
         }
         
         /// <summary>
@@ -79,7 +82,10 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ApproveAdmins(List<AdminViewModel> models)
         {
-            return Ok("Admin approved");
+            // var result = await _approvalService.ApproveStudentsAsync(models);
+            // if (!result)
+            //     return new BadRequestResult();
+            return Ok("Admins approved");
         }
 
         /// <summary>
@@ -99,8 +105,10 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ApproveParents(List<ParentViewModel> models)
         {
-            return Ok("Parent approved");
+            var result = await _approvalService.ApproveParentsAsync(models);
+            if (!result)
+                return new BadRequestResult();
+            return Ok("Parents approved");
         }
-
     }
 }
