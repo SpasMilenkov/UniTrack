@@ -9,6 +9,7 @@ import { StudentsListComponent } from './students-list/students-list.component';
 import { StatisticsLayoutComponent } from './statistics/statistics-layout/statistics-layout.component';
 import { ConfirmEmailComponent } from './auth/confirm-email/confirm-email.component';
 import { ApprovalTableComponent } from './admin/approval-table/approval-table.component';
+import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 
 const routes: Routes =  [
   {
@@ -24,7 +25,7 @@ const routes: Routes =  [
   { path: 'profile', component: ProfileComponent},
   { path: 'students-list', component: StudentsListComponent},
   { path: 'statistics', component: StatisticsLayoutComponent},
-  { path: 'approval-table', component: ApprovalTableComponent},
+  { path: 'approval-table', component: AdminLayoutComponent},
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];
 

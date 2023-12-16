@@ -5,6 +5,22 @@
   color: colors.$color-ut-white;
 }
 
+.mat-mdc-menu-item:not([disabled]):hover{
+  background-color: colors.$color-ut-accent
+}
+
+.mat-mdc-menu-content .mat-mdc-menu-item.disapprove-button,
+.mat-mdc-menu-content .mat-mdc-menu-item.disapprove-button .mat-mdc-menu-item-text {
+  background-color: colors.$color-ut-red;
+}
+
+.disapprove-button.mat-mdc-menu-item:not([disabled]):hover{
+  background-color: colors.$color-ut-dark-wine;
+  .mat-mdc-menu-item-text{
+    background-color: colors.$color-ut-dark-wine;
+  }
+}
+
 .mat-mdc-menu-item .mat-icon-no-color, .mat-mdc-menu-item .mat-mdc-menu-submenu-icon{
   color: colors.$color-ut-white !important;
 }
