@@ -57,19 +57,6 @@ namespace UniTrackBackend.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ElectiveSubjects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ElectiveSubjects", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Schools",
                 columns: table => new
                 {
@@ -266,17 +253,11 @@ namespace UniTrackBackend.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    ClassTeacherId = table.Column<int>(type: "integer", nullable: false),
-                    ElectiveSubjectId = table.Column<int>(type: "integer", nullable: true)
+                    ClassTeacherId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Grades", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Grades_ElectiveSubjects_ElectiveSubjectId",
-                        column: x => x.ElectiveSubjectId,
-                        principalTable: "ElectiveSubjects",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Grades_Teachers_ClassTeacherId",
                         column: x => x.ClassTeacherId,
@@ -295,7 +276,6 @@ namespace UniTrackBackend.Data.Migrations
                     UserId = table.Column<string>(type: "text", nullable: false),
                     GradeId = table.Column<int>(type: "integer", nullable: false),
                     SchoolId = table.Column<int>(type: "integer", nullable: false),
-                    ElectiveSubjectId = table.Column<int>(type: "integer", nullable: true),
                     ParentId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -307,11 +287,6 @@ namespace UniTrackBackend.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Students_ElectiveSubjects_ElectiveSubjectId",
-                        column: x => x.ElectiveSubjectId,
-                        principalTable: "ElectiveSubjects",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Students_Grades_GradeId",
                         column: x => x.GradeId,
@@ -396,7 +371,8 @@ namespace UniTrackBackend.Data.Migrations
                     StudentId = table.Column<int>(type: "integer", nullable: false),
                     TeacherId = table.Column<int>(type: "integer", nullable: false),
                     SubjectId = table.Column<int>(type: "integer", nullable: false),
-                    GradedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    GradedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Topic = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -513,11 +489,6 @@ namespace UniTrackBackend.Data.Migrations
                 column: "ClassTeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_ElectiveSubjectId",
-                table: "Grades",
-                column: "ElectiveSubjectId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Marks_StudentId",
                 table: "Marks",
                 column: "StudentId");
@@ -537,11 +508,6 @@ namespace UniTrackBackend.Data.Migrations
                 table: "Parents",
                 column: "UserId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_ElectiveSubjectId",
-                table: "Students",
-                column: "ElectiveSubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_GradeId",
@@ -630,9 +596,6 @@ namespace UniTrackBackend.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Grades");
-
-            migrationBuilder.DropTable(
-                name: "ElectiveSubjects");
 
             migrationBuilder.DropTable(
                 name: "Teachers");
