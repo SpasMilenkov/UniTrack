@@ -30,7 +30,7 @@ h2
 }
 
 .text-ut-white{
-  color: $color-ut-white;
+  color: $color-ut-white !important;
 }
 
 .text-ut-dark-grey{
@@ -42,11 +42,11 @@ h2
 }
 
 .bg-ut-primary{
-  background: $color-ut-primary;
+  background: $color-ut-primary !important;
 }
 
 .bg-ut-accent{
-  background: $color-ut-accent;
+  background: $color-ut-accent !important;
 }
 
 .bg-ut-white{

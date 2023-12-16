@@ -43,7 +43,6 @@ export class SignupComponent implements OnInit {
     console.log(this.authForm.value);
 
     if(this.authForm.valid){
-      this.authService.signup(this.authForm.getRawValue() as User);
     }
   }
 

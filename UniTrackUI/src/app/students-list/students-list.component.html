@@ -1,11 +1,5 @@
-<div
-  class="my-5 offset-lg-2 col-lg-8 offset-md-1 col-md-10"
->
-  <table
-    mat-table
-    [dataSource]="studentsData"
-    class="mat-elevation-z8"
-  >
+<div class="my-5 offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+  <table mat-table [dataSource]="studentsData" class="mat-elevation-z8">
     <!-- Name Column -->
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef>First Name</th>
@@ -31,13 +25,13 @@
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let student">
-        <mat-icon
-          class="add-icon"
-          [matMenuTriggerFor]="teacherMenu"
-          [matMenuTriggerData]="{ student: student }"
-          >more_verte</mat-icon
-        >
+      <td
+        mat-cell
+        *matCellDef="let student"
+        [matMenuTriggerFor]="teacherMenu"
+        [matMenuTriggerData]="{ student: student }"
+      >
+        <mat-icon class="add-icon">more_verte</mat-icon>
       </td>
     </ng-container>
 
@@ -48,7 +42,31 @@
 
 <mat-menu #teacherMenu="matMenu">
   <ng-template matMenuContent let-student="student">
-    <button mat-menu-item (click)="openDialog(student.id, student.firstName, student.lastName, teacherDetailsCardTypes.ADD_GRADE)">Add grade</button>
-    <button mat-menu-item (click)="openDialog(student.id, student.firstName, student.lastName,  teacherDetailsCardTypes.ADD_ABSENCE)">Add absence</button>
+    <button
+      mat-menu-item
+      (click)="
+        openDialog(
+          student.id,
+          student.firstName,
+          student.lastName,
+          teacherDetailsCardTypes.ADD_GRADE
+        )
+      "
+    >
+      Add grade
+    </button>
+    <button
+      mat-menu-item
+      (click)="
+        openDialog(
+          student.id,
+          student.firstName,
+          student.lastName,
+          teacherDetailsCardTypes.ADD_ABSENCE
+        )
+      "
+    >
+      Add absence
+    </button>
   </ng-template>
 </mat-menu>

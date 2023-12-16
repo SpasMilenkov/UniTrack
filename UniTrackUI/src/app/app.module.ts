@@ -4,12 +4,12 @@ import { MaterialModule } from './shared/material.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { StatisticsModule } from './statistics/statistics.module';
-import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { StudentsListModule } from './students-list/students-list.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,10 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
     AuthModule,
     ProfileModule,
     StatisticsModule,
-    LeaderboardModule,
     SharedModule,
     AppRoutingModule,
     StudentsListModule,
+    AdminModule,
     HttpClientModule
   ],
   providers: [],
