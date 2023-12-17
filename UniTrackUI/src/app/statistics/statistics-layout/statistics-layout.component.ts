@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GradeTypes } from 'src/app/shared/enums/grade-types.enum';
 import { Attendance } from 'src/app/shared/models/attendance';
 import { ClassAverageComparison } from 'src/app/shared/models/class-average-comparison';
 import { DetailedSubjectPerformance } from 'src/app/shared/models/detailed-subject-performance';
@@ -29,16 +28,16 @@ export class StatisticsLayoutComponent implements OnInit {
     this.statisticObj = this.statisticsService.getCurrentStudentStatistics('');
 
     const {
-      Attendance: attendance,
-      SubjectAvg: subjectsAvg,
-      DetailedSubjectPerformance: detailedSubjectPerformance,
-      ClassAverageComparison: classAvgComparison,
+      attendance,
+      subjectAvg,
+      detailedSubjectPerformance,
+      classAverageComparison
     } = this.statisticObj;
 
     this.initAttendanceChart(attendance);
-    this.iniSubjectAverageChart(subjectsAvg);
+    this.iniSubjectAverageChart(subjectAvg);
     this.initDetailedSubjectChart(detailedSubjectPerformance);
-    this.initClassAvgComparison(classAvgComparison);
+    this.initClassAvgComparison(classAverageComparison);
   }
 
   private initAttendanceChart(attendance: Attendance): void {
@@ -46,9 +45,9 @@ export class StatisticsLayoutComponent implements OnInit {
       labels: ['Unexcused Absences', 'Excused Absences'],
       datasets: [
         {
-          data: [attendance.UnExcusedAbsence, attendance.ExcusedAbsence],
-          backgroundColor: ['#673389', '#72B01D'],
-          hoverBackgroundColor: ['#391459', '#42870A'],
+          data: [attendance.unExcusedAbsence, attendance.excusedAbsence],
+          backgroundColor: ['#87BC3F', '#7E529B'],
+          hoverBackgroundColor: ['#6AA91A', '#5F2E81'],
         },
       ],
     };
@@ -68,7 +67,7 @@ export class StatisticsLayoutComponent implements OnInit {
   private iniSubjectAverageChart(subjectsAvg: SubjectAverage[]): void {
     const averageGrades = subjectsAvg?.map((subject) => {
       let grade = 2;
-      switch (subject.Average) {
+      switch (subject.average) {
         case 'Excellent':
           grade = 6;
           break;
@@ -86,13 +85,13 @@ export class StatisticsLayoutComponent implements OnInit {
     });
 
     this.subjectAvgData = {
-      labels: [...subjectsAvg?.map((subject) => subject.SubjectName)],
+      labels: [...subjectsAvg?.map((subject) => subject.subjectName)],
       datasets: [
         {
           label: 'Subject Average',
           data: [...averageGrades, ...averageGrades],
-          backgroundColor: ['#72b01d', '#673389', '#047f94'],
-          borderColor: ['#72b01d', '#673389', '#047f94'],
+          backgroundColor: ['#87BC3F', '#7E529B', '#5c6bc0'],
+          borderColor: ['#87BC3F', '#7E529B', '#5c6bc0'],
           borderWidth: 1,
         },
       ],
@@ -134,25 +133,25 @@ export class StatisticsLayoutComponent implements OnInit {
     detailedSubjectData: DetailedSubjectPerformance[]
   ): void {
     this.detailedSubjectData = {
-      labels: detailedSubjectData.map(({ SubjectName }) => SubjectName),
+      labels: detailedSubjectData.map(({ subjectName }) => subjectName),
       datasets: [
         {
           label: 'Marks Count',
-          backgroundColor: '#673389',
-          borderColor: '#673389',
-          data: detailedSubjectData.map(({ Details }) => Details.MarksCount),
+          backgroundColor: '#7E529B',
+          borderColor: '#7E529B',
+          data: detailedSubjectData.map(({ details }) => details.marksCount),
         },
         {
           label: 'Highest Mark',
-          backgroundColor: '#72B01D',
-          borderColor: '#72B01D',
-          data: detailedSubjectData.map(({ Details }) => Details.HighestMark),
+          backgroundColor: '#87BC3F',
+          borderColor: '#87BC3F',
+          data: detailedSubjectData.map(({ details }) => details.highestMark),
         },
         {
           label: 'Lowest Mark',
-          backgroundColor: '#ffc107',
-          borderColor: '#ffc107',
-          data: detailedSubjectData.map(({ Details }) => Details.LowestMark),
+          backgroundColor: '#ffca28',
+          borderColor: '#ffca28',
+          data: detailedSubjectData.map(({ details }) => details.lowestMark),
         },
       ],
     };
@@ -197,13 +196,13 @@ export class StatisticsLayoutComponent implements OnInit {
     classAvgComparison: ClassAverageComparison[]
   ): void {
     this.classAvgComparisonData = {
-      labels: classAvgComparison.map(({ ClassName }) => ClassName),
+      labels: classAvgComparison.map(({ className }) => className),
       datasets: [
         {
           label: 'Class Average Comparison',
-          data: classAvgComparison.map(({ Average }) => Average),
+          data: classAvgComparison.map(({ average }) => average),
           fill: true,
-          borderColor: '#673389',
+          borderColor: '#7E529B',
           tension: 0.5,
         },
       ],
