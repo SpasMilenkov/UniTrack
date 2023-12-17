@@ -96,7 +96,7 @@
             <param name="studentId">The ID of the student for whom the analysis is to be generated.</param>
             <returns>An analysis model if successful, otherwise a bad request response.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.StudentViewModel})">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(UniTrackBackend.Api.ViewModels.StudentApprovalViewModel)">
             <summary>
             Approves student registrations.
             </summary>
@@ -108,7 +108,7 @@
             <response code="401">Unauthorized if the user is not authenticated.</response>
             <response code="403">Forbidden if the user does not have the Admin role.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveTeachers(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.TeacherViewModel})">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveTeachers(UniTrackBackend.Api.ViewModels.TeacherApprovalViewModel)">
             <summary>
             Approves teacher registrations.
             </summary>
@@ -372,12 +372,6 @@
             <param name="studentService">Service for managing student data.</param>
             <param name="mapper">Service for mapping view models to entities.</param>
         </member>
-        <member name="M:UniTrackBackend.Controllers.StudentController.AddStudent(UniTrackBackend.Api.ViewModels.StudentViewModel)">
-            <summary>
-            Adds a new student record to the system.
-            </summary>
-            <returns>The created student record.</returns>
-        </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.GetStudent(System.Int32)">
             <summary>
             Retrieves a student by their ID.
@@ -390,14 +384,6 @@
             Retrieves all student records.
             </summary>
             <returns>A list of all students.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.StudentController.UpdateStudent(System.Int32,UniTrackBackend.Api.ViewModels.StudentViewModel)">
-            <summary>
-            Updates an existing student record.
-            </summary>
-            <param name="id">The ID of the student to update.</param>
-            <param name="model">The updated student view model.</param>
-            <returns>A NoContent result indicating successful update.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.StudentController.DeleteStudent(System.Int32)">
             <summary>
