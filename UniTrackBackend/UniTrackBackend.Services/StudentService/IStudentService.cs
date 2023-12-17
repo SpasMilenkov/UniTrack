@@ -9,4 +9,5 @@ public interface IStudentService
     Task<IEnumerable<Student?>> GetAllStudentsAsync();
     Task UpdateStudentAsync(Student? student);
     Task<bool> DeleteStudentAsync(int id);
+    public Task<Student?> GetStudentByUserIdAsync(string userId);
 }

@@ -26,6 +26,12 @@ public class StudentService : IStudentService
         return student;
     }
 
+    public async Task<Student?> GetStudentByUserIdAsync(string userId)
+    {
+        var student = await _unitOfWork.StudentRepository.GetStudentWithDetailsAsync(userId);
+        return student;
+    }
+
     public async Task<IEnumerable<Student?>> GetAllStudentsAsync()
     {
         return await _unitOfWork.StudentRepository.GetAllAsync();
