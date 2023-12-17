@@ -2,6 +2,12 @@
 
 .mat-mdc-table {
   background-color: colors.$color-ut-white;
+  border: 1px solid colors.$color-ut-light-grey;
+  width: 100%;
+  max-width: 100%;
+  display: table;
+  border-collapse: collapse;
+  margin: 0px;
 }
 
 .mat-mdc-header-cell {
@@ -23,7 +29,8 @@
   }
 }
 
-.student-user, .approved-user {
+.student-user,
+.approved-user {
   color: colors.$color-ut-primary;
   font-weight: 900;
 }
@@ -33,7 +40,13 @@
   font-weight: 900;
 }
 
-.disapproved-user{
+.disapproved-user {
   color: colors.$color-ut-red;
   font-weight: 900;
+}
+
+.table-wrapper {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
 }

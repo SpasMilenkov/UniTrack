@@ -24,7 +24,7 @@ export class ProfileComponent {
   constructor(private userService: UserService, private eventsService: EventsService) { }
 
   ngOnInit(): void {
-    this.profile = this.userService.getTeacherProfile();
+    this.profile = this.userService.getCurrentUserProfile();
     this.events$ = this.eventsService.getEvents();
   }
 

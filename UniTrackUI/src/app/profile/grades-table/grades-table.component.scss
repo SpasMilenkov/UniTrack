@@ -1,0 +1,32 @@
+@use "colors";
+
+.table-wrapper {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-mdc-table {
+  background-color: colors.$color-ut-white;
+}
+
+.mat-mdc-header-cell {
+  font-family: "Cabin Sketch", sans-serif !important;
+  font-weight: 900;
+  font-size: 1.1rem;
+  background-color: colors.$color-ut-primary-100 !important;
+  color: colors.$color-ut-accent !important;
+}
+
+.topic-cell {
+  max-width: 260px;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  max-width: 100%;
+  display: table;
+  border-collapse: collapse;
+  margin: 0px;
+  border: 1px solid colors.$color-ut-light-grey;
+}

@@ -7,6 +7,9 @@ import { TeacherDetailsCardComponent } from './teacher-details-card/teacher-deta
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { GradesTableComponent } from './grades-table/grades-table.component';
+import { StudentsListModule } from '../students-list/students-list.module';
+import { AbsencesTableComponent } from './absences-table/absences-table.component';
 
 
 
@@ -15,7 +18,9 @@ import { AppRoutingModule } from '../app-routing.module';
     ProfileComponent,
     ProfileDetailsComponent,
     StudentDetailsCardComponent,
-    TeacherDetailsCardComponent
+    TeacherDetailsCardComponent,
+    GradesTableComponent,
+    AbsencesTableComponent
   ],
   exports: [
     ProfileComponent,
@@ -25,7 +30,8 @@ import { AppRoutingModule } from '../app-routing.module';
     CommonModule,
     AppRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    StudentsListModule
   ]
 })
 export class ProfileModule { }

@@ -43,23 +43,16 @@
         </div>
       </div>
       <div class="row">
-        <div class="my-5 p-0">
-          <div class="events-wrapper">
-            <h2 class="title-wrapper text-ut-accent fw-bold p-2 ps-4 m-0">
-              Upcoming events:
-            </h2>
-            <div class="cards-wrapper p-3" *ngIf="events$ | async as events">
-              <div class="row">
-                <app-event-card
-                  *ngFor="let event of events"
-                  [event]="event"
-                  class="col-md-4"
-                ></app-event-card>
-                <div *ngIf="!events.length" class="text-center">
-                  There are no upcoming events.
-                </div>
-              </div>
-            </div>
+        <div class="col-12 my-5" *ngIf="profile.type === profileTypes.STUDENT">
+          <h1 class="fw-bold text-ut-accent">Grades: </h1>
+          <app-grades-table
+            [grades]="getStudentProfile().grades || []"
+          ></app-grades-table>
+          <div class="my-4">
+            <h1 class="fw-bold text-ut-primary">Absences: </h1>
+            <app-absences-table
+            [absences]="getStudentProfile().absences || []"
+          ></app-absences-table>
           </div>
         </div>
       </div>
