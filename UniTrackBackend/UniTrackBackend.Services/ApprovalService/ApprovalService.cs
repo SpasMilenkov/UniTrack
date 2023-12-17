@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
-using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;
@@ -21,89 +19,83 @@ public class ApprovalService : IApprovalService
         _userManager = userManager;
         _logger = logger;
     }
-    public async Task<bool> ApproveStudentsAsync(List<StudentViewModel> students)
+
+    public async Task<bool> ApproveStudentsAsync(StudentApprovalViewModel student)
     {
         try
         {
-            foreach (var studentModel in students)
+            var filter = student.StudentIds.ToHashSet();
+
+            var existingStudents = await _unitOfWork.StudentRepository.GetAsync(
+                s => filter.Contains(s.UserId));
+
+            for (var i = 0; i < student.StudentIds.Count; i++)
             {
-                var user = await _userManager.FindByEmailAsync(studentModel.Email);
+                var userId = student.StudentIds[i];
+                var user = await _userManager.FindByIdAsync(userId);
 
-                if (user is null)
-                    return false;
-            
-                await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
+                if (user is null) continue;
 
-                var grade = await _unitOfWork.GradeRepository.SingleOrDefaultAsync(g => g.Name == studentModel.Grade);
-                if (grade is null)
-                    return false;
-            
-                var student = new Student
+                if (!existingStudents.All(s => s.UserId != userId)) continue;
+
+                var newEntry = new Student()
                 {
-                
-                    Grade = grade,
-                    UserId = user.Id,
-                    User = user
+                    UserId = userId,
+                    SchoolId = student.SchoolId,
+                    GradeId = student.GradeId,
+                    StudentNumber = i
                 };
-
-                await _unitOfWork.StudentRepository.AddAsync(student);
+                await _unitOfWork.StudentRepository.AddAsync(newEntry);
+                await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
             }
+
             await _unitOfWork.SaveAsync();
             return true;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "An error occurred while processing the approval");
-            throw;
+            Console.WriteLine(e);
+            return false;
         }
     }
 
     public async Task<bool> ApproveParentsAsync(List<ParentViewModel> parents)
     {
-        try
-        {
-            foreach (var parentModel in parents)
-            {
-                var user = await _userManager.FindByEmailAsync(parentModel.Email);
-
-                if (user is null)
-                    return false;
-
-                await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
-            
-            }
-            await _unitOfWork.SaveAsync();
-            return true;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "An error occurred while processing the approval");
-            throw;
-        }
-
+        throw new NotImplementedException();
     }
 
-    public async Task<bool> ApproveTeachersAsync(List<TeacherViewModel> teachers)
+    public async Task<bool> ApproveTeacherAsync(TeacherApprovalViewModel approvalModel)
     {
-        try
-        {
-            foreach (var teacherModel in teachers)
-            {
-                var user = await _userManager.FindByEmailAsync(teacherModel.Email);
+        var teacherUId = approvalModel.UserId;
 
-                if (user is null)
-                    return false;
-            
-                await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
-            
-            }
-            await _unitOfWork.SaveAsync();
-            return true;
-        }
-        catch (Exception e)
+        // Validate the teacher ID
+        var teacherExists = await _unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == teacherUId);
+        if (teacherExists != null) return false;
+        
+        var filter = approvalModel.SubjectIds.ToHashSet();
+        var subjects = await _unitOfWork.SubjectRepository.GetAsync(s => filter.Contains(s.Id));
+        var teacher = new Teacher()
         {
-            _logger.LogError(e, "An error occurred while processing the approval");
-            throw;
-        }
+            // Assign the teacher to the class
+            UserId = teacherUId,
+            SchoolId = approvalModel.SchoolId,
+            Subjects = subjects.ToList(),
+        };
+        await _unitOfWork.TeacherRepository.AddAsync(teacher);
+        await _unitOfWork.SaveAsync();
+        if (approvalModel.ClassId is -1) return true;
+
+
+        var grade = await _unitOfWork.GradeRepository.GetByIdAsync(approvalModel.ClassId);
+        var newTeacher = await _unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == teacherUId);
+        grade.ClassTeacherId = newTeacher.Id;
+        await _unitOfWork.GradeRepository.UpdateAsync(grade);
+        await _unitOfWork.SaveAsync();
+        return true;
+    }
+    
+    public async Task<bool> ApproveAdminsAsync()
+    {
+        throw new NotImplementedException();
     }
 }
