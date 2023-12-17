@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
+import { Roles } from 'src/app/shared/enums/roles.enum';
 import { StudentDetailsCardTypes } from 'src/app/shared/enums/student-details-card-types.enum';
 import { TeacherDetailsCardTypes } from 'src/app/shared/enums/teacher-details-card-types.enum';
 import { Event } from 'src/app/shared/models/event';
@@ -19,7 +19,7 @@ export class ProfileComponent {
   events$!: Observable<Event[]>;
   studentDetailsCardTypes = StudentDetailsCardTypes;
   teacherDetailsCardTypes = TeacherDetailsCardTypes;
-  profileTypes = ProfileTypes;
+  roles = Roles;
 
   constructor(private userService: UserService, private eventsService: EventsService) { }
 

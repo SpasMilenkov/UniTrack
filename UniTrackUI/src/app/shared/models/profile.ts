@@ -1,4 +1,4 @@
-import { ProfileTypes } from "../enums/profile-types.enum";
+import { Roles } from "../enums/roles.enum";
 
 export interface Profile{
   id: string;
@@ -6,7 +6,7 @@ export interface Profile{
   avatarUrl: string;
   firstName: string;
   lastName: string;
-  type: ProfileTypes;
+  type: Roles;
   classId: string;
   className: string;
 }

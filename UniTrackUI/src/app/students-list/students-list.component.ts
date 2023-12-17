@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { StudentsService } from '../shared/services/students.service';
 import { StudentProfile } from '../shared/models/student-profile';
 import { TeacherDetailsCardTypes } from '../shared/enums/teacher-details-card-types.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGradeAbsenceDialogComponent } from '../shared/components/add-grade-absence-dialog/add-grade-absence-dialog.component';
+import { TeachersService } from '../shared/services/teachers.service';
 
 @Component({
   selector: 'app-students-list',
@@ -23,12 +23,12 @@ export class StudentsListComponent {
   ];
 
   constructor(
-    private studentsService: StudentsService,
+    private teachersService: TeachersService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.studentsData = this.studentsService.getAllStudents();
+    this.studentsData = this.teachersService.getAllStudents();
   }
 
   openDialog(
@@ -42,7 +42,13 @@ export class StudentsListComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      if(type === this.teacherDetailsCardTypes.ADD_GRADE){
+        this.teachersService.addGrade(studentId, result);
+        return;
+      }else if(type === this.teacherDetailsCardTypes.ADD_ABSENCE){
+        this.teachersService.addAbsence(studentId, result);
+        return;
+      }
     });
   }
 }

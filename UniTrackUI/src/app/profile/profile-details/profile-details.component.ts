@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
+import { Roles } from 'src/app/shared/enums/roles.enum';
 import { Profile } from 'src/app/shared/models/profile';
 import { StudentProfile } from 'src/app/shared/models/student-profile';
 import { TeacherProfile } from 'src/app/shared/models/teacher-profile';
@@ -11,7 +11,7 @@ import { TeacherProfile } from 'src/app/shared/models/teacher-profile';
 })
 export class ProfileDetailsComponent {
   @Input() profile!: Profile | StudentProfile;
-  profileTypes = ProfileTypes;
+  roles = Roles;
 
   constructor() {}
 
@@ -28,5 +28,5 @@ export class ProfileDetailsComponent {
   getTeacherClasses(): string {
     const teacher= this.getTeacherProfile();
     return teacher.classes.map(({classId})=>classId).join(', ');
-  }    
+  }
 }

@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
+import { Roles } from 'src/app/shared/enums/roles.enum';
 import { UserRequest } from 'src/app/shared/models/user-request';
 
 @Component({
@@ -20,7 +20,7 @@ export class ApprovalTableComponent implements OnInit {
     'actions',
   ];
   selection = new SelectionModel<UserRequest>(true, []);
-  profileTypes = ProfileTypes;
+  roles = Roles;
 
   dataSource!: MatTableDataSource<UserRequest>;
   @Input() userRequests: UserRequest[] = [];

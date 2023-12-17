@@ -1,10 +1,10 @@
-import { ProfileTypes } from "../enums/profile-types.enum";
+import { Roles } from "../enums/roles.enum";
 
 export interface UserRequest {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
-  type: ProfileTypes;
+  type: Roles;
   approved: boolean
 }
