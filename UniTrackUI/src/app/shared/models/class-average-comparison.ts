@@ -1,4 +1,4 @@
 export interface ClassAverageComparison {
-  ClassName: string;
-  Average: number;
+  className: string;
+  average: number;
 }

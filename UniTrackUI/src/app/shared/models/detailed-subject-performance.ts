@@ -1,8 +1,8 @@
 export interface DetailedSubjectPerformance {
-  SubjectName: string;
-  Details: {
-    MarksCount: number;
-    HighestMark: number;
-    LowestMark: number;
+  subjectName: string;
+  details: {
+    marksCount: number;
+    highestMark: number;
+    lowestMark: number;
   };
 }

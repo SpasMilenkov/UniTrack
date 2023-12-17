@@ -7,69 +7,69 @@ import { Statistic } from '../models/statistic';
 export class StatisticsService {
   getCurrentStudentStatistics(id: string): Statistic {
     return {
-      StudentName: 'John Doe',
-      StudentId: '12345',
-      OverallAverage: 4.5,
-      PerformanceSummary:
+      studentName: 'John Doe',
+      studentId: '12345',
+      overallAverage: 4.5,
+      performanceSummary:
         'John has shown great improvement in Science but needs to focus more on History.',
-      SubjectAvg: [
+      subjectAvg: [
         {
-          SubjectName: 'Mathematics',
-          Average: 'Good',
+          subjectName: 'Mathematics',
+          average: 'Good',
         },
         {
-          SubjectName: 'Science',
-          Average: 'Average',
+          subjectName: 'Science',
+          average: 'Average',
         },
         {
-          SubjectName: 'History',
-          Average: 'Excellent',
+          subjectName: 'History',
+          average: 'Excellent',
         },
       ],
-      DetailedSubjectPerformance: [
+      detailedSubjectPerformance: [
         {
-          SubjectName: 'Mathematics',
-          Details: {
-            MarksCount: 10,
-            HighestMark: 5.75,
-            LowestMark: 2.52,
+          subjectName: 'Mathematics',
+          details: {
+            marksCount: 10,
+            highestMark: 5.75,
+            lowestMark: 2.52,
           },
         },
         {
-          SubjectName: 'Science',
-          Details: {
-            MarksCount: 8,
-            HighestMark: 4.8,
-            LowestMark: 3.2,
+          subjectName: 'Science',
+          details: {
+            marksCount: 8,
+            highestMark: 4.8,
+            lowestMark: 3.2,
           },
         },
         {
-          SubjectName: 'History',
-          Details: {
-            MarksCount: 12,
-            HighestMark: 6.0,
-            LowestMark: 5.25,
+          subjectName: 'History',
+          details: {
+            marksCount: 12,
+            highestMark: 6.0,
+            lowestMark: 5.25,
           },
         },
       ],
-      ClassAverageComparison: [
+      classAverageComparison: [
         {
-          ClassName: 'Mathematics',
-          Average: 4.2,
+          className: 'Mathematics',
+          average: 4.2,
         },
         {
-          ClassName: 'Science',
-          Average: 3.8,
+          className: 'Science',
+          average: 3.8,
         },
         {
-          ClassName: 'History',
-          Average: 4.5,
+          className: 'History',
+          average: 4.5,
         },
       ],
-      Attendance: {
-        TotalAbsence: 5.5,
-        UnExcusedAbsence: 2.5,
-        ExcusedAbsence: 3,
+      attendance: {
+        totalAbsence: 5.5,
+        unExcusedAbsence: 2.5,
+        excusedAbsence: 3,
       },
     };
   }
