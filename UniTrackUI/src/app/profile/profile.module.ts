@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { GradesTableComponent } from './grades-table/grades-table.component';
 import { StudentsListModule } from '../students-list/students-list.module';
+import { AbsencesTableComponent } from './absences-table/absences-table.component';
 
 
 
@@ -18,7 +19,8 @@ import { StudentsListModule } from '../students-list/students-list.module';
     ProfileDetailsComponent,
     StudentDetailsCardComponent,
     TeacherDetailsCardComponent,
-    GradesTableComponent
+    GradesTableComponent,
+    AbsencesTableComponent
   ],
   exports: [
     ProfileComponent,

@@ -43,11 +43,17 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 my-5">
+        <div class="col-12 my-5" *ngIf="profile.type === profileTypes.STUDENT">
+          <h1 class="fw-bold text-ut-accent">Grades: </h1>
           <app-grades-table
-            *ngIf="profile.type === profileTypes.STUDENT"
             [grades]="getStudentProfile().grades || []"
           ></app-grades-table>
+          <div class="my-4">
+            <h1 class="fw-bold text-ut-primary">Absences: </h1>
+            <app-absences-table
+            [absences]="getStudentProfile().absences || []"
+          ></app-absences-table>
+          </div>
         </div>
       </div>
     </div>
