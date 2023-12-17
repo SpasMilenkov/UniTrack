@@ -10,8 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Data.Models.TypeSafe;
 
 namespace UniTrackBackend.Services;
 
@@ -23,18 +25,20 @@ public class AuthService : IAuthService
     private readonly UniTrackDbContext _context;
     private readonly SignInManager<User> _signInManager;
     private readonly ILogger<AuthService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthService(UserManager<User> userManager,
         IConfiguration config,
         UniTrackDbContext context,
         SignInManager<User> signInManager,
-        ILogger<AuthService> logger)
+        ILogger<AuthService> logger, RoleManager<IdentityRole> roleManager, IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _config = config;
         _context = context;
         _signInManager = signInManager;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
     
     public string GenerateJwtToken(User user)
@@ -144,7 +148,8 @@ public class AuthService : IAuthService
                 UserName = model.Email,
                 Email = model.Email,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                AvatarUrl = "https://cdn-icons-png.flaticon.com/512/1154/1154955.png"
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -291,6 +296,16 @@ public class AuthService : IAuthService
             _logger.LogError(e, "An error occurred while trying to fetch a user");
             throw;
         }
+    }
+
+    public async Task<string> GetUserRole(User user)
+    {
+        var roleList = await _userManager.GetRolesAsync(user);
+        
+        // the system does not allow more than one role per user
+        // no time to allow it to handle more than one :^) so
+        // we assume that there is no other thing in the list than the role we need
+        return roleList.First();
     }
 }
 
