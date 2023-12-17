@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Controllers;
 
@@ -12,11 +13,12 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly IEmailService _emailService;
-
-    public AuthController(IAuthService authService, IEmailService emailService)
+    private readonly IMapper _mapper;
+    public AuthController(IAuthService authService, IEmailService emailService, IMapper mapper)
     {
         _authService = authService;
         _emailService = emailService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -43,11 +45,12 @@ public class AuthController : ControllerBase
         
             var token = _authService.GenerateJwtToken(user);
             var refreshToken = await _authService.GenerateRefreshToken(user);
+            var resultModel = _mapper.MapLoginResult(userId: user.Id, role: await _authService.GetUserRole(user), avatarUrl: user.AvatarUrl);
             
-            Response.Cookies.Append("RefreshToken", refreshToken, CookieOptionManager.RefreshCookieOptions);
-            Response.Cookies.Append("AccessToken", token, CookieOptionManager.AccessCookieOptions);
+            Response.Cookies.Append("RefreshToken", refreshToken, CookieOptionManager.GenerateRefreshCookieOptions());
+            Response.Cookies.Append("AccessToken", token, CookieOptionManager.GenerateAccessCookieOptions());
         
-            return Ok(new { token });
+            return Ok(resultModel);
         }
         catch (Exception e)
         {
@@ -140,8 +143,8 @@ public class AuthController : ControllerBase
             var newAccessToken = _authService.GenerateJwtToken(user);
             var newRefreshToken = await _authService.GenerateRefreshToken(user);
         
-            Response.Cookies.Append("RefreshToken", newRefreshToken, CookieOptionManager.RefreshCookieOptions);
-            Response.Cookies.Append("AccessToken", newAccessToken, CookieOptionManager.AccessCookieOptions);
+            Response.Cookies.Append("RefreshToken", newRefreshToken, CookieOptionManager.GenerateRefreshCookieOptions());
+            Response.Cookies.Append("AccessToken", newAccessToken, CookieOptionManager.GenerateAccessCookieOptions());
             return Ok("Token refreshed");
         }
         catch (Exception e)
