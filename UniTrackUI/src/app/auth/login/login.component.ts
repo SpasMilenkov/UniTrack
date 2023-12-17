@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { switchMap } from 'rxjs';
+import { LocalStorageKeys } from 'src/app/shared/enums/local-storage-keys.enum';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -17,14 +20,19 @@ export class LoginComponent {
   });
   hidePassword = true;
 
-  constructor(private fb: NonNullableFormBuilder, private authService: AuthService) {}
+  constructor(private fb: NonNullableFormBuilder, private authService: AuthService, private userService: UserService) {}
 
   ngOnInit(): void {}
 
   onLogin(): void {
     this.authForm.markAllAsTouched();
     if(this.authForm.valid){
-      this.authService.login(this.authForm.getRawValue());
+      this.authService.login(this.authForm.getRawValue()).pipe(
+        switchMap((res) => {
+          console.log(res);
+          return this.userService.getUserById(3);
+        })
+      ).subscribe();
     }
   }
 

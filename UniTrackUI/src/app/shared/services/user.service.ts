@@ -3,15 +3,21 @@ import { Profile } from '../models/profile';
 import { StudentProfile } from '../models/student-profile';
 import { Roles } from '../enums/roles.enum';
 import { TeacherProfile } from '../models/teacher-profile';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   getRole(): Roles {
     return this.getTeacherProfile().type;
+  }
+
+  getUserById(id: number): Observable<any>{
+    return this.http.get(`http://localhost:5036/api/Student/${id}`, {withCredentials: true})
   }
 
   getCurrentUserProfile(): Profile | StudentProfile {

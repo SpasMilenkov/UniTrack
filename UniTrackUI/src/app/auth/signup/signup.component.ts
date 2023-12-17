@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
   onSignup(): void {
     this.authForm.markAllAsTouched();
     if(this.authForm.valid){
-      this.authService.signup(this.authForm.getRawValue());
+      this.authService.signup(this.authForm.getRawValue()).subscribe(res => console.log(res));
     }
   }
 
