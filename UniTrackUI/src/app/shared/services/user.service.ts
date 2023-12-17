@@ -13,7 +13,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getRole(): Roles {
-    return this.getTeacherProfile().type;
+    return Roles.ADMIN;
   }
 
   getUserById(id: number): Observable<any>{
@@ -107,7 +107,8 @@ export class UserService {
       subjects: ['Math', 'History', 'Music', 'Science'],
       classes: [
         {
-          classId: '1',
+          classId: 1,
+          className: 'Class A',
           students: [
             {
               id: '2222',

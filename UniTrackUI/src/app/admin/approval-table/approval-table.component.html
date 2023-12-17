@@ -114,7 +114,7 @@
 </ng-container>
 <mat-menu #actionsMenu="matMenu">
   <ng-template matMenuContent let-user="user">
-    <button mat-menu-item (click)="approve(user.id)">
+    <button mat-menu-item (click)="approve(user.type, user.id)">
       <mat-icon>done</mat-icon>
       Approve
     </button>

@@ -24,7 +24,8 @@ export class ApprovalTableComponent implements OnInit {
 
   dataSource!: MatTableDataSource<UserRequest>;
   @Input() userRequests: UserRequest[] = [];
-  @Output() onApprove = new EventEmitter<string[]>();
+  @Output() onApproveStudents = new EventEmitter<string[]>();
+  @Output() onApproveTeacher = new EventEmitter<string>();
   @Output() onDisapprove = new EventEmitter<string[]>();
 
   constructor() {}
@@ -57,13 +58,17 @@ export class ApprovalTableComponent implements OnInit {
     }`;
   }
 
-  approve(id?: string): void {
-    if (id) {
-      this.onApprove.emit([id]);
+  approve(type: string, id?: string): void {
+    if(type === this.roles.STUDENT){
+      if (id) {
+        this.onApproveStudents.emit([id]);
+        return;
+      }
+      const clonedIds = this.selection.selected.map(({ id }) => id);
+      this.onApproveStudents.emit(clonedIds);
       return;
     }
-    const clonedIds = this.selection.selected.map(({ id }) => id);
-    this.onApprove.emit(clonedIds);
+    this.onApproveTeacher.emit(id);
   }
 
   disapprove(id?: string): void {

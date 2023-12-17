@@ -3,7 +3,8 @@
     <div class="my-5 offset-lg-1 col-lg-10">
       <app-approval-table
         [userRequests]="userRequests"
-        (onApprove)="onApprove($event)"
+        (onApproveStudents)="onApproveStudents($event)"
+        (onApproveTeacher)="onApproveTeacher($event)"
         (onDisapprove)="onDisapprove($event)"
       ></app-approval-table>
     </div>
