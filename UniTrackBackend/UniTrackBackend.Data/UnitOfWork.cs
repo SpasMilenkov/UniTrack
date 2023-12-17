@@ -14,7 +14,7 @@ public class UnitOfWork : IDisposable, IUnitOfWork
     private EfRepository<Parent>? _parentRepository;
     private StudentRepository? _studentRepository;
     private EfRepository<Subject>? _subjectRepository;
-    private EfRepository<Teacher>? _teacherRepository;
+    private ITeacherRepository? _teacherRepository;
     private EfRepository<School>? _schoolRepository;
     private EfRepository<Admin>? _adminRepository;
     
@@ -87,11 +87,11 @@ public class UnitOfWork : IDisposable, IUnitOfWork
         }
     }
 
-    public IRepository<Teacher> TeacherRepository
+    public ITeacherRepository TeacherRepository
     {
         get
         {
-            _teacherRepository ??= new EfRepository<Teacher>(_context);
+            _teacherRepository ??= new TeacherRepository(_context);
             return _teacherRepository;
         }
     }
