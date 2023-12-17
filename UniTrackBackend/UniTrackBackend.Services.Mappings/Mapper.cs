@@ -55,23 +55,6 @@ public class Mapper : IMapper
         }
     }
 
-    public Student? MapStudent(StudentViewModel model)
-    {
-        try
-        {
-            var student = new Student
-            {
-                 
-            };
-            return student;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
-
     public StudentResultViewModel? MapStudentViewModel(Student student)
     {
         try
@@ -175,6 +158,99 @@ public class Mapper : IMapper
         catch (Exception e)
         {
             _logger.LogError(e, "Failed to map SchoolViewModel to School");
+            return null;
+        }
+    }
+
+    public TeacherResultViewModel? MapTeacherViewModel(Teacher teacher, string? classId = null, string? className = null)
+    {
+        try
+        {
+            var model = new TeacherResultViewModel
+            {
+                Id = teacher.Id.ToString(),
+                UniId = teacher.SchoolId.ToString(),
+                AvatarUrl = teacher.User.AvatarUrl,
+                FirstName = teacher.User.FirstName,
+                LastName = teacher.User.LastName,
+                Type = "TEACHER",
+                ClassId = classId,
+                ClassName = className,
+                Subjects = teacher.Subjects.Select(s => s.Name).ToList()
+            };
+            return model;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map teacher to TeacherViewModel");
+            return null;
+        }
+        
+    }
+
+    public Subject? MapSubject(SubjectViewModel model)
+    {
+        try
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var subject = new Subject
+            {
+                Name = model.Name,
+                Teachers = new List<Teacher>() 
+            };
+            return subject;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map teacher to Subject");
+            return null;
+        }
+    }
+
+    public SubjectResultViewModel? MapSubjectViewModel(Subject subject)
+    {
+        try
+        {
+            if (subject == null)
+            {
+                throw new ArgumentNullException(nameof(subject));
+            }
+
+            var viewModel = new SubjectResultViewModel
+            {
+                Name = subject.Name,
+                TeacherIds = subject.Teachers.Select(t => t.Id.ToString())
+            };
+
+            return viewModel;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map teacher to TeacherViewModel");
+            return null;
+        }
+
+    }
+
+    public LoginResultViewModel? MapLoginResult( string userId, string role, string avatarUrl)
+    {
+        try
+        {
+            var model = new LoginResultViewModel
+            {
+                UserId = userId,
+                UserRole = role,
+                AvatarUrl = avatarUrl
+            };
+            return model;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to map teacher to TeacherViewModel");
             return null;
         }
     }
