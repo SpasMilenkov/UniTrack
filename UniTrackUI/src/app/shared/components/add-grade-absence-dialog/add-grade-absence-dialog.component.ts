@@ -9,7 +9,7 @@ import { AddGradeAbsenceDialogData } from '../../models/add-grade-absence-dialog
 @Component({
   selector: 'app-add-grade-absence-dialog',
   templateUrl: './add-grade-absence-dialog.component.html',
-  styleUrls: ['./add-grade-absence-dialog.component.scss']
+  styleUrls: ['./add-grade-absence-dialog.component.scss'],
 })
 export class AddGradeAbsenceDialogComponent {
   types = TeacherDetailsCardTypes;
@@ -18,6 +18,7 @@ export class AddGradeAbsenceDialogComponent {
     subject: this.fb.control('', Validators.required),
     grade: this.fb.control(2, Validators.pattern(/^[2-6]$/)),
     date: this.fb.control(''),
+    topic: this.fb.control(''),
   });
 
   constructor(
@@ -50,7 +51,7 @@ export class AddGradeAbsenceDialogComponent {
 
   onSubmit(): void {
     console.log(this.form.value);
-    if(this.form.valid){
+    if (this.form.valid) {
       this.dialogRef.close();
     }
   }
