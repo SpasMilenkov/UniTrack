@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Profile } from '../models/profile';
 import { StudentProfile } from '../models/student-profile';
-import { ProfileTypes } from '../enums/profile-types.enum';
+import { Roles } from '../enums/roles.enum';
 import { TeacherProfile } from '../models/teacher-profile';
 
 @Injectable({
@@ -10,11 +10,15 @@ import { TeacherProfile } from '../models/teacher-profile';
 export class UserService {
   constructor() {}
 
+  getRole(): Roles {
+    return this.getTeacherProfile().type;
+  }
+
   getCurrentUserProfile(): Profile | StudentProfile {
     return {
       id: '2222',
       uniId: '1',
-      type: ProfileTypes.STUDENT,
+      type: Roles.STUDENT,
       avatarUrl: 'assets/images/programmer.png',
       firstName: 'John',
       lastName: 'Doe',
@@ -86,7 +90,7 @@ export class UserService {
 
   getTeacherProfile(): TeacherProfile {
     return {
-      type: ProfileTypes.TEACHER,
+      type: Roles.TEACHER,
       uniId: '1',
       avatarUrl: 'assets/images/teacher.png',
       firstName: 'John',
@@ -102,7 +106,7 @@ export class UserService {
             {
               id: '2222',
               uniId: '1',
-              type: ProfileTypes.STUDENT,
+              type: Roles.STUDENT,
               avatarUrl: 'assets/images/programmer.png',
               firstName: 'John',
               lastName: 'Doe',
