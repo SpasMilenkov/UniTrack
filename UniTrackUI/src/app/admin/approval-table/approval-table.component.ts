@@ -35,7 +35,7 @@ export class ApprovalTableComponent implements OnInit {
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource.data.filter(({type}) => type === this.roles.STUDENT).length;
     return numSelected === numRows;
   }
 
@@ -45,7 +45,7 @@ export class ApprovalTableComponent implements OnInit {
       return;
     }
 
-    this.selection.select(...this.dataSource.data);
+    this.selection.select(...this.dataSource.data.filter(({type}) => type === this.roles.STUDENT));
   }
 
   checkboxLabel(row?: UserRequest): string {
@@ -73,5 +73,11 @@ export class ApprovalTableComponent implements OnInit {
     }
     const clonedIds = this.selection.selected.map(({ id }) => id);
     this.onDisapprove.emit(clonedIds);
+  }
+
+  selectRow(row: any): void {
+    if(row.type === this.roles.STUDENT){
+      this.selection.toggle(row);
+    }
   }
 }
