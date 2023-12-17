@@ -19,10 +19,10 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   onApprove(event: any): void{
-    console.log(event);
+    this.adminService.approveUsers(event);
   }
 
   onDisapprove(event: any): void{
-    console.log(event);
+    this.adminService.disApproveUsers(event);
   }
 }

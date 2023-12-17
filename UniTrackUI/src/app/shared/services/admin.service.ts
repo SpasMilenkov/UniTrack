@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { UserRequest } from '../models/user-request';
-import { ProfileTypes } from '../enums/profile-types.enum';
+import { Roles } from '../enums/roles.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
+  approveUsers(userIds: string) {
+    console.log(userIds);
+  }
+
+  disApproveUsers(userIds: string) {
+    console.log(userIds);
+  }
+
   getUserApprovalRequests(): UserRequest[] {
     return [
       {
@@ -13,7 +21,7 @@ export class AdminService {
         email: 'test1@test.com',
         firstName: 'John',
         lastName: 'Doe',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
       {
@@ -21,7 +29,7 @@ export class AdminService {
         email: 'test2@test.com',
         firstName: 'Jane',
         lastName: 'Smith',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
       {
@@ -29,7 +37,7 @@ export class AdminService {
         email: 'test3@test.com',
         firstName: 'Alice',
         lastName: 'Johnson',
-        type: ProfileTypes.TEACHER,
+        type: Roles.TEACHER,
         approved: true
       },
       {
@@ -37,7 +45,7 @@ export class AdminService {
         email: 'test4@test.com',
         firstName: 'Bob',
         lastName: 'Anderson',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
       {
@@ -45,7 +53,7 @@ export class AdminService {
         email: 'test5@test.com',
         firstName: 'Eva',
         lastName: 'Brown',
-        type: ProfileTypes.TEACHER,
+        type: Roles.TEACHER,
         approved: false
       },
       {
@@ -53,7 +61,7 @@ export class AdminService {
         email: 'test6@test.com',
         firstName: 'Mike',
         lastName: 'Wilson',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
       {
@@ -61,7 +69,7 @@ export class AdminService {
         email: 'test7@test.com',
         firstName: 'Sara',
         lastName: 'Miller',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
       {
@@ -69,7 +77,7 @@ export class AdminService {
         email: 'test8@test.com',
         firstName: 'David',
         lastName: 'Clark',
-        type: ProfileTypes.TEACHER,
+        type: Roles.TEACHER,
         approved: false
       },
       {
@@ -77,7 +85,7 @@ export class AdminService {
         email: 'test9@test.com',
         firstName: 'Grace',
         lastName: 'White',
-        type: ProfileTypes.TEACHER,
+        type: Roles.TEACHER,
         approved: false
       },
       {
@@ -85,7 +93,7 @@ export class AdminService {
         email: 'test10@test.com',
         firstName: 'Tom',
         lastName: 'Taylor',
-        type: ProfileTypes.STUDENT,
+        type: Roles.STUDENT,
         approved: false
       },
     ];

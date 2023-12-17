@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,21 +9,23 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   authForm = this.fb.group({
-    email: this.fb.control(null, [
+    email: this.fb.control('', [
       Validators.required,
       Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     ]),
-    password: this.fb.control(null, Validators.required),
+    password: this.fb.control('', Validators.required),
   });
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {}
 
   onLogin(): void {
     this.authForm.markAllAsTouched();
-    console.log(this.authForm.value);
+    if(this.authForm.valid){
+      this.authService.login(this.authForm.getRawValue());
+    }
   }
 
   toggleHidePassword(event: any): void{

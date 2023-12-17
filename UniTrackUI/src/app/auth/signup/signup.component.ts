@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/shared/models/user';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
   hidePassword = true;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private authService: AuthService
   ) {}
 
@@ -40,9 +40,8 @@ export class SignupComponent implements OnInit {
 
   onSignup(): void {
     this.authForm.markAllAsTouched();
-    console.log(this.authForm.value);
-
     if(this.authForm.valid){
+      this.authService.signup(this.authForm.getRawValue());
     }
   }
 
