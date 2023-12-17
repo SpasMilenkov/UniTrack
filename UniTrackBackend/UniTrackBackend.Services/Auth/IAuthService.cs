@@ -19,4 +19,5 @@ public interface IAuthService
     public Task<string> GenerateForgottenPasswordLink(User user);
     public Task<User?> GetUserByEmail(string email);
     public Task<User?> GetUserById(string id);
+    public Task<string> GetUserRole(User user); 
 }

@@ -5,4 +5,5 @@ namespace UniTrackBackend.Data.Commons;
 public interface IStudentRepository : IRepository<Student>
 {
     Task<Student?> GetStudentWithDetailsAsync(int id);
+    Task<Student?> GetStudentWithDetailsAsync(string id);
 }

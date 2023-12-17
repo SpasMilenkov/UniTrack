@@ -30,11 +30,11 @@ namespace UniTrackBackend.Controllers
         /// <response code="401">Unauthorized if the user is not authenticated.</response>
         /// <response code="403">Forbidden if the user does not have the Admin role.</response>
         [HttpPut("students")]
-        [Authorize(Roles = Ts.Roles.Admin)]
+        // [Authorize(Roles = Ts.Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveStudents(List<StudentViewModel> models)
+        public async Task<IActionResult> ApproveStudents(StudentApprovalViewModel models)
         {
             var result = await _approvalService.ApproveStudentsAsync(models);
             if (!result)
@@ -53,13 +53,13 @@ namespace UniTrackBackend.Controllers
         /// <response code="401">Unauthorized if the user is not authenticated.</response>
         /// <response code="403">Forbidden if the user does not have the Admin role.</response>
         [HttpPut("teachers")]
-        [Authorize(Roles = Ts.Roles.Admin)]
+        // [Authorize(Roles = Ts.Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveTeachers(List<TeacherViewModel> models)
+        public async Task<IActionResult> ApproveTeachers(TeacherApprovalViewModel models)
         {
-            var result = await _approvalService.ApproveTeachersAsync(models);
+            var result = await _approvalService.ApproveTeacherAsync(models);
             if (!result)
                 return new BadRequestResult();
             return Ok("Teachers approved");

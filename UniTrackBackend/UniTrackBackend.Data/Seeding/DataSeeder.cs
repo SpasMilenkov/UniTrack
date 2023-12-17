@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;
 
@@ -38,11 +39,11 @@ public static class DataSeeder
         using var scope = serviceProvider.CreateScope();
         
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         _userManager = userManager;
         
-        await SeedUsersAsync();
+        await SeedUsersAsync(roleManager);
         await SeedRolesAsync(roleManager);
         await SeedSchoolsAsync(unitOfWork: unitOfWork);
         await SeedTeachersAsync(unitOfWork);
@@ -71,7 +72,7 @@ public static class DataSeeder
         }
     }
 
-    private static async Task SeedUsersAsync()
+    private static async Task SeedUsersAsync(RoleManager<IdentityRole> roleManager)
     {
         var users = new List<User>
         {
@@ -81,32 +82,42 @@ public static class DataSeeder
             new User { UserName = "user4", FirstName = "John", LastName = "Doe", Email = "user95@example.com", AvatarUrl = "example"},
             new User { UserName = "user5", FirstName = "John", LastName = "Doe", Email = "user94@example.com", AvatarUrl = "example"},
         };
-
         foreach (var user in users)
         {
             if (await _userManager.FindByEmailAsync(user.Email!) == null)
             {
                 await _userManager.CreateAsync(user, "String123!");
+
             }
         }
     }
 
-    private static async Task SeedTeachersAsync(UnitOfWork unitOfWork)
+    private static async Task SeedTeachersAsync(IUnitOfWork unitOfWork)
     {
         var user = await _userManager.FindByEmailAsync("user98@example.com");
         var user2 = await _userManager.FindByEmailAsync("user97@example.com");
         var school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
-
+        await _userManager.AddToRoleAsync(user, Ts.Roles.Teacher);
+        await _userManager.AddToRoleAsync(user2, Ts.Roles.Teacher);
         if (school is null)
         {
             await SeedSchoolsAsync(unitOfWork);
             school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
         }
+
+        var subjects = await unitOfWork.SubjectRepository.GetAllAsync();
+        var enumerable = subjects.ToList();
+        if (subjects is null || enumerable.Any())
+        {
+            await SeedSubjectsAsync(unitOfWork);
+            subjects = await unitOfWork.SubjectRepository.GetAllAsync();
+            enumerable = subjects.ToList();
+        }
         
         var teachers = new List<Teacher>
         {
-            new Teacher { UserId = user!.Id, SchoolId = school!.Id},
-            new Teacher { UserId = user2!.Id, SchoolId = school.Id}
+            new Teacher { UserId = user!.Id, SchoolId = school!.Id, Subjects = enumerable},
+            new Teacher { UserId = user2!.Id, SchoolId = school.Id, Subjects = enumerable}
         };
 
         foreach (var teacher in teachers)
@@ -120,7 +131,7 @@ public static class DataSeeder
         await unitOfWork.SaveAsync();
     }
 
-    private static async Task SeedSubjectsAsync(UnitOfWork unitOfWork)
+    private static async Task SeedSubjectsAsync(IUnitOfWork unitOfWork)
     {
         var result = await unitOfWork.SubjectRepository.GetAllAsync();
         if (!result.Any())
@@ -142,13 +153,14 @@ public static class DataSeeder
         }
     }
 
-    private static async Task SeedStudentsAsync(UnitOfWork unitOfWork)
+    private static async Task SeedStudentsAsync(IUnitOfWork unitOfWork)
     {
         var user = await _userManager.FindByEmailAsync("user96@example.com");
         var user2 = await _userManager.FindByEmailAsync("user95@example.com");
         var grade = await unitOfWork.GradeRepository.FirstOrDefaultAsync(g => g.Name == "Grade 10");
         var school = await unitOfWork.SchoolRepository.FirstOrDefaultAsync(s => s.Name == "Eg Bertolt Brecht");
-
+        await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
+        await _userManager.AddToRoleAsync(user2, Ts.Roles.Student);
         if (school is null)
         {
             await SeedSchoolsAsync(unitOfWork);
@@ -179,7 +191,7 @@ public static class DataSeeder
     }
 
 
-    private static async Task SeedMarksAsync(UnitOfWork unitOfWork)
+    private static async Task SeedMarksAsync(IUnitOfWork unitOfWork)
     {
         //Teachers
         var user1 = await _userManager.FindByEmailAsync("user98@example.com");
@@ -268,7 +280,7 @@ public static class DataSeeder
         await unitOfWork.SaveAsync();
     }
 
-    private static async Task SeedGradesAsync(UnitOfWork unitOfWork)
+    private static async Task SeedGradesAsync(IUnitOfWork unitOfWork)
     {
         //Teachers
         var user1 = await _userManager.FindByEmailAsync("user98@example.com");
@@ -292,7 +304,7 @@ public static class DataSeeder
         await unitOfWork.SaveAsync();
     }
 
-    private static async Task SeedAbsencesAsync(UnitOfWork unitOfWork)
+    private static async Task SeedAbsencesAsync(IUnitOfWork unitOfWork)
     {
         //Teachers
         var user1 = await _userManager.FindByEmailAsync("user98@example.com");
@@ -350,7 +362,7 @@ public static class DataSeeder
         await unitOfWork.SaveAsync();
     }
 
-    private static async Task SeedSchoolsAsync(UnitOfWork unitOfWork)
+    private static async Task SeedSchoolsAsync(IUnitOfWork unitOfWork)
     {
         var schools = new List<School>
         {

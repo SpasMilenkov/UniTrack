@@ -5,6 +5,7 @@ using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Middlewares;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
+using UniTrackBackend.Services.SubjectService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,8 @@ builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 builder.Services.AddScoped<IMarkService, MarkService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
-
+builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
