@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Controllers
 {
+    //TODO: Fix absence mapping in the controller using the mapper
+    
+    
     /// <summary>
     /// Handles actions related to student absences.
     /// </summary>
@@ -12,10 +18,11 @@ namespace UniTrackBackend.Controllers
     public class AbsencesController : ControllerBase
     {
         private readonly IAbsenceService _absenceService;
-
-        public AbsencesController(IAbsenceService absenceService)
+        private readonly IMapper _mapper;
+        public AbsencesController(IAbsenceService absenceService, IMapper mapper)
         {
             _absenceService = absenceService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -25,9 +32,14 @@ namespace UniTrackBackend.Controllers
         /// <returns>The created absence record.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Absence>> PostAbsence(Absence absence)
+        public async Task<ActionResult<Absence>> PostAbsence(AbsenceViewModel absence)
         {
-            var newAbsence = await _absenceService.AddAbsenceAsync(absence);
+            var entity = _mapper.MapAbsence(absence);
+            
+            if (entity is null)
+                return BadRequest();
+            
+            var newAbsence = await _absenceService.AddAbsenceAsync(entity);
             return CreatedAtAction(nameof(GetAbsenceById), new { id = newAbsence.Id }, newAbsence);
         }
 
@@ -40,7 +52,9 @@ namespace UniTrackBackend.Controllers
         public async Task<ActionResult<IEnumerable<Absence>>> GetAllAbsences()
         {
             var absences = await _absenceService.GetAbsencesAsync();
-            return Ok(absences);
+            var modelList = absences.Select(absence => _mapper.MapAbsenceResultViewModel(absence)).ToList();
+            
+            return Ok(modelList);
         }
 
         /// <summary>
@@ -67,10 +81,12 @@ namespace UniTrackBackend.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAbsence(int id, Absence absence)
+        public async Task<IActionResult> UpdateAbsence(int id, AbsenceViewModel absence)
         {
-            if (id != absence.Id) return BadRequest("ID mismatch");
-            await _absenceService.UpdateAbsenceAsync(absence);
+            var entity = _mapper.MapAbsence(absence);
+            if (entity is null)
+                return BadRequest();
+            await _absenceService.UpdateAbsenceAsync(entity);
             return NoContent();
         }
 
