@@ -42,8 +42,8 @@ public class Mapper : IMapper
             {
                 StudentId = model.StudentId,
                 TeacherId = model.TeacherId,
-                Value = model.AbsenceCount,
-                Time = model.Date,
+                Value = model.Value,
+                Time = model.Time.Date,
                 Excused = model.Excused
             };
             return absence;
@@ -59,10 +59,10 @@ public class Mapper : IMapper
     {
         try
         {
-            var absenceViewModels = new List<AbsenceViewModel>();
+            var absenceViewModels = new List<AbsenceResultViewModel>();
             foreach (var absence in student.Absences)
             {
-                absenceViewModels.Add(MapAbsenceViewModel(absence));
+                absenceViewModels.Add(MapAbsenceResultViewModel(absence));
             }
 
             var markViewModels = new List<MarkViewModel>();
@@ -96,11 +96,11 @@ public class Mapper : IMapper
         }
     }
 
-    public AbsenceViewModel MapAbsenceViewModel(Absence absence)
+    public AbsenceResultViewModel MapAbsenceResultViewModel(Absence absence)
     {
         try
         {
-            var model = new AbsenceViewModel
+            var model = new AbsenceResultViewModel()
             {
                 Subject = absence.Subject.Name,
                 AbsenceCount = absence.Value,
@@ -142,6 +142,7 @@ public class Mapper : IMapper
             throw;
         }
     }
+
     public School? MapSchool(SchoolViewModel model)
     {
         try
