@@ -52,5 +52,5 @@ public class StudentResultViewModel
     [EmailAddress]
     public string? Email { get; set; } = null!;
 
-    public List<AbsenceViewModel> Absences { get; set; } = null!;
+    public List<AbsenceResultViewModel> Absences { get; set; } = null!;
 }
