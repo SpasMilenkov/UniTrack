@@ -22,7 +22,11 @@ public class AbsenceService : IAbsenceService
 
     public async Task<IEnumerable<Absence>> GetAbsencesAsync()
     {
-        return await _context.AbsenceRepository.GetAllAsync();
+        var absences = await _context.AbsenceRepository.GetAllAbsencesWithDetailsAsync();
+        var absenceList = absences.ToList();
+        
+
+        return absenceList;
     }
 
     public async Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId)
