@@ -38,6 +38,7 @@ builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IAbsenceService, AbsenceService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
