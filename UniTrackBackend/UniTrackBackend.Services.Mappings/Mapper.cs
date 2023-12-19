@@ -42,6 +42,7 @@ public class Mapper : IMapper
             {
                 StudentId = model.StudentId,
                 TeacherId = model.TeacherId,
+                SubjectId = model.SubjectId,
                 Value = model.Value,
                 Time = model.Time.Date,
                 Excused = model.Excused
