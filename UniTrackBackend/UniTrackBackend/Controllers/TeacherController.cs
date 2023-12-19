@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
@@ -33,7 +33,7 @@ public class TeacherController : ControllerBase
     public async Task<IActionResult> GetAllTeachers()
     {
         var teachers = await _teacherService.GetAllTeachersAsync();
-        var models = new List<TeacherResultViewModel>();
+        var models = new List<TeacherResultDto>();
         foreach (var teacher in teachers)
         {
             var model = _mapper.MapTeacherViewModel(teacher);

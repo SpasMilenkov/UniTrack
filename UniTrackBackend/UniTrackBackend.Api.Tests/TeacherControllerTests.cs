@@ -1,6 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
@@ -18,7 +18,7 @@ public class TeacherControllerTests
         var fakeMapper = A.Fake<IMapper>();
         var fakeGradeService = A.Fake<IGradeService>();
         var teachers = new List<Teacher> { /* populate with test data */ };
-        var viewModels = new List<TeacherResultViewModel>();
+        var viewModels = new List<TeacherResultDto>();
         A.CallTo(() => fakeService.GetAllTeachersAsync()).Returns(teachers);
 
         var controller = new TeacherController(fakeService, fakeMapper, fakeGradeService);
@@ -28,7 +28,7 @@ public class TeacherControllerTests
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(viewModels, okResult.Value as IEnumerable<TeacherResultViewModel>);
+        Assert.Equal(viewModels, okResult.Value as IEnumerable<TeacherResultDto>);
     }
     [Fact]
     public async Task GetTeacher_ExistingId_ReturnsTeacher()
@@ -43,7 +43,7 @@ public class TeacherControllerTests
             UserId = "1",
             SchoolId = 1,
         };
-        var viewModel = new TeacherResultViewModel
+        var viewModel = new TeacherResultDto
         {
             Id = "1",
             UniId = null,

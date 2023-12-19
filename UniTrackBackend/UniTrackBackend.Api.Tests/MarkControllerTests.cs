@@ -1,6 +1,6 @@
 using FakeItEasy;
-using Microsoft.AspNetCore.Mvc; 
-using UniTrackBackend.Api.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
@@ -24,10 +24,10 @@ public class MarkControllerTests
     public async Task AddMark_ValidMarkViewModel_ReturnsCreatedAtActionResult()
     {
         // Arrange
-        var model = new MarkViewModel() { Id = 1 /*, other properties if necessary */ };
+        var model = new MarkDto() { Id = 1 /*, other properties if necessary */ };
         var mark = new Mark() { Id = 1 /*, map other properties from model */ };
 
-        A.CallTo(() => _fakeMapper.MapMark(A<MarkViewModel>.Ignored)).Returns(mark);
+        A.CallTo(() => _fakeMapper.MapMark(A<MarkDto>.Ignored)).Returns(mark);
         A.CallTo(() => _fakeService.AddMarkAsync(A<Mark>.Ignored)).Returns(mark);
 
         // Act
@@ -138,9 +138,9 @@ public class MarkControllerTests
     [Fact]
     public async Task UpdateMark_ValidData_ReturnsOkObjectResult()
     {
-        var model = new MarkViewModel(){Id = 1};
+        var model = new MarkDto(){Id = 1};
         var mark = new Mark() { Id = 1, /* Other properties */ };
-        A.CallTo(() => _fakeMapper.MapMark(A<MarkViewModel>.Ignored)).Returns(mark);
+        A.CallTo(() => _fakeMapper.MapMark(A<MarkDto>.Ignored)).Returns(mark);
         A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.Ignored)).Returns(mark);
         var result = await _controller.UpdateMark(1, model);
 
@@ -151,7 +151,7 @@ public class MarkControllerTests
     [Fact]
     public async Task UpdateMark_IdMismatch_ReturnsBadRequest()
     {
-        var mark = new MarkViewModel() { Id = 1, /* Other properties */ };
+        var mark = new MarkDto() { Id = 1, /* Other properties */ };
 
         var result = await _controller.UpdateMark(2, mark);
 
@@ -161,7 +161,7 @@ public class MarkControllerTests
     [Fact]
     public async Task UpdateMark_NonExistingMark_ReturnsNotFound()
     {
-        var mark = new MarkViewModel() { Id = 999, /* Other properties */ };
+        var mark = new MarkDto() { Id = 999, /* Other properties */ };
         A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.That.Matches(m => m.Id == mark.Id))).Returns((Mark)null);
 
         var result = await _controller.UpdateMark(999, mark);

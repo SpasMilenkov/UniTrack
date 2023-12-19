@@ -1,6 +1,6 @@
 // using FakeItEasy;
 // using Microsoft.AspNetCore.Mvc;
-// using UniTrackBackend.Api.ViewModels;
+// using UniTrackBackend.Api.DTO;
 // using UniTrackBackend.Controllers;
 // using UniTrackBackend.Services;
 //
@@ -70,7 +70,7 @@
 //     public async Task ApproveParents_ValidData_ReturnsOkResult()
 //     {
 //         var fakeService = A.Fake<IApprovalService>();
-//         var parentModels = new List<ParentViewModel> { /* populate with test data */ };
+//         var parentModels = new List<ParentDto> { /* populate with test data */ };
 //
 //         A.CallTo(() => fakeService.ApproveParentsAsync(parentModels)).Returns(true);
 //
@@ -85,7 +85,7 @@
 //     public async Task ApproveParents_InvalidData_ReturnsBadRequest()
 //     {
 //         var fakeService = A.Fake<IApprovalService>();
-//         var parentModels = new List<ParentViewModel> { /* invalid data */ };
+//         var parentModels = new List<ParentDto> { /* invalid data */ };
 //
 //         A.CallTo(() => fakeService.ApproveParentsAsync(parentModels)).Returns(false);
 //

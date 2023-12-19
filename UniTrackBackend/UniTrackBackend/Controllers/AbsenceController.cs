@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
 
@@ -30,7 +30,7 @@ namespace UniTrackBackend.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAbsence(AbsenceViewModel absence)
+        public async Task<IActionResult> PostAbsence(AbsenceDto absence)
         {
             var entity = _mapper.MapAbsence(absence);
 
@@ -47,7 +47,7 @@ namespace UniTrackBackend.Controllers
         /// <returns>A list of all absence records.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<AbsenceViewModel>>> GetAllAbsences()
+        public async Task<ActionResult<IEnumerable<AbsenceDto>>> GetAllAbsences()
         {
             var absences = await _absenceService.GetAbsencesAsync();
             var modelList = absences.Select(absence => _mapper.MapAbsenceResultViewModel(absence)).ToList();
@@ -99,7 +99,7 @@ namespace UniTrackBackend.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAbsence(int id, AbsenceViewModel absence)
+        public async Task<IActionResult> UpdateAbsence(int id, AbsenceDto absence)
         {
             var entity = _mapper.MapAbsence(absence);
             if (entity is null)

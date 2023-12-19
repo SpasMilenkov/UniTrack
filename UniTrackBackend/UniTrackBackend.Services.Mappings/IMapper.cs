@@ -1,27 +1,27 @@
-using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.Mappings;
 
 public interface IMapper
 {
-    public Mark? MapMark(MarkViewModel model);
+    public Mark? MapMark(MarkDto model);
 
-    public AbsenceResultViewModel MapAbsenceResultViewModel(Absence absence);
+    public AbsenceResultDto MapAbsenceResultViewModel(Absence absence);
 
-    public Absence? MapAbsence(AbsenceViewModel model);
+    public Absence? MapAbsence(AbsenceDto model);
     // public Student? MapStudent(StudentViewModel model);
 
-    public StudentResultViewModel? MapStudentViewModel(Student student);
+    public StudentResultDto? MapStudentViewModel(Student student);
 
-    public MarkViewModel? MapMarkViewModel(Mark mark);
+    public MarkDto? MapMarkViewModel(Mark mark);
 
-    public School? MapSchool(SchoolViewModel model);
-    public TeacherResultViewModel? MapTeacherViewModel(Teacher teacher, string? classId = null, string? className = null);
+    public School? MapSchool(SchoolDto model);
+    public TeacherResultDto? MapTeacherViewModel(Teacher teacher, string? classId = null, string? className = null);
 
-    public Subject? MapSubject(SubjectViewModel model);
-    public SubjectResultViewModel? MapSubjectViewModel(Subject subject);
-    public LoginResultViewModel? MapLoginResult(string userId, string role, string avatarUrl);
+    public Subject? MapSubject(SubjectDto model);
+    public SubjectResultDto? MapSubjectViewModel(Subject subject);
+    public LoginResultDto? MapLoginResult(string userId, string role, string avatarUrl);
 
 }

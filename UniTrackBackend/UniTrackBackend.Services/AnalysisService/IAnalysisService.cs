@@ -1,8 +1,8 @@
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 
 namespace UniTrackBackend.Services;
 
 public interface IAnalysisService
 {
-    public Task<StudentAnalysisResultViewModel?> GenerateAnalysisModel(int studentId);
+    public Task<StudentAnalysisResultDto?> GenerateAnalysisModel(int studentId);
 }

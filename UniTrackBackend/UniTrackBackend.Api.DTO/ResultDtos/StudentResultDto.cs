@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels;
+namespace UniTrackBackend.Api.DTO.ResultDtos;
 
-public class StudentResultViewModel
+public class StudentResultDto
 {
 
     [Required] public string Id { get; set; } = null!;
@@ -47,10 +47,10 @@ public class StudentResultViewModel
     [Range(1, int.MaxValue)]
     public int Number { get; set; }
 
-    public List<MarkViewModel> Marks { get; set; } = null!;
+    public List<MarkDto> Marks { get; set; } = null!;
     [Required]
     [EmailAddress]
     public string? Email { get; set; } = null!;
 
-    public List<AbsenceResultViewModel> Absences { get; set; } = null!;
+    public List<AbsenceResultDto> Absences { get; set; } = null!;
 }

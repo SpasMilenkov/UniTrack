@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UniTrackBackend.Api.ViewModels;
+namespace UniTrackBackend.Api.DTO;
 
-public class AbsenceViewModel
+public class AbsenceDto
 {
     [Required]
     public int StudentId { get; set; }

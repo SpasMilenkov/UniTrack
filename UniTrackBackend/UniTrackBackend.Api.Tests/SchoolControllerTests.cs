@@ -1,6 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
@@ -15,7 +15,7 @@ public class SchoolControllerTests
     {
         var fakeService = A.Fake<ISchoolService>();
         var fakeMapper = A.Fake<IMapper>();
-        var model = new SchoolViewModel { /* properties */ };
+        var model = new SchoolDto { /* properties */ };
         var school = new School { /* properties */ };
 
         A.CallTo(() => fakeMapper.MapSchool(model)).Returns(school);
@@ -34,7 +34,7 @@ public class SchoolControllerTests
     {
         var fakeService = A.Fake<ISchoolService>();
         var fakeMapper = A.Fake<IMapper>();
-        var model = new SchoolViewModel { /* invalid properties */ };
+        var model = new SchoolDto { /* invalid properties */ };
 
         A.CallTo(() => fakeMapper.MapSchool(model)).Returns(null as School);
 
@@ -93,7 +93,7 @@ public class SchoolControllerTests
     {
         var fakeService = A.Fake<ISchoolService>();
         var fakeMapper = A.Fake<IMapper>();
-        var model = new SchoolViewModel { Id = 1 /* other properties */ };
+        var model = new SchoolDto { Id = 1 /* other properties */ };
         var school = new School { Id = 1 /* other properties */ };
 
         A.CallTo(() => fakeMapper.MapSchool(model)).Returns(school);
@@ -111,7 +111,7 @@ public class SchoolControllerTests
     public async Task UpdateSchool_IdMismatch_ReturnsBadRequest()
     {
         var controller = new SchoolController(A.Fake<ISchoolService>(), A.Fake<IMapper>());
-        var model = new SchoolViewModel { Id = 2 /* other properties */ };
+        var model = new SchoolDto { Id = 2 /* other properties */ };
 
         var result = await controller.UpdateSchool(1, model);
 

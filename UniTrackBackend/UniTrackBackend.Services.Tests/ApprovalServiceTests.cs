@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using FakeItEasy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using UniTrackBackend.Api.ViewModels;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Data.Models.TypeSafe;

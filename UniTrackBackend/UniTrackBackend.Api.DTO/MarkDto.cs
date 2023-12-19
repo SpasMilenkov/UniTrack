@@ -1,6 +1,6 @@
-namespace UniTrackBackend.Api.ViewModels;
+namespace UniTrackBackend.Api.DTO;
 
-public class MarkViewModel
+public class MarkDto
 {
     public int Id { get; set; }
     public decimal Value { get; set; }

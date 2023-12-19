@@ -1,7 +1,7 @@
 
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels
+namespace UniTrackBackend.Api.DTO.ResultDtos
 {
-    public class StudentAnalysisResultViewModel
+    public class StudentAnalysisResultDto
     {
         public required string StudentName { get; set; }
         public int StudentId { get; set; }

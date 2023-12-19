@@ -3,7 +3,7 @@
 // using Microsoft.AspNetCore.Identity;
 // using Microsoft.AspNetCore.Mvc;
 // using Microsoft.AspNetCore.Mvc.Routing;
-// using UniTrackBackend.Api.ViewModels;
+// using UniTrackBackend.Api.DTO;
 // using UniTrackBackend.Controllers;
 // using UniTrackBackend.Data.Models;
 // using UniTrackBackend.Services;
@@ -67,7 +67,7 @@
 //     public async Task Login_Successful_ReturnsOkAndSetsCookies()
 //     {
 //         // Arrange
-//         var userModel = new LoginViewModel { Email = "test@example.com", Password = "Password123" };
+//         var userModel = new LoginDto { Email = "test@example.com", Password = "Password123" };
 //         var user = new User
 //         {
 //             Id = "2",
@@ -100,7 +100,7 @@
 //     public async Task Login_Unsuccessful_ReturnsUnauthorizedResult()
 //     {
 //         // Arrange
-//         var userModel = new LoginViewModel { Email = "wrong@example.com", Password = "Password123" };
+//         var userModel = new LoginDto { Email = "wrong@example.com", Password = "Password123" };
 //
 //         A.CallTo(() => _fakeAuthService.LoginUser(userModel)).Returns((User)null);
 //
@@ -114,7 +114,7 @@
 //     public async Task Register_Successful_ReturnsOkResult()
 //     {
 //         // Arrange
-//         var registerModel = new RegisterViewModel
+//         var registerModel = new RegisterDto
 //         {
 //             Email = "new@example.com",
 //             Password = "Password1231",
@@ -164,7 +164,7 @@
 //         // Arrange
 //         _controller.ModelState.AddModelError("Error", "Model is invalid"); // Simulate model validation failure
 //
-//         var registerModel = new RegisterViewModel
+//         var registerModel = new RegisterDto
 //         {
 //             UserName = null,
 //             FirstName = null,
@@ -185,7 +185,7 @@
 //     public async Task Register_TokenGenerationFailure_ReturnsBadRequest()
 //     {
 //         // Arrange
-//         var registerModel = new RegisterViewModel
+//         var registerModel = new RegisterDto
 //         {
 //             Email = "new@example.com",
 //             UserName = "new@example.com",
@@ -217,7 +217,7 @@
 //     [Fact]
 //     public async Task Register_EmailInUse_ReturnsBadRequest()
 //     {
-//         var registerModel = new RegisterViewModel
+//         var registerModel = new RegisterDto
 //         {
 //             Email = "existing@example.com",
 //             UserName = "new@example.com",
@@ -360,7 +360,7 @@
 //     [Fact]
 //     public async Task ResetPassword_ValidData_ResetsPassword()
 //     {
-//         var model = new ResetPasswordModel
+//         var model = new ResetPasswordDto
 //         {
 //             Email = null,
 //             NewPassword = null,
@@ -378,7 +378,7 @@
 //     [Fact]
 //     public async Task ResetPassword_InvalidData_ReturnsBadRequest()
 //     {
-//         var model = new ResetPasswordModel
+//         var model = new ResetPasswordDto
 //         {
 //             Email = null,
 //             NewPassword = null,

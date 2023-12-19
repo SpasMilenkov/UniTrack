@@ -1,8 +1,8 @@
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 
 namespace UniTrackBackend.Services;
 
 public interface IRecommendationService
 {
-    public Task<IEnumerable<RecommendationResultViewModel>?> GetRecommendations(int studentId);
+    public Task<IEnumerable<RecommendationResultDto>?> GetRecommendations(int studentId);
 }

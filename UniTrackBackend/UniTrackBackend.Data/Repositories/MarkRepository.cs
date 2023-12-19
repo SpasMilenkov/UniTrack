@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;

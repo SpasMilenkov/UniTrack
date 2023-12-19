@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UniTrackBackend.Api.ViewModels;
+namespace UniTrackBackend.Api.DTO;
 
-public class RegisterViewModel
+public class RegisterDto
 {
     [Required(ErrorMessage = "Username is required.")]
     [StringLength(50, ErrorMessage = "Username cannot be longer than 30 characters.")]

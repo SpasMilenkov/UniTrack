@@ -1,11 +1,11 @@
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 
 namespace UniTrackBackend.Services;
 
 public interface IApprovalService
 {
-    public Task<bool> ApproveStudentsAsync(StudentApprovalViewModel students);
-    public Task<bool> ApproveParentsAsync(List<ParentViewModel> parents);
-    public Task<bool> ApproveTeacherAsync(TeacherApprovalViewModel approvalModel);
+    public Task<bool> ApproveStudentsAsync(StudentApprovalDto students);
+    public Task<bool> ApproveParentsAsync(List<ParentDto> parents);
+    public Task<bool> ApproveTeacherAsync(TeacherApprovalDto approvalModel);
     public Task<bool> ApproveAdminsAsync();
 }

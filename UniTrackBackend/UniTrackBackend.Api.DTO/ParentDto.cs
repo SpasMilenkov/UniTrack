@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using UniTrackBackend.Services.Commons.Attributes;
 
-namespace UniTrackBackend.Api.ViewModels;
+namespace UniTrackBackend.Api.DTO;
 
-public class ParentViewModel
+public class ParentDto
 {
     [Required]
     [StringLength(100)]

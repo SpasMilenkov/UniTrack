@@ -1,8 +1,8 @@
 using UniTrackBackend.Data.Models;
 
-namespace UniTrackBackend.Api.ViewModels
+namespace UniTrackBackend.Api.DTO
 {
-    public class SchoolViewModel
+    public class SchoolDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

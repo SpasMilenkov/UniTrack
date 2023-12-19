@@ -1,6 +1,6 @@
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels;
+namespace UniTrackBackend.Api.DTO.ResultDtos;
 
-public class TeacherResultViewModel
+public class TeacherResultDto
 {
     public required string Id { get; set; }
     public required string UniId { get; set; }

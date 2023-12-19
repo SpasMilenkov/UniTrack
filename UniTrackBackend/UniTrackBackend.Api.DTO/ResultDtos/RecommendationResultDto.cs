@@ -1,6 +1,6 @@
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels;
+namespace UniTrackBackend.Api.DTO.ResultDtos;
 
-public class RecommendationResultViewModel
+public class RecommendationResultDto
 {
     public required string Title { get; set; }
     public required string Link { get; set; }

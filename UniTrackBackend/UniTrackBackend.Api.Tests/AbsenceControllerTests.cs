@@ -1,7 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
@@ -30,7 +29,7 @@ public class AbsenceControllerTests
         // Arrange
         var absenceService = A.Fake<IAbsenceService>();
         var mapper = A.Fake<IMapper>();
-        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        var absence = new AbsenceDto { /* Populate with valid data */ };
         A.CallTo(() => mapper.MapAbsence(absence)).Throws<Exception>();
 
         var controller = new AbsencesController(absenceService, mapper);
@@ -44,7 +43,7 @@ public class AbsenceControllerTests
         // Arrange
         var absenceService = A.Fake<IAbsenceService>();
         var mapper = A.Fake<IMapper>();
-        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        var absence = new AbsenceDto { /* Populate with valid data */ };
         var mappedEntity = new Absence { /* ... */ };
         A.CallTo(() => mapper.MapAbsence(absence)).Returns(mappedEntity);
         A.CallTo(() => absenceService.UpdateAbsenceAsync(mappedEntity)).Returns(Task.CompletedTask);
@@ -120,7 +119,7 @@ public class AbsenceControllerTests
         // Arrange
         var absenceService = A.Fake<IAbsenceService>();
         var mapper = A.Fake<IMapper>();
-        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        var absence = new AbsenceDto { /* Populate with valid data */ };
         var mappedEntity = new Absence { /* ... */ };
         A.CallTo(() => mapper.MapAbsence(absence)).Returns(mappedEntity);
         A.CallTo(() => absenceService.UpdateAbsenceAsync(mappedEntity)).Throws<Exception>();

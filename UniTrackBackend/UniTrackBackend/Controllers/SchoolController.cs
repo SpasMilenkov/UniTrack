@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 
 namespace UniTrackBackend.Controllers
 {
@@ -29,7 +29,7 @@ namespace UniTrackBackend.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddSchool([FromBody] SchoolViewModel model)
+        public async Task<IActionResult> AddSchool([FromBody] SchoolDto model)
         {
             var school = _mapper.MapSchool(model);
             if (school is null)
@@ -76,7 +76,7 @@ namespace UniTrackBackend.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateSchool(int id, [FromBody] SchoolViewModel model)
+        public async Task<IActionResult> UpdateSchool(int id, [FromBody] SchoolDto model)
         {
             if (id != model.Id)
                 return BadRequest("ID mismatch");

@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
 

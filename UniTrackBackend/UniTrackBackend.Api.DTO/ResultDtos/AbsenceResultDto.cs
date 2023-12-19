@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels;
+namespace UniTrackBackend.Api.DTO.ResultDtos;
 
-public class AbsenceResultViewModel
+public class AbsenceResultDto
 {
     [Required]
     [MaxLength(100)]

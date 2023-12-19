@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services.Ma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E878AC06-2561-4BE8-B168-83A827B56C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Api.ViewModels", "UniTrackBackend.Api.ViewModels\UniTrackBackend.Api.ViewModels.csproj", "{800C4A69-37B3-43B6-8FD2-00AEEF8C4770}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Api.DTO", "UniTrackBackend.Api.DTO\UniTrackBackend.Api.DTO.csproj", "{800C4A69-37B3-43B6-8FD2-00AEEF8C4770}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services.Commons", "UniTrackBackend.Services.Commons\UniTrackBackend.Services.Commons.csproj", "{8A887F10-9049-4FE5-9712-D89545AE23FD}"
 EndProject

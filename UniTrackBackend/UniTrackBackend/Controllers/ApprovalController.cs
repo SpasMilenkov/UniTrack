@@ -1,7 +1,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Models.TypeSafe;
 using UniTrackBackend.Services;
 
@@ -34,7 +34,7 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveStudents(StudentApprovalViewModel models)
+        public async Task<IActionResult> ApproveStudents(StudentApprovalDto models)
         {
             var result = await _approvalService.ApproveStudentsAsync(models);
             if (!result)
@@ -57,7 +57,7 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveTeachers(TeacherApprovalViewModel models)
+        public async Task<IActionResult> ApproveTeachers(TeacherApprovalDto models)
         {
             var result = await _approvalService.ApproveTeacherAsync(models);
             if (!result)
@@ -80,7 +80,7 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveAdmins(List<AdminViewModel> models)
+        public async Task<IActionResult> ApproveAdmins(List<AdminDto> models)
         {
             // var result = await _approvalService.ApproveStudentsAsync(models);
             // if (!result)
@@ -103,7 +103,7 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveParents(List<ParentViewModel> models)
+        public async Task<IActionResult> ApproveParents(List<ParentDto> models)
         {
             var result = await _approvalService.ApproveParentsAsync(models);
             if (!result)

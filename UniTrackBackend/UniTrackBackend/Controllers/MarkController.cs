@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
 
@@ -39,7 +39,7 @@ public class MarkController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddMark([FromBody] MarkViewModel model)
+    public async Task<IActionResult> AddMark([FromBody] MarkDto model)
     {
         if (!ModelState.IsValid || model is null)
             return BadRequest();
@@ -142,7 +142,7 @@ public class MarkController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateMark(int id, [FromBody] MarkViewModel model)
+    public async Task<IActionResult> UpdateMark(int id, [FromBody] MarkDto model)
     {
         if (id != model.Id)
             return BadRequest("ID mismatch");

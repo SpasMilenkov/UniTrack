@@ -1,7 +1,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.SubjectService;
@@ -24,7 +24,7 @@ namespace UniTrackBackend.Controllers
 
         // GET: api/subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubjectResultViewModel>>> GetAllSubjects()
+        public async Task<ActionResult<IEnumerable<SubjectResultDto>>> GetAllSubjects()
         {
             var subjects = await _subjectService.GetAllSubjectsAsync();
             return Ok(subjects);
@@ -32,7 +32,7 @@ namespace UniTrackBackend.Controllers
 
         // GET: api/subjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SubjectResultViewModel>> GetSubject(int id)
+        public async Task<ActionResult<SubjectResultDto>> GetSubject(int id)
         {
             var subject = await _subjectService.GetSubjectByIdAsync(id);
 
@@ -46,7 +46,7 @@ namespace UniTrackBackend.Controllers
 
         // POST: api/subjects
         [HttpPost]
-        public async Task<ActionResult<SubjectResultViewModel>> AddSubject(SubjectViewModel subject)
+        public async Task<ActionResult<SubjectResultDto>> AddSubject(SubjectDto subject)
         {
             var entity = _mapper.MapSubject(subject);
             var addedSubject = await _subjectService.AddSubjectAsync(entity);
@@ -55,7 +55,7 @@ namespace UniTrackBackend.Controllers
 
         // PUT: api/subjects/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, SubjectViewModel subject)
+        public async Task<IActionResult> UpdateSubject(int id, SubjectDto subject)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace UniTrackBackend.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> AssignTeachersToSubject(SubjectViewModel subjectViewModel)
+        public async Task<IActionResult> AssignTeachersToSubject(SubjectDto subjectDto)
         {
             
             return Ok();
