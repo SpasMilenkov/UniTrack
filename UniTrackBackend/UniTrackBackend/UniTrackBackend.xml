@@ -6,43 +6,51 @@
     <members>
         <member name="T:UniTrackBackend.Controllers.AbsencesController">
             <summary>
-            Handles actions related to student absences.
+            Controller for handling operations related to student and teacher absences.
+            Provides functionality for recording, retrieving, updating, and deleting absence records.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.PostAbsence(UniTrackBackend.Data.Models.Absence)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.PostAbsence(UniTrackBackend.Api.ViewModels.AbsenceViewModel)">
             <summary>
             Records a new absence.
             </summary>
-            <param name="absence">The absence details to record.</param>
-            <returns>The created absence record.</returns>
+            <param name="absence">The absence details to be recorded.</param>
+            <returns>An ActionResult indicating the result of the operation.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAllAbsences">
             <summary>
             Retrieves all recorded absences.
             </summary>
-            <returns>A list of all absences.</returns>
+            <returns>A list of all absence records.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceById(System.Int32)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceByStudentId(System.Int32)">
             <summary>
-            Retrieves a specific absence by its ID.
+            Retrieves absences for a specific student by their ID.
             </summary>
-            <param name="id">The ID of the absence to retrieve.</param>
-            <returns>The absence record if found, otherwise returns not found.</returns>
+            <param name="id">The ID of the student whose absences are to be retrieved.</param>
+            <returns>An ActionResult containing the student's absence records or a not found result.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.UpdateAbsence(System.Int32,UniTrackBackend.Data.Models.Absence)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceByTeacherId(System.Int32)">
+            <summary>
+            Retrieves absences for a specific teacher by their ID.
+            </summary>
+            <param name="id">The ID of the teacher whose absences are to be retrieved.</param>
+            <returns>An ActionResult containing the teacher's absence records or a not found result.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.UpdateAbsence(System.Int32,UniTrackBackend.Api.ViewModels.AbsenceViewModel)">
             <summary>
             Updates an existing absence record.
             </summary>
-            <param name="id">The ID of the absence to update.</param>
+            <param name="id">The ID of the absence record to update.</param>
             <param name="absence">The updated absence details.</param>
-            <returns>Returns no content if the update is successful, otherwise a bad request.</returns>
+            <returns>Returns NoContent if the update is successful, otherwise returns BadRequest.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.AbsencesController.DeleteAbsence(System.Int32)">
             <summary>
             Deletes a specific absence record by its ID.
             </summary>
-            <param name="id">The ID of the absence to delete.</param>
-            <returns>Returns no content if the deletion is successful.</returns>
+            <param name="id">The ID of the absence record to delete.</param>
+            <returns>Returns NoContent if the deletion is successful, otherwise NotFound.</returns>
         </member>
         <member name="T:UniTrackBackend.Controllers.AdminController">
             <summary>
@@ -227,14 +235,6 @@
             <param name="model">The model containing the email, token, and new password of the user.</param>
             <response code="200">Password has been reset successfully.</response>
             <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
-        </member>
-        <member name="T:UniTrackBackend.Controllers.MarkController">
-            <summary>
-            The MarkController is responsible for handling all HTTP requests related to the management of marks in the system.
-            It provides functionality to add, retrieve, update, and delete marks. Additionally, it supports fetching marks
-            based on various filters such as student ID, teacher ID, subject ID, and specific dates. The controller leverages
-            the IMarkService for business logic operations and IMapper for object mapping between view models and data models.
-            </summary>
         </member>
         <member name="M:UniTrackBackend.Controllers.MarkController.#ctor(UniTrackBackend.Services.IMarkService,UniTrackBackend.Services.Mappings.IMapper)">
             <summary>

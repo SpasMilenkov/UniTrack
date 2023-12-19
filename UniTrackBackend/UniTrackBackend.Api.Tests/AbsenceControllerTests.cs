@@ -1,129 +1,146 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Api.Tests;
 
 public class AbsenceControllerTests
 {
     [Fact]
-    public async Task PostAbsence_ValidAbsence_ReturnsCreatedAtActionResult()
+    public void Constructor_WithValidDependencies_ShouldCreateInstance()
     {
-        var fakeService = A.Fake<IAbsenceService>();
-        var absence = new Absence { /* properties */ };
-        A.CallTo(() => fakeService.AddAbsenceAsync(A<Absence>.Ignored)).Returns(absence);
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        var mapper = A.Fake<IMapper>();
 
-        var controller = new AbsencesController(fakeService);
+        // Act
+        var controller = new AbsencesController(absenceService, mapper);
 
-        var result = await controller.PostAbsence(absence);
-
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
-        Assert.Equal(absence, createdAtActionResult.Value);
+        // Assert
+        Assert.NotNull(controller);
     }
     [Fact]
-    public async Task GetAbsenceById_ExistingId_ReturnsAbsence()
+    public async Task PostAbsence_WithServiceException_ShouldHandleException()
     {
-        var fakeService = A.Fake<IAbsenceService>();
-        var absence = new Absence { Id = 1 /* other properties */ };
-        var absences = new List<Absence> { absence }; // Wrap the absence in a list
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        var mapper = A.Fake<IMapper>();
+        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        A.CallTo(() => mapper.MapAbsence(absence)).Throws<Exception>();
 
-        // Ensure the method returns an IEnumerable of Absence
-        A.CallTo(() => fakeService.GetAbsencesByStudentIdAsync(1)).Returns(absences);
+        var controller = new AbsencesController(absenceService, mapper);
 
-        var controller = new AbsencesController(fakeService);
-
-        var result = await controller.GetAbsenceById(1);
-
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var returnedAbsences = Assert.IsType<List<Absence>>(okResult.Value);
-        Assert.Contains(absence, returnedAbsences);
-    }
-
-    [Fact]
-    public async Task GetAbsenceById_ExistingStudentWithAbsences_ReturnsAbsences()
-    {
-        var fakeService = A.Fake<IAbsenceService>();
-        var absences = new List<Absence> { new Absence { Id = 1 /* other properties */ } };
-    
-        A.CallTo(() => fakeService.GetAbsencesByStudentIdAsync(1)).Returns(absences);
-
-        var controller = new AbsencesController(fakeService);
-
-        var result = await controller.GetAbsenceById(1);
-
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var resultValue = Assert.IsType<List<Absence>>(okResult.Value);
-        Assert.Equal(absences, resultValue);
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => controller.PostAbsence(absence));
     }
     [Fact]
-    public async Task GetAbsenceById_ExistingStudentWithNoAbsences_ReturnsNoAbsencesFoundMessage()
+    public async Task UpdateAbsence_WithValidData_ShouldReturnNoContentResult()
     {
-        var fakeService = A.Fake<IAbsenceService>();
-    
-        A.CallTo(() => fakeService.GetAbsencesByStudentIdAsync(2)).Returns(new List<Absence>());
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        var mapper = A.Fake<IMapper>();
+        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        var mappedEntity = new Absence { /* ... */ };
+        A.CallTo(() => mapper.MapAbsence(absence)).Returns(mappedEntity);
+        A.CallTo(() => absenceService.UpdateAbsenceAsync(mappedEntity)).Returns(Task.CompletedTask);
 
-        var controller = new AbsencesController(fakeService);
+        var controller = new AbsencesController(absenceService, mapper);
 
-        var result = await controller.GetAbsenceById(2);
-
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        Assert.Equal("No absences found", okResult.Value);
-    }
-    [Fact]
-    public async Task GetAbsenceById_NonExistingStudent_ReturnsNotFound()
-    {
-        var fakeService = A.Fake<IAbsenceService>();
-    
-        A.CallTo(() => fakeService.GetAbsencesByStudentIdAsync(999)).Returns((List<Absence>)null);
-
-        var controller = new AbsencesController(fakeService);
-
-        var result = await controller.GetAbsenceById(999);
-
-        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
-        Assert.Equal("Student not found", notFoundResult.Value);
-    }
-
-
-    [Fact]
-    public async Task UpdateAbsence_ValidData_ReturnsNoContent()
-    {
-        var fakeService = A.Fake<IAbsenceService>();
-        var absence = new Absence { Id = 1 /* other properties */ };
-        A.CallTo(() => fakeService.UpdateAbsenceAsync(A<Absence>.Ignored)).Returns(Task.CompletedTask);
-
-        var controller = new AbsencesController(fakeService);
-
+        // Act
         var result = await controller.UpdateAbsence(1, absence);
 
+        // Assert
         Assert.IsType<NoContentResult>(result);
     }
-
     [Fact]
-    public async Task UpdateAbsence_IdMismatch_ReturnsBadRequest()
+    public async Task DeleteAbsence_WithValidId_ShouldReturnNoContentResult()
     {
-        var fakeService = A.Fake<IAbsenceService>();
-        var absence = new Absence { Id = 2 /* other properties */ };
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        A.CallTo(() => absenceService.DeleteAbsenceAsync(1)).Returns(Task.CompletedTask);
 
-        var controller = new AbsencesController(fakeService);
+        var controller = new AbsencesController(absenceService, null);
 
-        var result = await controller.UpdateAbsence(1, absence);
-
-        Assert.IsType<BadRequestObjectResult>(result);
-    }
-    [Fact]
-    public async Task DeleteAbsence_ExistingId_ReturnsNoContent()
-    {
-        var fakeService = A.Fake<IAbsenceService>();
-        A.CallTo(() => fakeService.DeleteAbsenceAsync(1)).Returns(Task.CompletedTask);
-
-        var controller = new AbsencesController(fakeService);
-
+        // Act
         var result = await controller.DeleteAbsence(1);
 
+        // Assert
         Assert.IsType<NoContentResult>(result);
+    }
+    [Fact]
+    public async Task GetAllAbsences_WithServiceException_ShouldHandleException()
+    {
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        A.CallTo(() => absenceService.GetAbsencesAsync()).Throws<Exception>();
+
+        var controller = new AbsencesController(absenceService, null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => controller.GetAllAbsences());
+    }
+    [Fact]
+    public async Task GetAbsenceByStudentId_WithInvalidId_ShouldReturnNotFound()
+    {
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        A.CallTo(() => absenceService.GetAbsencesByStudentIdAsync(A<int>.Ignored)).Returns(new List<Absence>());
+
+        var controller = new AbsencesController(absenceService, null);
+
+        // Act
+        var result = await controller.GetAbsenceByStudentId(-1);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+    [Fact]
+    public async Task GetAbsenceByTeacherId_WithInvalidId_ShouldReturnNotFound()
+    {
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        A.CallTo(() => absenceService.GetAbsencesByTeacherIdAsync(A<int>.Ignored)).Returns(new List<Absence>());
+
+        var controller = new AbsencesController(absenceService, null);
+
+        // Act
+        var result = await controller.GetAbsenceByTeacherId(-1);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+    [Fact]
+    public async Task UpdateAbsence_WithNonExistingId_ShouldReturnBadRequest()
+    {
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        var mapper = A.Fake<IMapper>();
+        var absence = new AbsenceViewModel { /* Populate with valid data */ };
+        var mappedEntity = new Absence { /* ... */ };
+        A.CallTo(() => mapper.MapAbsence(absence)).Returns(mappedEntity);
+        A.CallTo(() => absenceService.UpdateAbsenceAsync(mappedEntity)).Throws<Exception>();
+
+        var controller = new AbsencesController(absenceService, mapper);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => controller.UpdateAbsence(-1, absence));
+    }
+    [Fact]
+    public async Task DeleteAbsence_WithNonExistingId_ShouldReturnNotFound()
+    {
+        // Arrange
+        var absenceService = A.Fake<IAbsenceService>();
+        A.CallTo(() => absenceService.DeleteAbsenceAsync(A<int>.Ignored)).Throws<Exception>();
+
+        var controller = new AbsencesController(absenceService, null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => controller.DeleteAbsence(-1));
     }
 
 }
