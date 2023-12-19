@@ -17,6 +17,7 @@ public class AbsenceService : IAbsenceService
     {
            
         await _context.AbsenceRepository.AddAsync(absence);
+        await _context.SaveAsync();
         return absence;
     }
 
@@ -24,21 +25,23 @@ public class AbsenceService : IAbsenceService
     {
         var absences = await _context.AbsenceRepository.GetAllAbsencesWithDetailsAsync();
         var absenceList = absences.ToList();
-        
 
         return absenceList;
     }
 
     public async Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId)
     {
-        return await _context.AbsenceRepository.GetAsync(a => a.Student.Id == studentId);
+        return await _context.AbsenceRepository.GetAllAbsencesWithDetailsAsync(a => a.StudentId == studentId);
     }
-
+    public async Task<IEnumerable<Absence>> GetAbsencesByTeacherIdAsync(int teacherId)
+    {
+        return await _context.AbsenceRepository.GetAllAbsencesWithDetailsAsync(a => a.TeacherId == teacherId);
+    }
     public async Task UpdateAbsenceAsync(Absence updatedAbsence)
     {
         var absence = await _context.AbsenceRepository.GetByIdAsync(updatedAbsence.Id);
         if (absence == null) throw new ArgumentException("Absence not found");
-
+        absence.Excused = updatedAbsence.Excused;
         await _context.AbsenceRepository.UpdateAsync(absence);
         await _context.SaveAsync();
     }
