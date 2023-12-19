@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
@@ -20,6 +21,17 @@ public class AbsenceRepository:EfRepository<Absence>, IAbsenceRepository
             .Include(a => a.Teacher)
             .ThenInclude(t => t.User)
             .ToListAsync();
+        return allAbsences;
+    }
+    public async Task<IEnumerable<Absence>> GetAllAbsencesWithDetailsAsync(Expression<Func<Absence, bool>> filter)
+    {
+        var allAbsences = await _context.Absences
+            .Include(a => a.Subject)
+            .Include(a => a.Teacher)
+            .ThenInclude(t => t.User)
+            .Where(filter)
+            .ToListAsync();
+
         return allAbsences;
     }
 }
