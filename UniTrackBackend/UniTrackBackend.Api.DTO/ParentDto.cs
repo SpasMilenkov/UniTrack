@@ -5,16 +5,6 @@ namespace UniTrackBackend.Api.DTO;
 
 public class ParentDto
 {
-    [Required]
-    [StringLength(100)]
-    public required string Name { get; set; }
-
-    [Required]
-    [EmailAddress]
-    [StringLength(100)]
-    public required string Email { get; set; }
-    
-    [Required]
-    [EmailList]
-    public required List<string> ChildrenEmails { get; set; }
+    [Required] public string UserId { get; set; }
+    public List<int> ChildIds { get; set; }
 }
