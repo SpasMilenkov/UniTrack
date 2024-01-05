@@ -14,7 +14,6 @@ public class AbsenceDto
 
     [Required]
     [Range(0, 1, ErrorMessage = "Value must be between 0 and 1")]
-    [Display(Name = "Absence Value")]
     public decimal Value { get; set; }
 
     [Required]
