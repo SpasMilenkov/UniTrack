@@ -1,151 +1,144 @@
-// using FakeItEasy;
-// using Microsoft.AspNetCore.Mvc;
-// using UniTrackBackend.Api.DTO;
-// using UniTrackBackend.Controllers;
-// using UniTrackBackend.Data.Models;
-// using UniTrackBackend.Services;
-// using UniTrackBackend.Services.Mappings;
-//
-// namespace UniTrackBackend.Api.Tests;
-//
-// public class StudentControllerTests
-// {
-//     private readonly IStudentService _fakeService;
-//     private readonly StudentController _controller;
-//     private readonly IMapper _fakeMapper;
-//
-//     public StudentControllerTests()
-//     {
-//         _fakeService = A.Fake<IStudentService>();
-//         _fakeMapper = A.Fake<IMapper>();
-//         _controller = new StudentController(_fakeService, _fakeMapper);
-//     }
-//     [Fact]
-//     public async Task GetStudent_ExistingId_ReturnsOkObjectResult()
-//     {
-//         var student = new Student { Id = 1, /* Other properties */ };
-//
-//         A.CallTo(() => _fakeService.GetStudentByIdAsync(1)).Returns(student);
-//         // A.CallTo(() => _fakeMapper.MapStudent(A<StudentViewModel>.Ignored)).Returns(student);
-//
-//         var result = await _controller.GetStudent(1);
-//
-//         var okResult = Assert.IsType<OkObjectResult>(result);
-//         Assert.IsType<OkObjectResult>(result);
-//     }
-//
-//
-//     [Fact]
-//     public async Task GetStudent_NonExistingId_ReturnsNotFoundResult()
-//     {
-//         A.CallTo(() => _fakeService.GetStudentByIdAsync(999)).Returns((Student)null);
-//
-//         var result = await _controller.GetStudent(999);
-//
-//         Assert.IsType<NotFoundResult>(result);
-//     }
-//     [Fact]
-//     public async Task GetAllStudents_ReturnsOkObjectResultWithStudents()
-//     {
-//         var students = new List<Student> { /* Initialize list of students */ };
-//         A.CallTo(() => _fakeService.GetAllStudentsAsync()).Returns(students);
-//
-//         var result = await _controller.GetAllStudents();
-//
-//         var okResult = Assert.IsType<OkObjectResult>(result);
-//         Assert.Equal(students, okResult.Value);
-//     }
-//     [Fact]
-//     public async Task DeleteStudent_ReturnsNoContentResult()
-//     {
-//         var studentId = 1;
-//         A.CallTo(() => _fakeService.DeleteStudentAsync(studentId)).Returns(true);
-//         var result = await _controller.DeleteStudent(studentId);
-//
-//         Assert.IsType<NoContentResult>(result);
-//     }
-//     [Fact]
-//     public async Task GetAllStudents_NoStudents_ReturnsOkObjectResultWithEmptyList()
-//     {
-//         A.CallTo(() => _fakeService.GetAllStudentsAsync()).Returns(new List<Student>());
-//         var result = await _controller.GetAllStudents();
-//
-//         var okResult = Assert.IsType<OkObjectResult>(result);
-//         var students = Assert.IsAssignableFrom<IEnumerable<Student>>(okResult.Value);
-//         Assert.Empty(students);
-//     }
-//     [Fact]
-//     public async Task DeleteStudent_NonExistingStudent_ReturnsNotFound()
-//     {
-//         const int nonExistingId = 999;
-//         A.CallTo(() => _fakeService.DeleteStudentAsync(nonExistingId)).Throws(new KeyNotFoundException());
-//         var result = await _controller.DeleteStudent(nonExistingId);
-//
-//         Assert.IsType<NotFoundResult>(result);
-//     }
-//     [Fact]
-//     public async Task UpdateStudent_ValidData_ReturnsNoContent()
-//     {
-//         var fakeService = A.Fake<IStudentService>();
-//         var fakeMapper = A.Fake<IMapper>();
-//         var model = new StudentViewModel
-//         {
-//             StudentId = 1,
-//             Name = null,
-//             Grade = null,
-//             Email = null /* Other properties */
-//         };
-//         var student = new Student { /* Properties mapped from model */ };
-//
-//         A.CallTo(() => fakeMapper.MapStudent(model)).Returns(student);
-//         A.CallTo(() => fakeService.UpdateStudentAsync(student)).Returns(Task.CompletedTask);
-//
-//         var controller = new StudentController(fakeService, fakeMapper);
-//
-//         var result = await controller.UpdateStudent(model.StudentId, model);
-//
-//         Assert.IsType<NoContentResult>(result);
-//     }
-//     [Fact]
-//     public async Task UpdateStudent_IdMismatch_ReturnsBadRequest()
-//     {
-//         var controller = new StudentController(A.Fake<IStudentService>(), A.Fake<IMapper>());
-//         var model = new StudentViewModel
-//         {
-//             StudentId = 2,
-//             Name = null,
-//             Grade = null,
-//             Email = null /* Other properties */
-//         };
-//
-//         var result = await controller.UpdateStudent(1, model);
-//
-//         Assert.IsType<BadRequestResult>(result);
-//     }
-//     [Fact]
-//     public async Task AddStudent_ValidData_ReturnsCreatedAtActionResult()
-//     {
-//         var fakeService = A.Fake<IStudentService>();
-//         var fakeMapper = A.Fake<IMapper>();
-//         var model = new StudentViewModel
-//         {
-//             StudentId = 3,
-//             Name = null,
-//             Grade = null,
-//             Email = null
-//         };
-//         var student = new Student { /* Properties mapped from model */ };
-//         var createdStudent = new Student { Id = 1, /* Other properties */ };
-//
-//         A.CallTo(() => fakeMapper.MapStudent(model)).Returns(student);
-//         A.CallTo(() => fakeService.AddStudentAsync(student)).Returns(createdStudent);
-//
-//         var controller = new StudentController(fakeService, fakeMapper);
-//
-//         var result = await controller.AddStudent(model);
-//
-//         var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-//         Assert.Equal(createdStudent, createdAtActionResult.Value);
-//     }
-//
-// }
+using FakeItEasy;
+using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
+using UniTrackBackend.Controllers;
+using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services;
+using UniTrackBackend.Services.Mappings;
+
+namespace UniTrackBackend.Api.Tests;
+
+public class StudentControllerTests
+{
+    private readonly IStudentService _fakeStudentService;
+    private readonly IMapper _fakeMapper;
+    private readonly StudentController _controller;
+
+    public StudentControllerTests()
+    {
+        _fakeStudentService = A.Fake<IStudentService>();
+        _fakeMapper = A.Fake<IMapper>();
+        _controller = new StudentController(_fakeStudentService, _fakeMapper);
+    }
+    
+    public class GetStudentByUserIdTests : StudentControllerTests
+    {
+        [Fact]
+        public async Task GetStudentByUserId_ExistingUserId_ReturnsOkObjectResult()
+        {
+            // Arrange
+            var userId = "someUserId";
+            var student = new Student { /* set properties */ };
+            var studentDto = new StudentResultDto { /* set properties */ };
+
+            A.CallTo(() => _fakeStudentService.GetStudentByUserIdAsync(userId)).Returns(Task.FromResult(student));
+            A.CallTo(() => _fakeMapper.MapStudentViewModel(student)).Returns(studentDto);
+
+            // Act
+            var result = await _controller.GetStudentByUserId(userId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(studentDto, okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetStudentByUserId_NonExistingUserId_ReturnsNotFoundResult()
+        {
+            // Arrange
+            var userId = "someUserId";
+            A.CallTo(() => _fakeStudentService.GetStudentByUserIdAsync(userId)).Returns(Task.FromResult<Student>(null));
+
+            // Act
+            var result = await _controller.GetStudentByUserId(userId);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+    }
+
+    public class GetStudentTests : StudentControllerTests
+    {
+        [Fact]
+        public async Task GetStudent_ExistingId_ReturnsOkObjectResult()
+        {
+            // Arrange
+            var studentId = 1;
+            var student = new Student { /* set properties */ };
+            var studentDto = new StudentResultDto { /* set properties */ };
+
+            A.CallTo(() => _fakeStudentService.GetStudentByIdAsync(studentId)).Returns(Task.FromResult(student));
+            A.CallTo(() => _fakeMapper.MapStudentViewModel(student)).Returns(studentDto);
+
+            // Act
+            var result = await _controller.GetStudent(studentId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(studentDto, okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetStudent_NonExistingId_ReturnsNotFoundResult()
+        {
+            // Arrange
+            var studentId = 1;
+            A.CallTo(() => _fakeStudentService.GetStudentByIdAsync(studentId)).Returns(Task.FromResult<Student>(null));
+
+            // Act
+            var result = await _controller.GetStudent(studentId);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+    }
+    public class GetAllStudentsTests : StudentControllerTests
+    {
+        [Fact]
+        public async Task GetAllStudents_ReturnsOkObjectResultWithStudents()
+        {
+            // Arrange
+            var students = new List<Student> { /* Populate with test students */ };
+            A.CallTo(() => _fakeStudentService.GetAllStudentsAsync()).Returns(Task.FromResult<IEnumerable<Student>>(students));
+
+            // Act
+            var result = await _controller.GetAllStudents();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(students, okResult.Value);
+        }
+    }
+    public class DeleteStudentTests : StudentControllerTests
+    {
+        [Fact]
+        public async Task DeleteStudent_ExistingId_ReturnsNoContentResult()
+        {
+            // Arrange
+            var studentId = 1;
+            A.CallTo(() => _fakeStudentService.DeleteStudentAsync(studentId)).Returns(Task.FromResult(true));
+
+            // Act
+            var result = await _controller.DeleteStudent(studentId);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteStudent_NonExistingId_ReturnsNotFoundResult()
+        {
+            // Arrange
+            var studentId = 1;
+            A.CallTo(() => _fakeStudentService.DeleteStudentAsync(studentId)).Throws<KeyNotFoundException>();
+
+            // Act
+            var result = await _controller.DeleteStudent(studentId);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+    }
+
+}
