@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Services;
+using UniTrackBackend.Services.Commons.Exceptions;
 using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Controllers;
@@ -144,13 +145,10 @@ public class MarkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateMark(int id, [FromBody] MarkDto model)
     {
-        if (id != model.Id)
-            return BadRequest("ID mismatch");
-
         var mark = _mapper.MapMark(model);
         if (mark is null)
             return NotFound();
-        var updatedMark = await _markService.UpdateMarkAsync(mark);
+        var updatedMark = await _markService.UpdateMarkAsync(mark, id);
         
         if (updatedMark is null || updatedMark.Id != id)
             return NotFound();
@@ -168,18 +166,7 @@ public class MarkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteMark(int id)
     {
-        try
-        {
-            var result = await _markService.DeleteMarkAsync(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound();
-        }
+        await _markService.DeleteMarkAsync(id);
 
         return Ok();
     }
