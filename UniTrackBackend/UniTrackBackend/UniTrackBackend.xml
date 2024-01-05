@@ -128,19 +128,7 @@
             <response code="401">Unauthorized if the user is not authenticated.</response>
             <response code="403">Forbidden if the user does not have the Admin role.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveAdmins(System.Collections.Generic.List{UniTrackBackend.Api.DTO.AdminDto})">
-            <summary>
-            Approves admin registrations.
-            </summary>
-            <remarks>
-            This endpoint approves pending admin registrations.
-            Only accessible to users with the Admin role.
-            </remarks>
-            <response code="200">Returns a confirmation message when an admin is approved.</response>
-            <response code="401">Unauthorized if the user is not authenticated.</response>
-            <response code="403">Forbidden if the user does not have the Admin role.</response>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveParents(System.Collections.Generic.List{UniTrackBackend.Api.DTO.ParentDto})">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveParents(UniTrackBackend.Api.DTO.ParentDto)">
             <summary>
             Approves parent registrations.
             </summary>
@@ -331,41 +319,6 @@
             Handles school-related actions such as managing school records.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.AddSchool(UniTrackBackend.Api.DTO.SchoolDto)">
-            <summary>
-            Adds a new school.
-            </summary>
-            <param name="model">The school view model to create a new school.</param>
-            <returns>Returns the created school object.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.GetSchool(System.Int32)">
-            <summary>
-            Retrieves a specific school by its ID.
-            </summary>
-            <param name="id">The ID of the school to retrieve.</param>
-            <returns>The school object if found, otherwise returns not found.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.GetAllSchools">
-            <summary>
-            Retrieves all schools.
-            </summary>
-            <returns>A list of all schools.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.UpdateSchool(System.Int32,UniTrackBackend.Api.DTO.SchoolDto)">
-            <summary>
-            Updates the details of an existing school.
-            </summary>
-            <param name="id">The ID of the school to update.</param>
-            <param name="model">The updated school view model.</param>
-            <returns>Returns updated school object if successful, otherwise a bad request or not found.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.DeleteSchool(System.Int32)">
-            <summary>
-            Deletes a school by its ID.
-            </summary>
-            <param name="id">The ID of the school to delete.</param>
-            <returns>Returns no content if deletion is successful, otherwise not found.</returns>
-        </member>
         <member name="T:UniTrackBackend.Controllers.StudentController">
             <summary>
             The StudentController manages student-related operations within the system.
@@ -418,14 +371,7 @@
             <param name="id">The ID of the teacher to retrieve.</param>
             <returns>The teacher object if found, otherwise returns not found.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.TeacherController.AddTeacher(UniTrackBackend.Data.Models.Teacher)">
-            <summary>
-            Adds a new teacher.
-            </summary>
-            <param name="teacher">The teacher object to add.</param>
-            <returns>Returns the created teacher object.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Data.Models.Teacher)">
+        <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Api.DTO.TeacherDto)">
             <summary>
             Updates an existing teacher's details.
             </summary>
