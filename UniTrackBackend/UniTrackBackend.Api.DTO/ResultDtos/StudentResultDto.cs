@@ -47,7 +47,7 @@ public class StudentResultDto
     [Range(1, int.MaxValue)]
     public int Number { get; set; }
 
-    public List<MarkDto> Marks { get; set; } = null!;
+    public List<MarkResultDto> Marks { get; set; } = null!;
     [Required]
     [EmailAddress]
     public string? Email { get; set; } = null!;
