@@ -11,14 +11,12 @@ public interface IMapper
     public AbsenceResultDto MapAbsenceResultViewModel(Absence absence);
 
     public Absence? MapAbsence(AbsenceDto model);
-    // public Student? MapStudent(StudentViewModel model);
 
-    public StudentResultDto? MapStudentViewModel(Student student);
+    public StudentResultDto? MapStudentDto(Student student);
 
-    public MarkDto? MapMarkViewModel(Mark mark);
-
-    public School? MapSchool(SchoolDto model);
-    public TeacherResultDto? MapTeacherViewModel(Teacher teacher, string? classId = null, string? className = null);
+    public MarkResultDto MapMarkDto(Mark mark);
+    
+    public TeacherResultDto? MapTeacherDto(Teacher teacher, string? classId = null, string? className = null);
 
     public Subject? MapSubject(SubjectDto model);
     public SubjectResultDto? MapSubjectViewModel(Subject subject);

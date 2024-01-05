@@ -39,7 +39,7 @@ public class TeacherController : ControllerBase
         {
             var gradeInfo = await _teacherService.GetGradeByClassTeacherId(teacher.Id);
             
-            var model = _mapper.MapTeacherViewModel(teacher, gradeInfo.Id.ToString(), gradeInfo.Name);
+            var model = _mapper.MapTeacherDto(teacher, gradeInfo.Id.ToString(), gradeInfo.Name);
             if (model is not null)
             {
                 models.Add(model);
@@ -64,10 +64,10 @@ public class TeacherController : ControllerBase
         var gradeInfo = await _gradeService.GetClassTeacherData(teacher.Id);
         if (gradeInfo is not  null)
         {
-            var classTeacherModel = _mapper.MapTeacherViewModel(teacher, gradeInfo.Value.Key, gradeInfo.Value.Value);
+            var classTeacherModel = _mapper.MapTeacherDto(teacher, gradeInfo.Value.Key, gradeInfo.Value.Value);
             return Ok(classTeacherModel);
         }
-        var model = _mapper.MapTeacherViewModel(teacher);
+        var model = _mapper.MapTeacherDto(teacher);
         return Ok(model);
     }
     

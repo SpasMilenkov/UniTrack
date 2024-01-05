@@ -24,7 +24,8 @@ public class Mapper : IMapper
                 TeacherId = model.TeacherId,
                 SubjectId = model.SubjectId,
                 Value = model.Value,
-                GradedOn =  model.GradedOn
+                GradedOn =  model.GradedOn,
+                Topic = model.Topic
             };
             return mark;
         }
@@ -56,7 +57,7 @@ public class Mapper : IMapper
         }
     }
 
-    public StudentResultDto? MapStudentViewModel(Student student)
+    public StudentResultDto? MapStudentDto(Student student)
     {
         try
         {
@@ -66,10 +67,10 @@ public class Mapper : IMapper
                 absenceViewModels.Add(MapAbsenceResultViewModel(absence));
             }
 
-            var markViewModels = new List<MarkDto>();
+            var markViewModels = new List<MarkResultDto>();
             foreach (var mark in student.Marks)
             {
-                markViewModels.Add(MapMarkViewModel(mark));
+                markViewModels.Add(MapMarkDto(mark));
             }
             var model = new StudentResultDto()
             {
@@ -103,6 +104,7 @@ public class Mapper : IMapper
         {
             var model = new AbsenceResultDto()
             {
+                AbsenceId = absence.Id,
                 Subject = absence.Subject.Name,
                 AbsenceCount = absence.Value,
                 Excused = absence.Excused,
@@ -122,18 +124,19 @@ public class Mapper : IMapper
         }
     }
 
-    public MarkDto? MapMarkViewModel(Mark mark)
+    public MarkResultDto MapMarkDto(Mark mark)
     {
         try
         {
-            var model  = new MarkDto
+            var model  = new MarkResultDto
             {
                 Id = mark.Id,
                 Value = mark.Value,
                 StudentId = mark.StudentId,
                 TeacherId = mark.TeacherId,
                 SubjectId = mark.SubjectId,
-                GradedOn = mark.GradedOn
+                GradedOn = mark.GradedOn,
+                Topic = mark.Topic
             };
             return model;
         }
@@ -144,27 +147,7 @@ public class Mapper : IMapper
         }
     }
 
-    public School? MapSchool(SchoolDto model)
-    {
-        try
-        {
-            var school = new School
-            {
-                // Id = model.Id,
-                // Name = model.Name,
-                // Teachers = model.Teachers,
-                // Students = model.Students,
-            };
-            return school;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Failed to map SchoolDto to School");
-            return null;
-        }
-    }
-
-    public TeacherResultDto? MapTeacherViewModel(Teacher teacher, string? classId = null, string? className = null)
+    public TeacherResultDto? MapTeacherDto(Teacher teacher, string? classId = null, string? className = null)
     {
         try
         {

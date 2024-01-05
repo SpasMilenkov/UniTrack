@@ -42,7 +42,7 @@ namespace UniTrackBackend.Controllers
             var student = await _studentService.GetStudentByIdAsync(id);
             if (student == null)
                 return NotFound();
-            var result = _mapper.MapStudentViewModel(student);
+            var result = _mapper.MapStudentDto(student);
             return Ok(result);
         }
         [HttpGet("userId/{userId}")]
@@ -51,7 +51,7 @@ namespace UniTrackBackend.Controllers
             var student = await _studentService.GetStudentByUserIdAsync(userId);
             if (student == null)
                 return NotFound();
-            var result = _mapper.MapStudentViewModel(student);
+            var result = _mapper.MapStudentDto(student);
             return Ok(result);
         }
         /// <summary>

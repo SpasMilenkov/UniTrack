@@ -33,7 +33,7 @@ public class StudentControllerTests
             var studentDto = new StudentResultDto { /* set properties */ };
 
             A.CallTo(() => _fakeStudentService.GetStudentByUserIdAsync(userId)).Returns(Task.FromResult(student));
-            A.CallTo(() => _fakeMapper.MapStudentViewModel(student)).Returns(studentDto);
+            A.CallTo(() => _fakeMapper.MapStudentDto(student)).Returns(studentDto);
 
             // Act
             var result = await _controller.GetStudentByUserId(userId);
@@ -69,7 +69,7 @@ public class StudentControllerTests
             var studentDto = new StudentResultDto { /* set properties */ };
 
             A.CallTo(() => _fakeStudentService.GetStudentByIdAsync(studentId)).Returns(Task.FromResult(student));
-            A.CallTo(() => _fakeMapper.MapStudentViewModel(student)).Returns(studentDto);
+            A.CallTo(() => _fakeMapper.MapStudentDto(student)).Returns(studentDto);
 
             // Act
             var result = await _controller.GetStudent(studentId);
