@@ -2,6 +2,7 @@
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Services
 {
@@ -9,11 +10,12 @@ namespace UniTrackBackend.Services
     {
         private readonly IUnitOfWork _context;
         private readonly ILogger<SchoolService> _logger;
-
-        public SchoolService(IUnitOfWork context, ILogger<SchoolService> logger)
+        private readonly IMapper _mapper;
+        public SchoolService(IUnitOfWork context, ILogger<SchoolService> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
         public async Task<School?> AddSchoolAsync(School? school)
         {
