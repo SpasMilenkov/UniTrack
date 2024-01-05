@@ -64,29 +64,6 @@ namespace UniTrackBackend.Controllers
                 return new BadRequestResult();
             return Ok("Teachers approved");
         }
-        
-        /// <summary>
-        /// Approves admin registrations.
-        /// </summary>
-        /// <remarks>
-        /// This endpoint approves pending admin registrations.
-        /// Only accessible to users with the Admin role.
-        /// </remarks>
-        /// <response code="200">Returns a confirmation message when an admin is approved.</response>
-        /// <response code="401">Unauthorized if the user is not authenticated.</response>
-        /// <response code="403">Forbidden if the user does not have the Admin role.</response>
-        [HttpPut("admins")]
-        [Authorize(Roles = Ts.Roles.SuperAdmin)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveAdmins(List<AdminDto> models)
-        {
-            // var result = await _approvalService.ApproveStudentsAsync(models);
-            // if (!result)
-            //     return new BadRequestResult();
-            return Ok("Admins approved");
-        }
 
         /// <summary>
         /// Approves parent registrations.
@@ -99,16 +76,16 @@ namespace UniTrackBackend.Controllers
         /// <response code="401">Unauthorized if the user is not authenticated.</response>
         /// <response code="403">Forbidden if the user does not have the Admin role.</response>
         [HttpPut("parents")]
-        [Authorize(Roles = Ts.Roles.Admin)]
+        // [Authorize(Roles = Ts.Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveParents(List<ParentDto> models)
+        public async Task<IActionResult> ApproveParents(ParentDto models)
         {
             var result = await _approvalService.ApproveParentsAsync(models);
             if (!result)
                 return new BadRequestResult();
-            return Ok("Parents approved");
+            return Ok("Parent approved");
         }
     }
 }
