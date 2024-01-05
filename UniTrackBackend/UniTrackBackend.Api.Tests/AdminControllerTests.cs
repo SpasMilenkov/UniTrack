@@ -179,6 +179,5 @@ namespace UniTrackBackend.Api.Tests
                 Assert.IsType<BadRequestObjectResult>(result);
             }
         }
-
     }
 }
