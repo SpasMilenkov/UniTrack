@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using UniTrackBackend.Data;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Commons.Exceptions;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Services
 {
@@ -9,140 +12,160 @@ namespace UniTrackBackend.Services
     {
         private readonly IUnitOfWork _context;
         private readonly ILogger<MarkService> _logger;
+        private readonly IMapper _mapper;
 
-        public MarkService(IUnitOfWork context, ILogger<MarkService> logger)
+        public MarkService(IUnitOfWork context, ILogger<MarkService> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<Mark?> AddMarkAsync(Mark? mark)
+        public async Task<MarkResultDto> AddMarkAsync(Mark? mark)
         {
             try
             {
                 await _context.MarkRepository.AddAsync(mark);
+                await _context.SaveAsync();
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while adding mark");
                 return null;
             }
-            return mark;
+            return _mapper.MapMarkDto(mark);
         }
 
-        public async Task<Mark?> GetMarkByIdAsync(int id)
+        public async Task<MarkResultDto> GetMarkByIdAsync(int id)
         {
             try
             {
-                return await _context.MarkRepository.GetByIdAsync(id);
+                var mark = await _context.MarkRepository.GetByIdAsync(id);
+                if (mark == null) throw new ArgumentNullException(nameof(mark));  
+                return _mapper.MapMarkDto(mark);
 
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while getting mark by ID");
-                return null;
+                throw new DataNotFoundException();
             }
-            
-                
         }
 
-        public async Task<IEnumerable<Mark?>?> GetAllMarksAsync()
+        public async Task<IEnumerable<MarkResultDto>> GetAllMarksAsync()
         {
             try
             {
-                return await _context.MarkRepository.GetAllAsync();
+                var marks = await _context.MarkRepository.GetAllAsync() as List<Mark>;
+                if (marks == null) throw new ArgumentNullException(nameof(marks));  
+
+                return marks.Select(m => _mapper.MapMarkDto(m));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all marks");
-                return null;
+                throw new DataNotFoundException();
             }
                 
         }
 
-        public async Task<IEnumerable<Mark>?> GetMarksByStudentAsync(int studentId)
+        public async Task<IEnumerable<MarkResultDto>> GetMarksByStudentAsync(int studentId)
         {
             try
             {
-                return await _context.MarkRepository.GetAsync(m => m.Student.Id == studentId);
+                var marks = await _context.MarkRepository.GetAsync(m => m.Student.Id == studentId);
+                if (marks == null) throw new ArgumentNullException(nameof(marks));  
+
+                return marks.Select(m => _mapper.MapMarkDto(m));
 
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all marks a student has");
-                return null;
+                throw new DataNotFoundException();
             }
         }
 
-        public async Task<IEnumerable<Mark?>?> GetMarksByTeacherAsync(int teacherId)
+        public async Task<IEnumerable<MarkResultDto>> GetMarksByTeacherAsync(int teacherId)
         {
             try
             {
-                return await _context.MarkRepository.GetAsync(m => m.Teacher.Id == teacherId);
+                var marks = await _context.MarkRepository.GetAsync(m => m.Teacher.Id == teacherId);
+                if (marks == null) throw new ArgumentNullException(nameof(marks));  
+
+                return marks.Select(m => _mapper.MapMarkDto(m));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all marks a teacher has graded");
-                return null;
+                throw new DataNotFoundException();
             }
                 
         }
 
-        public async Task<IEnumerable<Mark>?> GetMarksBySubjectAsync(int subjectId)
+        public async Task<IEnumerable<MarkResultDto>> GetMarksBySubjectAsync(int subjectId)
         {
             try
             {
-                return await _context.MarkRepository.GetAsync(m => m.Subject.Id == subjectId);
+                var marks = await _context.MarkRepository.GetAsync(m => m.Subject.Id == subjectId);
+                if (marks == null) throw new ArgumentNullException(nameof(marks));  
+
+                return marks.Select(m => _mapper.MapMarkDto(m));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all marks of a current subject");
-                return null;
+                throw new DataNotFoundException();
             }
         }
 
-        public async Task<IEnumerable<Mark?>?> GetMarksByDateAsync(DateTime date)
+        public async Task<IEnumerable<MarkResultDto>> GetMarksByDateAsync(DateTime date)
         {
             try
             {
-                return await _context.MarkRepository.GetAsync(m => m.GradedOn.Date == date.Date);
+                var marks = await _context.MarkRepository.GetAsync(m => m.GradedOn.Date == date.Date);
+                
+                if (marks == null) throw new ArgumentNullException(nameof(marks));  
+
+                return marks.Select(m => _mapper.MapMarkDto(m));
 
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all marks graded in the same day");
-                return null;
+                throw new DataNotFoundException();
             }
         }
 
-        public async Task<Mark?> UpdateMarkAsync(Mark? mark)
+        public async Task<MarkResultDto> UpdateMarkAsync(Mark mark, int markId)
         {
             try
             {
+                mark.Id = markId;
                 await _context.MarkRepository.UpdateAsync(mark);
-                return mark;
+                await _context.SaveAsync();
+                return _mapper.MapMarkDto(mark);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to update mark");
-                return null;
+                throw new DataNotFoundException();
             }
         }
 
-        public async Task<bool> DeleteMarkAsync(int id)
+        public async Task DeleteMarkAsync(int id)
         {
             try
             {
                 var mark = await _context.MarkRepository.GetByIdAsync(id);
-                if (mark == null) return false;
-                
+                if (mark == null) throw new ArgumentNullException(nameof(mark));  
                 await _context.MarkRepository.DeleteAsync(id);
-                return true;
+                await _context.SaveAsync();
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to delete mark");
-                return false;
+                throw new DataNotFoundException();
             }
 
         }
