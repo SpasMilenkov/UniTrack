@@ -5,6 +5,9 @@ namespace UniTrackBackend.Api.DTO.ResultDtos;
 public class AbsenceResultDto
 {
     [Required]
+    public int AbsenceId { get; set; }
+    
+    [Required]
     [MaxLength(100)]
     public required string Subject { get; set; }
 
