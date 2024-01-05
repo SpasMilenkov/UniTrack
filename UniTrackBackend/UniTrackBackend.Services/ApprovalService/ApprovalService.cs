@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
@@ -59,9 +60,25 @@ public class ApprovalService : IApprovalService
         }
     }
 
-    public async Task<bool> ApproveParentsAsync(List<ParentDto> parents)
+    public async Task<bool> ApproveParentsAsync(ParentDto approvalModel)
     {
-        throw new NotImplementedException();
+    
+        var user = await _userManager.FindByIdAsync(approvalModel.UserId);
+        if (user is null) throw new ArgumentException(nameof(user));
+        var filter = approvalModel.ChildIds.ToHashSet();
+        var children = await _unitOfWork.StudentRepository.GetAsync(s => filter.Contains(s.Id));
+
+        var enumerable = children.ToList();
+        if (children is null) throw new ArgumentException(nameof(children));
+        
+        var entity = new Parent()
+        {
+            UserId = approvalModel.UserId,
+            Children = enumerable
+        };
+        await _unitOfWork.ParentRepository.AddAsync(entity);
+        await _unitOfWork.SaveAsync();
+        return true;
     }
 
     public async Task<bool> ApproveTeacherAsync(TeacherApprovalDto approvalModel)
@@ -92,10 +109,5 @@ public class ApprovalService : IApprovalService
         await _unitOfWork.GradeRepository.UpdateAsync(grade);
         await _unitOfWork.SaveAsync();
         return true;
-    }
-    
-    public async Task<bool> ApproveAdminsAsync()
-    {
-        throw new NotImplementedException();
     }
 }
