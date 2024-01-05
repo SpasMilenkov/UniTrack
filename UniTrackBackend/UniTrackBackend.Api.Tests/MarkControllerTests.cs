@@ -1,6 +1,7 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
@@ -10,184 +11,206 @@ namespace UniTrackBackend.Api.Tests;
 
 public class MarkControllerTests
 {
-    private readonly IMarkService _fakeService;
+    private readonly IMarkService _fakeMarkService;
+    private readonly IMapper _fakeMapper; // Assuming ICustomMapper is your custom mapper interface
     private readonly MarkController _controller;
-    private readonly IMapper _fakeMapper;
+
     public MarkControllerTests()
     {
-        _fakeService = A.Fake<IMarkService>();
-        _fakeMapper = A.Fake<IMapper>();
-        _controller = new MarkController(_fakeService, _fakeMapper);
+        _fakeMarkService = A.Fake<IMarkService>();
+        _fakeMapper = A.Fake<IMapper>(); // Create a fake of your custom mapper
+        _controller = new MarkController(_fakeMarkService, _fakeMapper);
     }
 
     [Fact]
-    public async Task AddMark_ValidMarkViewModel_ReturnsCreatedAtActionResult()
+    public async Task AddMark_ValidModel_ReturnsCreatedAtActionResult()
     {
         // Arrange
-        var model = new MarkDto() { Id = 1 /*, other properties if necessary */ };
-        var mark = new Mark() { Id = 1 /*, map other properties from model */ };
+        var model = new MarkDto
+        {
+            Topic = null
+        };
+        var mark = new Mark { /* set properties */ };
+        var resultDto = new MarkResultDto
+        {
+            Id = 1,
+            Topic = null /*, other properties */
+        };
 
-        A.CallTo(() => _fakeMapper.MapMark(A<MarkDto>.Ignored)).Returns(mark);
-        A.CallTo(() => _fakeService.AddMarkAsync(A<Mark>.Ignored)).Returns(mark);
+        A.CallTo(() => _fakeMapper.MapMark(model)).Returns(mark);
+        A.CallTo(() => _fakeMarkService.AddMarkAsync(mark)).Returns(Task.FromResult(resultDto));
 
         // Act
         var result = await _controller.AddMark(model);
 
         // Assert
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-        var resultValue = Assert.IsType<Mark>(createdAtActionResult.Value);
-        Assert.Equal(mark.Id, resultValue.Id); // Extend this to other properties as needed
+        var createdAtResult = Assert.IsType<CreatedAtActionResult>(result);
+        Assert.Equal(resultDto, createdAtResult.Value);
     }
 
-
-    [Fact]
-    public async Task AddMark_InvalidMark_ReturnsBadRequest()
+    [Theory]
+    [InlineData(null)]
+    public async Task AddMark_NullModel_ReturnsBadRequest(MarkDto model)
     {
-        var result = await _controller.AddMark(null); // Invalid mark
+        // Act
+        var result = await _controller.AddMark(model);
 
+        // Assert
         Assert.IsType<BadRequestResult>(result);
     }
     [Fact]
     public async Task GetMark_ExistingId_ReturnsOkObjectResult()
     {
-        var mark = new Mark { /* set properties */ };
-        A.CallTo(() => _fakeService.GetMarkByIdAsync(A<int>.Ignored)).Returns(mark);
+        // Arrange
+        var markId = 1;
+        var markDto = new MarkResultDto
+        {
+            Topic = null
+        };
+        A.CallTo(() => _fakeMarkService.GetMarkByIdAsync(markId)).Returns(Task.FromResult(markDto));
 
-        var result = await _controller.GetMark(1); // Assuming '1' is a valid ID
+        // Act
+        var result = await _controller.GetMark(markId);
 
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(mark, okResult.Value);
+        Assert.Equal(markDto, okResult.Value);
     }
 
     [Fact]
     public async Task GetMark_NonExistingId_ReturnsNotFoundResult()
     {
-        A.CallTo(() => _fakeService.GetMarkByIdAsync(A<int>.Ignored)).Returns((Mark)null);
+        // Arrange
+        var markId = 1;
+        A.CallTo(() => _fakeMarkService.GetMarkByIdAsync(markId)).Returns(Task.FromResult<MarkResultDto>(null));
 
-        var result = await _controller.GetMark(999); // Assuming '999' is an invalid ID
+        // Act
+        var result = await _controller.GetMark(markId);
 
+        // Assert
         Assert.IsType<NotFoundResult>(result);
     }
-
-    [Fact]
-    public async Task GetAllMarks_ReturnsOkObjectResultWithMarks()
+    public class GetAllMarksTests : MarkControllerTests
     {
-        var marks = new List<Mark> { /* populate list with marks */ };
-        A.CallTo(() => _fakeService.GetAllMarksAsync()).Returns(marks);
+        [Fact]
+        public async Task GetAllMarks_ReturnsOkObjectResultWithMarks()
+        {
+            // Arrange
+            var marks = new List<MarkResultDto> { /* Populate with test marks */ };
+            A.CallTo(() => _fakeMarkService.GetAllMarksAsync()).Returns(Task.FromResult<IEnumerable<MarkResultDto>>(marks));
 
-        var result = await _controller.GetAllMarks();
+            // Act
+            var result = await _controller.GetAllMarks();
 
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(marks, okResult.Value);
+        }
+    }
+    [Fact]
+    public async Task GetMarksByStudent_WithValidStudentId_ReturnsOkObjectResult()
+    {
+        // Arrange
+        var studentId = 1;
+        var marks = new List<MarkResultDto> { /* Populate with test marks */ };
+        A.CallTo(() => _fakeMarkService.GetMarksByStudentAsync(studentId)).Returns(Task.FromResult<IEnumerable<MarkResultDto>>(marks));
+
+        // Act
+        var result = await _controller.GetMarksByStudent(studentId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(marks, okResult.Value);
+    }
+    
+    [Fact]
+    public async Task GetMarksBySubject_WithValidSubjectId_ReturnsOkObjectResult()
+    {
+        // Arrange
+        var subjectId = 1;
+        var marks = new List<MarkResultDto> { /* Populate with test marks */ };
+        A.CallTo(() => _fakeMarkService.GetMarksBySubjectAsync(subjectId)).Returns(Task.FromResult<IEnumerable<MarkResultDto>>(marks));
+
+        // Act
+        var result = await _controller.GetMarksBySubject(subjectId);
+
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(marks, okResult.Value);
     }
     [Fact]
-    public async Task GetMarksByStudent_ValidStudentId_ReturnsOkObjectResult()
+    public async Task GetMarksByDate_WithValidDate_ReturnsOkObjectResult()
     {
-        var marks = new List<Mark> { /* populate list with marks */ };
-        A.CallTo(() => _fakeService.GetMarksByStudentAsync(A<int>.Ignored)).Returns(marks);
+        // Arrange
+        var date = DateTime.Now;
+        var marks = new List<MarkResultDto> { /* Populate with test marks */ };
+        A.CallTo(() => _fakeMarkService.GetMarksByDateAsync(date)).Returns(Task.FromResult<IEnumerable<MarkResultDto>>(marks));
 
-        var result = await _controller.GetMarksByStudent(1); // Valid student ID
+        // Act
+        var result = await _controller.GetMarksByDate(date);
 
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(marks, okResult.Value);
-    }
-
-    [Fact]
-    public async Task GetMarksByStudent_InvalidStudentId_ReturnsEmptyList()
-    {
-        A.CallTo(() => _fakeService.GetMarksByStudentAsync(A<int>.Ignored)).Returns(new List<Mark>());
-
-        var result = await _controller.GetMarksByStudent(999); // Invalid student ID
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Empty(okResult.Value as IEnumerable<Mark>);
-    }
-    [Fact]
-    public async Task GetMarksByTeacher_ValidTeacherId_ReturnsOkObjectResult()
-    {
-        var marks = new List<Mark> { /* populate list with marks */ };
-        A.CallTo(() => _fakeService.GetMarksByTeacherAsync(A<int>.Ignored)).Returns(marks);
-
-        var result = await _controller.GetMarksByTeacher(1); // Valid teacher ID
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(marks, okResult.Value);
-    }
-
-    [Fact]
-    public async Task GetMarksByTeacher_InvalidTeacherId_ReturnsEmptyList()
-    {
-        A.CallTo(() => _fakeService.GetMarksByTeacherAsync(A<int>.Ignored)).Returns(new List<Mark>());
-
-        var result = await _controller.GetMarksByTeacher(999); // Invalid teacher ID
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Empty(okResult.Value as IEnumerable<Mark>);
-    }
-    [Fact]
-    public async Task GetMarksBySubject_ValidSubjectId_ReturnsOkObjectResult()
-    {
-        var marks = new List<Mark> { /* populate list with marks */ };
-        A.CallTo(() => _fakeService.GetMarksBySubjectAsync(A<int>.Ignored)).Returns(marks);
-
-        var result = await _controller.GetMarksBySubject(1); // Valid subject ID
-
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(marks, okResult.Value);
     }
     [Fact]
-    public async Task UpdateMark_ValidData_ReturnsOkObjectResult()
+    public async Task UpdateMark_WithValidData_ReturnsOkObjectResult()
     {
-        var model = new MarkDto(){Id = 1};
-        var mark = new Mark() { Id = 1, /* Other properties */ };
-        A.CallTo(() => _fakeMapper.MapMark(A<MarkDto>.Ignored)).Returns(mark);
-        A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.Ignored)).Returns(mark);
-        var result = await _controller.UpdateMark(1, model);
+        // Arrange
+        var markId = 1;
+        var model = new MarkDto
+        {
+            Topic = null
+        };
+        var mark = new Mark { /* set properties */ };
+        var updatedDto = new MarkResultDto
+        {
+            Id = markId,
+            Topic = null /*, other properties */
+        };
 
+        A.CallTo(() => _fakeMapper.MapMark(model)).Returns(mark);
+        A.CallTo(() => _fakeMarkService.UpdateMarkAsync(mark, markId)).Returns(Task.FromResult(updatedDto));
+
+        // Act
+        var result = await _controller.UpdateMark(markId, model);
+
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(mark, okResult.Value);
+        Assert.Equal(updatedDto, okResult.Value);
     }
 
     [Fact]
-    public async Task UpdateMark_IdMismatch_ReturnsBadRequest()
+    public async Task UpdateMark_WithNonExistingId_ReturnsNotFoundResult()
     {
-        var mark = new MarkDto() { Id = 1, /* Other properties */ };
+        // Arrange
+        var markId = 1;
+        var model = new MarkDto
+        {
+            Topic = null
+        };
+        var mark = new Mark { /* set properties */ };
 
-        var result = await _controller.UpdateMark(2, mark);
+        A.CallTo(() => _fakeMapper.MapMark(model)).Returns(mark);
+        A.CallTo(() => _fakeMarkService.UpdateMarkAsync(mark, markId)).Returns(Task.FromResult<MarkResultDto>(null));
 
-        Assert.IsType<BadRequestObjectResult>(result);
-    }
+        // Act
+        var result = await _controller.UpdateMark(markId, model);
 
-    [Fact]
-    public async Task UpdateMark_NonExistingMark_ReturnsNotFound()
-    {
-        var mark = new MarkDto() { Id = 999, /* Other properties */ };
-        A.CallTo(() => _fakeService.UpdateMarkAsync(A<Mark>.That.Matches(m => m.Id == mark.Id))).Returns((Mark)null);
-
-        var result = await _controller.UpdateMark(999, mark);
-
+        // Assert
         Assert.IsType<NotFoundResult>(result);
     }
-
     [Fact]
-    public async Task DeleteMark_ExistingId_ReturnsOkResult()
+    public async Task DeleteMark_WithExistingId_ReturnsOkResult()
     {
-        A.CallTo(() => _fakeService.DeleteMarkAsync(A<int>.That.IsEqualTo(1))).Returns(true);
+        // Arrange
+        var markId = 1;
+        A.CallTo(() => _fakeMarkService.DeleteMarkAsync(markId)).DoesNothing();
 
+        // Act
+        var result = await _controller.DeleteMark(markId);
 
-        var result = await _controller.DeleteMark(1);
-
+        // Assert
         Assert.IsType<OkResult>(result);
-    }
-
-
-    [Fact]
-    public async Task DeleteMark_NonExistingId_ReturnsNotFoundResult()
-    {
-        A.CallTo(() => _fakeService.DeleteMarkAsync(A<int>.That.IsEqualTo(999))).Throws(new KeyNotFoundException());
-
-        var result = await _controller.DeleteMark(999);
-
-        Assert.IsType<NotFoundResult>(result);
     }
 }
