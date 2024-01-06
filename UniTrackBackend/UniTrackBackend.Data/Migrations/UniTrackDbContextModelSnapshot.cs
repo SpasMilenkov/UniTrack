@@ -22,6 +22,21 @@ namespace UniTrackBackend.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GradeTeacher", b =>
+                {
+                    b.Property<int>("GradesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeachersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GradesId", "TeachersId");
+
+                    b.HasIndex("TeachersId");
+
+                    b.ToTable("GradeTeacher");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -245,9 +260,15 @@ namespace UniTrackBackend.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassTeacherId");
+                    b.HasIndex("ClassTeacherId")
+                        .IsUnique();
+
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("Grades");
                 });
@@ -472,6 +493,9 @@ namespace UniTrackBackend.Data.Migrations
                     b.Property<DateTime?>("RefreshTokenValidity")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -492,6 +516,21 @@ namespace UniTrackBackend.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("GradeTeacher", b =>
+                {
+                    b.HasOne("UniTrackBackend.Data.Models.Grade", null)
+                        .WithMany()
+                        .HasForeignKey("GradesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -609,12 +648,20 @@ namespace UniTrackBackend.Data.Migrations
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
                     b.HasOne("UniTrackBackend.Data.Models.Teacher", "ClassTeacher")
+                        .WithOne()
+                        .HasForeignKey("UniTrackBackend.Data.Models.Grade", "ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.School", "School")
                         .WithMany()
-                        .HasForeignKey("ClassTeacherId")
+                        .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ClassTeacher");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>

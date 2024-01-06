@@ -38,5 +38,14 @@ public class UniTrackDbContext : IdentityDbContext<User>
             .HasOne(t => t.User)
             .WithOne()
             .HasForeignKey<Teacher>(t => t.UserId);
+        
+        modelBuilder.Entity<Grade>()
+            .HasOne(g => g.ClassTeacher)
+            .WithOne() // If Teacher doesn't have a corresponding navigation property for Grade
+            .HasForeignKey<Grade>(g => g.ClassTeacherId);
+        
+        modelBuilder.Entity<Teacher>()
+            .HasMany(t => t.Grades)
+        .WithMany(g => g.Teachers);
     }
 }
