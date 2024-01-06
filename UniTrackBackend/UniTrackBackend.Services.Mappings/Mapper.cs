@@ -203,12 +203,14 @@ public class Mapper : IMapper
     {
         try
         {
-            var viewModel = new SubjectResultDto
-            {
-                Id = subject.Id,
-                Name = subject.Name,
-                TeacherNames = subject.Teachers.Select(t => t.Id.ToString())
-            };
+            var viewModel = new SubjectResultDto(
+                subject.Id.ToString(),
+                subject.Name,
+                subject.Teachers.
+                    Select(t => new ShortTeacherResultDto(
+                        t.Id.ToString(),
+                        t.User.FirstName,
+                        t.User.LastName)));
 
             return viewModel;
         }
