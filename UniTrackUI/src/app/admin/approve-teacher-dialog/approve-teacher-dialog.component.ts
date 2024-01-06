@@ -4,7 +4,8 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { StudentsClass } from 'src/app/shared/models/students-class';
 import { Subject } from 'src/app/shared/models/subject';
 import { AdminService } from 'src/app/shared/services/admin.service';
@@ -21,7 +22,7 @@ export class ApproveTeacherDialogComponent implements OnInit {
     classId: this.fb.control(''),
   });
   allClasses!: StudentsClass[];
-  allSubjects!: Subject[];
+  allSubjects$!: Observable<Subject[]>;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveTeacherDialogComponent>,
@@ -31,7 +32,7 @@ export class ApproveTeacherDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.allClasses = this.adminService.getAllClasses();
-    this.allSubjects = this.adminService.getAllSubjects();
+    this.allSubjects$ = this.adminService.getAllSubjects();
   }
 
   onSubmit(): void {

@@ -113,6 +113,23 @@
     Passwords do not match. Please try again.
   </mat-error>
 
+  <mat-form-field appearance="outline" *ngIf="schools$ | async as schools"  class="without-space-after pt-3">
+    <mat-label>School:</mat-label>
+    <mat-select formControlName="schoolId">
+      <mat-option *ngFor="let school of schools" [value]="school.id">{{
+        school.name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error
+    *ngIf="
+      authForm.get('schoolId')?.touched &&
+      authForm.get('schoolId')?.hasError('required')
+    "
+  >
+    School field cannot be empty.
+  </mat-error>
+
   <a class="text-end text-ut-accent mt-4 mb-2" routerLink="../login">
     Already have an account?&nbsp;<span class="fw-bold">Log in here</span>.</a
   >

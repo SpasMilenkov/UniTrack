@@ -1,8 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable, tap } from 'rxjs';
 import { Roles } from 'src/app/shared/enums/roles.enum';
 import { UserRequest } from 'src/app/shared/models/user-request';
+import { AdminService } from 'src/app/shared/services/admin.service';
 
 @Component({
   selector: 'app-approval-table',
@@ -13,7 +15,6 @@ export class ApprovalTableComponent implements OnInit {
   displayedColumns: string[] = [
     'select',
     'email',
-    'type',
     'firstName',
     'lastName',
     'approved',
@@ -23,20 +24,27 @@ export class ApprovalTableComponent implements OnInit {
   roles = Roles;
 
   dataSource!: MatTableDataSource<UserRequest>;
-  @Input() userRequests: UserRequest[] = [];
-  @Output() onApproveStudents = new EventEmitter<string[]>();
-  @Output() onApproveTeacher = new EventEmitter<string>();
-  @Output() onDisapprove = new EventEmitter<string[]>();
+  userRequests$!: Observable<UserRequest[]>;
+  @Output() onApprove = new EventEmitter<string[] | string>();
 
-  constructor() {}
+  constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<UserRequest>(this.userRequests);
+    this.userRequests$ = this.adminService
+      .getUserApprovalRequests()
+      .pipe(
+        tap(
+          (userRequests: UserRequest[]) =>
+            (this.dataSource = new MatTableDataSource<UserRequest>(
+              userRequests
+            ))
+        )
+      );
   }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.filter(({type}) => type === this.roles.STUDENT).length;
+    const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
@@ -46,7 +54,7 @@ export class ApprovalTableComponent implements OnInit {
       return;
     }
 
-    this.selection.select(...this.dataSource.data.filter(({type}) => type === this.roles.STUDENT));
+    this.selection.select(...this.dataSource.data);
   }
 
   checkboxLabel(row?: UserRequest): string {
@@ -58,30 +66,15 @@ export class ApprovalTableComponent implements OnInit {
     }`;
   }
 
-  approve(type: string, id?: string): void {
-    if(type === this.roles.STUDENT){
-      if (id) {
-        this.onApproveStudents.emit([id]);
-        return;
-      }
-      const clonedIds = this.selection.selected.map(({ id }) => id);
-      this.onApproveStudents.emit(clonedIds);
-      return;
-    }
-    this.onApproveTeacher.emit(id);
-  }
-
-  disapprove(id?: string): void {
-    if (id) {
-      this.onDisapprove.emit([id]);
-      return;
-    }
+  approve(id?: string): void {
     const clonedIds = this.selection.selected.map(({ id }) => id);
-    this.onDisapprove.emit(clonedIds);
+    const selectedIds = id ? id : clonedIds;
+
+    this.onApprove.emit(selectedIds);
   }
 
   selectRow(row: any): void {
-    if(row.type === this.roles.STUDENT){
+    if (row.type === this.roles.STUDENT) {
       this.selection.toggle(row);
     }
   }

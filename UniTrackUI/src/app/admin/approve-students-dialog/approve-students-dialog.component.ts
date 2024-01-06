@@ -11,7 +11,7 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 })
 export class ApproveStudentsDialogComponent implements OnInit {
   form = this.fb.group({
-    gradeId: this.fb.control([], Validators.required),
+    gradeId: this.fb.control([], Validators.required)
   });
   allClasses!: StudentsClass[];
 

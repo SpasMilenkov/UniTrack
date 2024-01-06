@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { Attendance } from 'src/app/shared/models/attendance';
 import { ClassAverageComparison } from 'src/app/shared/models/class-average-comparison';
 import { DetailedSubjectPerformance } from 'src/app/shared/models/detailed-subject-performance';
@@ -12,7 +13,7 @@ import { StatisticsService } from 'src/app/shared/services/statistics.service';
   styleUrls: ['./statistics-layout.component.scss'],
 })
 export class StatisticsLayoutComponent implements OnInit {
-  statisticObj!: Statistic;
+  statisticObj$!: Observable<Statistic>;
   pieOptions: any;
   basicOptions: any;
   barOptions: any;
@@ -25,19 +26,23 @@ export class StatisticsLayoutComponent implements OnInit {
   constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
-    this.statisticObj = this.statisticsService.getCurrentStudentStatistics('');
-
-    const {
-      attendance,
-      subjectAvg,
-      detailedSubjectPerformance,
-      classAverageComparison
-    } = this.statisticObj;
-
-    this.initAttendanceChart(attendance);
-    this.iniSubjectAverageChart(subjectAvg);
-    this.initDetailedSubjectChart(detailedSubjectPerformance);
-    this.initClassAvgComparison(classAverageComparison);
+    this.statisticObj$ = this.statisticsService
+      .getCurrentStudentStatistics()
+      .pipe(
+        tap(
+          ({
+            attendance,
+            subjectAvg,
+            detailedSubjectPerformance,
+            classAverageComparison,
+          }) => {
+            this.initAttendanceChart(attendance);
+            this.iniSubjectAverageChart(subjectAvg);
+            this.initDetailedSubjectChart(detailedSubjectPerformance);
+            this.initClassAvgComparison(classAverageComparison);
+          }
+        )
+      );
   }
 
   private initAttendanceChart(attendance: Attendance): void {

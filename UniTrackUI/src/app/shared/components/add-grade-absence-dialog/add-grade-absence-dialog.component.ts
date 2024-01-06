@@ -29,7 +29,7 @@ export class AddGradeAbsenceDialogComponent {
   ) {}
 
   ngOnInit(): void {
-    this.teacher = this.userService.getTeacherProfile();
+    // this.teacher = this.userService.getTeacherProfile();
   }
 
   getTypeTitle(): string {

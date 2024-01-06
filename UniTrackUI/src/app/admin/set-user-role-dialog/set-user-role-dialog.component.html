@@ -1,0 +1,38 @@
+<div
+  class="main-wrapper d-flex flex-column align-items-center justify-content-center px-5 py-3"
+>
+  <form [formGroup]="form">
+    <h1 mat-dialog-title class="text-center fw-bold mb-3">
+      Set user role:
+    </h1>
+    <div mat-dialog-content class="d-flex flex-column justify-content-center">
+      <mat-label>Select a role:</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="role">
+          <mat-option
+            *ngFor="let role of roles"
+            [value]="role"
+            >{{ role }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="d-flex flex-column">
+      <button
+        mat-raised-button
+        mat-dialog-close
+        class="my-2 accent-btn-lg cancel-btn"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        cdkFocusInitial
+        class="my-2 accent-btn-lg"
+        (click)="onSubmit()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

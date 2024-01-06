@@ -1,6 +1,6 @@
 export interface Absence{
   subject: string;
-  absence: number;
+  absenceCount: number;
   excused: boolean;
   date: string;
   teacherId: string;
