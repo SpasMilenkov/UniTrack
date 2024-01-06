@@ -10,4 +10,5 @@ public class Teacher
     public ICollection<Subject> Subjects { get; set; } = null!;
     public ICollection<Absence> Absences { get; set; } = null!;
     public ICollection<Mark> Marks { get; set; } = null!;
+    public ICollection<Grade> Grades { get; set; } = null!;
 }
