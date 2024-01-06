@@ -4,7 +4,7 @@
       <button
         mat-raised-button
         class="primary-btn-lg text-ut-white w-100 my-2"
-        (click)="approve()"
+        (click)="approve(roles.STUDENT)"
       >
         <mat-icon>done</mat-icon>
         Approve
@@ -58,8 +58,8 @@
           mat-cell
           *matCellDef="let user"
           [ngClass]="{
-            'student-user': user.type === profileTypes.STUDENT,
-            'teacher-user': user.type === profileTypes.TEACHER
+            'student-user': user.type === roles.STUDENT,
+            'teacher-user': user.type === roles.TEACHER
           }"
         >
           {{ user.type }}
