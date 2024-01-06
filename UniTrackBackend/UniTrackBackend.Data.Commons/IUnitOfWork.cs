@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable
 {
     IRepository<School> SchoolRepository { get; }
     IAbsenceRepository AbsenceRepository { get; }
-    IRepository<Grade> GradeRepository { get; }
+    IGradeRepository GradeRepository { get; }
     IMarkRepository MarkRepository { get; }
     IRepository<Parent> ParentRepository { get; }
     IStudentRepository StudentRepository { get; }
