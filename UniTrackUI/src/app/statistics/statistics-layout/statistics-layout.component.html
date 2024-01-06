@@ -1,4 +1,4 @@
-<div class="main-wrapper rounded m-lg-5 p-3">
+<div class="main-wrapper rounded m-lg-5 p-3" *ngIf="statisticObj$ | async as statisticObj">
   <div class="row">
     <h1 class="fw-bold text-ut-dark-grey my-3">
       Statistics for {{ statisticObj.studentName }}:
