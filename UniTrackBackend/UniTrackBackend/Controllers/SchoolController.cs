@@ -3,6 +3,7 @@ using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services;
 using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Api.DTO.ResultDtos;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Controllers
 {
