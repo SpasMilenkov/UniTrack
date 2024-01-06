@@ -113,11 +113,20 @@ public static class DataSeeder
             subjects = await unitOfWork.SubjectRepository.GetAllAsync();
             enumerable = subjects.ToList();
         }
-        
+
+        var grades = await unitOfWork.GradeRepository.GetAllAsync();
+        var gradesEnumerable = grades.ToList();
+        if (grades is null || !gradesEnumerable.Any())
+        {
+            await SeedGradesAsync(unitOfWork);
+            grades = await unitOfWork.GradeRepository.GetAllAsync();
+            gradesEnumerable = grades.ToList();
+        }
+
         var teachers = new List<Teacher>
         {
-            new Teacher { UserId = user!.Id, SchoolId = school!.Id, Subjects = enumerable},
-            new Teacher { UserId = user2!.Id, SchoolId = school.Id, Subjects = enumerable}
+            new Teacher { UserId = user!.Id, SchoolId = school!.Id, Subjects = enumerable, Grades = new List<Grade> { gradesEnumerable.First() } },
+            new Teacher { UserId = user2!.Id, SchoolId = school.Id, Subjects = enumerable, Grades = new List<Grade> { gradesEnumerable.Last() } }
         };
 
         foreach (var teacher in teachers)
@@ -288,12 +297,20 @@ public static class DataSeeder
         
         var teacher1 = await unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == user1!.Id);
         var teacher2 = await unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == user2!.Id);
-        
+        var schools = await unitOfWork.SchoolRepository.GetAllAsync();
+        var enumerable = schools.ToList();
+        if (schools is null || enumerable.Any())
+        {
+            await SeedSchoolsAsync(unitOfWork);
+            schools = await unitOfWork.SchoolRepository.GetAllAsync();
+            enumerable = schools.ToList();
+        }
         var grades = new List<Grade>
         {
-            new Grade { Name = "Grade 10", ClassTeacherId = teacher1!.Id},
+            new() { Name = "Grade 10", ClassTeacherId = teacher1!.Id, Teachers = new List<Teacher> {teacher1}, SchoolId = enumerable.First().Id},
+            new() { Name = "Grade 9", ClassTeacherId = teacher2!.Id, Teachers = new List<Teacher> {teacher2}, SchoolId = enumerable.First().Id},  
         };
-
+        
         foreach (var grade in grades)
         {
             if (await unitOfWork.GradeRepository.FirstOrDefaultAsync(g => g.Name == grade.Name) == null)
