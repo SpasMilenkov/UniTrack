@@ -13,7 +13,7 @@ public class UnitOfWork : IDisposable, IUnitOfWork
     private MarkRepository? _markRepository;
     private EfRepository<Parent>? _parentRepository;
     private StudentRepository? _studentRepository;
-    private EfRepository<Subject>? _subjectRepository;
+    private SubjectRepository? _subjectRepository;
     private ITeacherRepository? _teacherRepository;
     private EfRepository<School>? _schoolRepository;
     private EfRepository<Admin>? _adminRepository;
@@ -78,11 +78,11 @@ public class UnitOfWork : IDisposable, IUnitOfWork
         }
     }
 
-    public IRepository<Subject> SubjectRepository
+    public ISubjectRepository SubjectRepository
     {
         get
         {
-            _subjectRepository ??= new EfRepository<Subject>(_context);
+            _subjectRepository ??= new SubjectRepository(_context);
             return _subjectRepository;
         }
     }

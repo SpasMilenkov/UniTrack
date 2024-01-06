@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
@@ -39,10 +40,17 @@ public class SubjectService : ISubjectService
             throw;
         }
     }
-    public async Task<Subject> AddSubjectAsync(Subject subject)
+    public async Task<Subject> AddSubjectAsync(SubjectDto subjectDto)
     {
         try
         {
+            var filter = subjectDto.TeacherIds.ToHashSet();
+            var teachers = await _unitOfWork.TeacherRepository.GetAsync(t => filter.Contains(t.Id));
+            var subject = new Subject
+            {
+                Name = subjectDto.Name,
+                Teachers = teachers.ToList()
+            };
             await _unitOfWork.SubjectRepository.AddAsync(subject);
             await _unitOfWork.SaveAsync();
             return subject;
@@ -55,19 +63,21 @@ public class SubjectService : ISubjectService
     }
     
 
-    public async Task<Subject> UpdateSubjectAsync(Subject subject)
+    public async Task<Subject> UpdateSubjectAsync(int id, SubjectDto subjectDto)
     {
-        try
+        var entity = await _unitOfWork.SubjectRepository.GetByIdAsync(id);
+        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        
+        foreach (var teacherId in subjectDto.TeacherIds)
         {
-            await _unitOfWork.SubjectRepository.UpdateAsync(subject);
-            await _unitOfWork.SaveAsync();
-            return subject;
+            var teacher = await _unitOfWork.TeacherRepository.GetByIdAsync(teacherId);
+            if (teacher is not null)
+                entity.Teachers.Add(teacher);
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in UpdateSubjectAsync");
-            throw;
-        }
+
+        await _unitOfWork.SubjectRepository.UpdateAsync(entity);
+        await _unitOfWork.SaveAsync();
+        return entity;
     }
 
     public async Task DeleteSubjectAsync(int id)
@@ -87,23 +97,18 @@ public class SubjectService : ISubjectService
             throw;
         }
     }
-
-    public async Task<Subject> AssignTeachersToSubject(Subject subject, List<int> teacherIds)
+    public async Task<Subject> AssignClassTeacherToSubject(int subjectId, int teacherId)
     {
-        foreach (var teacherId in teacherIds)
-        {
-            var teacher = await _unitOfWork.TeacherRepository.GetByIdAsync(teacherId);
-            if (teacher is not null)
-                subject.Teachers.Add(teacher);
-        }
+        var subject = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
+        if (subject is null) throw new ArgumentException(nameof(subject));
 
-        await _unitOfWork.SubjectRepository.UpdateAsync(subject);
+        var teacher = await _unitOfWork.TeacherRepository.GetByIdAsync(teacherId);
+        if (teacher is null) throw new ArgumentException(nameof(teacher));
+        
+        await _unitOfWork.SubjectRepository.LoadCollectionAsync(subject, s => s.Teachers);
+        
+        subject.Teachers.Add(teacher);
         await _unitOfWork.SaveAsync();
         return subject;
-    }
-
-    public async Task<Subject> AssignClassTeacherToSubject(Subject subject, int teacherId)
-    {
-        throw new NotImplementedException();
     }
 }

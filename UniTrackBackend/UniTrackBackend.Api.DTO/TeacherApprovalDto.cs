@@ -8,5 +8,4 @@ public class TeacherApprovalDto
     public int ClassId { get; set; }
     public int SchoolId { get; set; }
     public List<int> SubjectIds { get; set; }
-    public List<int> GradeIds { get; set; }
 }

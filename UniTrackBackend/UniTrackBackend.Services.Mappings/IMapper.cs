@@ -8,7 +8,7 @@ public interface IMapper
 {
     public Mark? MapMark(MarkDto model);
 
-    public AbsenceResultDto MapAbsenceResultViewModel(Absence absence);
+    public AbsenceResultDto MapAbsenceResultDto(Absence absence);
 
     public Absence? MapAbsence(AbsenceDto model);
 
@@ -19,7 +19,7 @@ public interface IMapper
     public TeacherResultDto? MapTeacherDto(Teacher teacher, string? classId = null, string? className = null);
 
     public Subject? MapSubject(SubjectDto model);
-    public SubjectResultDto? MapSubjectViewModel(Subject subject);
+    public SubjectResultDto? MapSubjectResultDto(Subject subject);
     public LoginResultDto? MapLoginResult(string userId, string role, string avatarUrl);
 
 }

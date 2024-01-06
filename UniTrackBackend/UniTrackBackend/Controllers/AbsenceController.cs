@@ -50,7 +50,7 @@ namespace UniTrackBackend.Controllers
         public async Task<ActionResult<IEnumerable<AbsenceDto>>> GetAllAbsences()
         {
             var absences = await _absenceService.GetAbsencesAsync();
-            var modelList = absences.Select(absence => _mapper.MapAbsenceResultViewModel(absence)).ToList();
+            var modelList = absences.Select(absence => _mapper.MapAbsenceResultDto(absence)).ToList();
 
             return Ok(modelList);
         }
@@ -68,7 +68,7 @@ namespace UniTrackBackend.Controllers
             var absences = await _absenceService.GetAbsencesByStudentIdAsync(id);
             if (absences == null) return NotFound("Student not found");
 
-            var models = absences.Select(absence => _mapper.MapAbsenceResultViewModel(absence)).ToList();
+            var models = absences.Select(absence => _mapper.MapAbsenceResultDto(absence)).ToList();
 
             return models.Any() ? Ok(models) : NotFound("No absences found for the specified student");
         }
@@ -85,7 +85,7 @@ namespace UniTrackBackend.Controllers
         {
             var absences = await _absenceService.GetAbsencesByTeacherIdAsync(id);
 
-            var models = absences.Select(absence => _mapper.MapAbsenceResultViewModel(absence)).ToList();
+            var models = absences.Select(absence => _mapper.MapAbsenceResultDto(absence)).ToList();
 
             return models.Any() ? Ok(models) : NotFound("No absences found for the specified teacher");
         }

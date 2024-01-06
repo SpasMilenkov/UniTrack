@@ -64,7 +64,7 @@ public class Mapper : IMapper
             var absenceViewModels = new List<AbsenceResultDto>();
             foreach (var absence in student.Absences)
             {
-                absenceViewModels.Add(MapAbsenceResultViewModel(absence));
+                absenceViewModels.Add(MapAbsenceResultDto(absence));
             }
 
             var markViewModels = new List<MarkResultDto>();
@@ -98,7 +98,7 @@ public class Mapper : IMapper
         }
     }
 
-    public AbsenceResultDto MapAbsenceResultViewModel(Absence absence)
+    public AbsenceResultDto MapAbsenceResultDto(Absence absence)
     {
         try
         {
@@ -173,7 +173,7 @@ public class Mapper : IMapper
         
     }
 
-    public Subject? MapSubject(SubjectDto model)
+    public Subject MapSubject(SubjectDto model)
     {
         try
         {
@@ -196,19 +196,15 @@ public class Mapper : IMapper
         }
     }
 
-    public SubjectResultDto? MapSubjectViewModel(Subject subject)
+    public SubjectResultDto? MapSubjectResultDto(Subject subject)
     {
         try
         {
-            if (subject == null)
-            {
-                throw new ArgumentNullException(nameof(subject));
-            }
-
             var viewModel = new SubjectResultDto
             {
+                Id = subject.Id,
                 Name = subject.Name,
-                TeacherIds = subject.Teachers.Select(t => t.Id.ToString())
+                TeacherNames = subject.Teachers.Select(t => t.Id.ToString())
             };
 
             return viewModel;
@@ -218,8 +214,8 @@ public class Mapper : IMapper
             _logger.LogError(e, "Failed to map teacher to TeacherViewModel");
             return null;
         }
-
     }
+    
 
     public LoginResultDto? MapLoginResult( string userId, string role, string avatarUrl)
     {
