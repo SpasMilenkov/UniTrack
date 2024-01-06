@@ -1,11 +1,14 @@
+import { Roles } from "../enums/roles.enum";
 import { Absence } from "./absence";
 import { Grade } from "./grade";
 import { Profile } from "./profile";
 
 export interface StudentProfile extends Profile{
-  id: string;
+  type: Roles;
+  classId: string;
+  className: string;
   number: number;
-  grades?: Grade[];
+  marks?: Grade[];
   absences?: Absence[];
   classTeacherId: string;
   classTeacherFirstName: string;

@@ -10,7 +10,7 @@
             <app-student-details-card
               class="col-md-6 my-1"
               [type]="studentDetailsCardTypes.GRADES"
-              [grades]="getStudentProfile().grades || []"
+              [grades]="getStudentProfile().marks || []"
               *ngIf="profile.type === roles.STUDENT"
             ></app-student-details-card>
             <app-student-details-card
@@ -46,7 +46,7 @@
         <div class="col-12 my-5" *ngIf="profile.type === roles.STUDENT">
           <h1 class="fw-bold text-ut-accent">Grades: </h1>
           <app-grades-table
-            [grades]="getStudentProfile().grades || []"
+            [grades]="getStudentProfile().marks || []"
           ></app-grades-table>
           <div class="my-4">
             <h1 class="fw-bold text-ut-primary">Absences: </h1>

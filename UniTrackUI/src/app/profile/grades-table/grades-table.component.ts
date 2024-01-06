@@ -10,11 +10,11 @@ export class GradesTableComponent {
   @Input() grades!: Grade[];
 
   displayedColumns: string[] = [
-    'subject',
-    'grade',
-    'date',
+    'subjectName',
+    'value',
+    'gradedOn',
     'teacherFirstName',
     'teacherLastName',
-    'topic'
+    'topic',
   ];
 }

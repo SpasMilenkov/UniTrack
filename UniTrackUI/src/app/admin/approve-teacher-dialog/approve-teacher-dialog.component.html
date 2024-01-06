@@ -7,7 +7,7 @@
     </h1>
     <div mat-dialog-content class="d-flex flex-column justify-content-center">
       <mat-label>Select subjects:</mat-label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" *ngIf="allSubjects$ | async as allSubjects">
         <mat-select formControlName="subjectIds" multiple>
           <mat-option
             *ngFor="let subject of allSubjects"

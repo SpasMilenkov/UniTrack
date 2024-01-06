@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { Attendance } from 'src/app/shared/models/attendance';
 import { ClassAverageComparison } from 'src/app/shared/models/class-average-comparison';
 import { DetailedSubjectPerformance } from 'src/app/shared/models/detailed-subject-performance';
+import { RecommendedMaterial } from 'src/app/shared/models/recommended-material';
 import { Statistic } from 'src/app/shared/models/statistic';
 import { SubjectAverage } from 'src/app/shared/models/subject-average';
 import { StatisticsService } from 'src/app/shared/services/statistics.service';
@@ -12,7 +14,7 @@ import { StatisticsService } from 'src/app/shared/services/statistics.service';
   styleUrls: ['./statistics-layout.component.scss'],
 })
 export class StatisticsLayoutComponent implements OnInit {
-  statisticObj!: Statistic;
+  statisticObj$!: Observable<Statistic>;
   pieOptions: any;
   basicOptions: any;
   barOptions: any;
@@ -22,22 +24,30 @@ export class StatisticsLayoutComponent implements OnInit {
   detailedSubjectData: any;
   classAvgComparisonData: any;
 
+  recommendedMaterials$!: Observable<RecommendedMaterial[]>;
+
   constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
-    this.statisticObj = this.statisticsService.getCurrentStudentStatistics('');
+    this.statisticObj$ = this.statisticsService
+      .getCurrentStudentStatistics()
+      .pipe(
+        tap(
+          ({
+            attendance,
+            subjectAvg,
+            detailedSubjectPerformance,
+            classAverageComparison,
+          }) => {
+            this.initAttendanceChart(attendance);
+            this.iniSubjectAverageChart(subjectAvg);
+            this.initDetailedSubjectChart(detailedSubjectPerformance);
+            this.initClassAvgComparison(classAverageComparison);
+          }
+        )
+      );
 
-    const {
-      attendance,
-      subjectAvg,
-      detailedSubjectPerformance,
-      classAverageComparison
-    } = this.statisticObj;
-
-    this.initAttendanceChart(attendance);
-    this.iniSubjectAverageChart(subjectAvg);
-    this.initDetailedSubjectChart(detailedSubjectPerformance);
-    this.initClassAvgComparison(classAverageComparison);
+      this.recommendedMaterials$ = this.statisticsService.getCurrentStudentRecommendationMaterial();
   }
 
   private initAttendanceChart(attendance: Attendance): void {

@@ -11,7 +11,7 @@ export class AbsencesTableComponent {
 
   displayedColumns: string[] = [
     'subject',
-    'absence',
+    'absenceCount',
     'excused',
     'date',
     'teacherFirstName',

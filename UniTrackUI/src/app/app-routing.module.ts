@@ -14,11 +14,13 @@ import { teacherGuard } from './shared/services/guards/teacher.guard';
 import { studentGuard } from './shared/services/guards/student.guard';
 import { adminGuard } from './shared/services/guards/admin.guard';
 import { profileGuard } from './shared/services/guards/profile.guard';
+import { authGuard } from './shared/services/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
@@ -46,7 +48,7 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [adminGuard],
   },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/profile', pathMatch: 'full' },
 ];
 
 @NgModule({

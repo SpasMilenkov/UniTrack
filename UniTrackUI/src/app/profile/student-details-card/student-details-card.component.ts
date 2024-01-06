@@ -28,19 +28,19 @@ export class StudentDetailsCardComponent {
 
   private calculateAbsences(): void{
     if(this.absences?.length){
-      this.absences?.forEach(({excused}) => {
+      this.absences?.forEach(({excused, absenceCount}) => {
         if(excused){
-          this.excusedAbsences++;
+          this.excusedAbsences+=absenceCount;
           return;
         }
-        this.unexcusedAbsences++;
+        this.unexcusedAbsences+=absenceCount;
       });
     }
   }
 
   private calculateGrades(): void{
     if(this.grades?.length){
-      this.averageGrades = this.grades?.reduce((p, c) => p + +c.grade, 0) / this.grades.length;
+      this.averageGrades = this.grades?.reduce((p, c) => p + +c.value, 0) / this.grades.length;
     }
   }
 }

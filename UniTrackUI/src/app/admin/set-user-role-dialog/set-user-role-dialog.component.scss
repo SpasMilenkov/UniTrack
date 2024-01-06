@@ -1,0 +1,7 @@
+@use 'colors';
+
+::ng-deep{
+  .mat-mdc-dialog-container .mdc-dialog__surface{
+    background-color: colors.$color-ut-accent-100 !important;
+  }
+}

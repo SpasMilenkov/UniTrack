@@ -1,0 +1,11 @@
+<ng-container>
+    <a [href]="recommendedMaterial.link" target="_blank">
+        <div class="material-wrapper my-2" [title]="recommendedMaterial.title">
+            <img class="image-wrapper" [src]="recommendedMaterial.thumbnail" alt="recommended-material-image" />
+            <h2 class="text-wrapper text-ut-dark-grey fw-bold p-2 pb-0">
+                {{ recommendedMaterial.title }}
+            </h2>
+            <div class="mx-2 text-end">{{recommendedMaterial.publishedDate | date}}</div>
+        </div>
+    </a>
+</ng-container>
