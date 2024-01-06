@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
  
- namespace UniTrackBackend.Api.ViewModels;
+ namespace UniTrackBackend.Api.DTO;
  
  
- public class ResetPasswordModel
+ public class ResetPasswordDto
  {
      [Required]
      [EmailAddress]

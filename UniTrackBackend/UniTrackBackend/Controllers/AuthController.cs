@@ -1,6 +1,6 @@
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Infrastructure;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+    public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
         try
         {
@@ -72,7 +72,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register(RegisterViewModel model)
+    public async Task<IActionResult> Register(RegisterDto model)
     {
         if (!ModelState.IsValid)
             return BadRequest("User registration failed");
@@ -249,13 +249,13 @@ public class AuthController : ControllerBase
     /// This endpoint allows a user to reset their password using a token received in their email.
     /// It requires a valid token, the user's email, and the new password.
     /// </remarks>
-    /// <param name="model">The model containing the email, token, and new password of the user.</param>
+    /// <param name="dto">The dto containing the email, token, and new password of the user.</param>
     /// <response code="200">Password has been reset successfully.</response>
-    /// <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
+    /// <response code="400">Bad request if the dto state is invalid or the request is invalid.</response>
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+    public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
     {
-        var result = await _authService.ResetPassword(model);
+        var result = await _authService.ResetPassword(dto);
         if (result.Succeeded)
         {
             return Ok("Password has been reset successfully");

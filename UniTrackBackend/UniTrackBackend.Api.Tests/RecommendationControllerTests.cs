@@ -1,6 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Services;
 
@@ -14,7 +14,7 @@ public class RecommendationControllerTests
         // Arrange
         var fakeService = A.Fake<IRecommendationService>();
         var studentId = 1;
-        var recommendations = new List<RecommendationResultViewModel> { /* Populate with test data */ };
+        var recommendations = new List<RecommendationResultDto> { /* Populate with test data */ };
 
         A.CallTo(() => fakeService.GetRecommendations(studentId)).Returns(recommendations);
 
@@ -34,7 +34,7 @@ public class RecommendationControllerTests
         var fakeService = A.Fake<IRecommendationService>();
         var invalidStudentId = -1; // Assuming negative IDs are invalid
 
-        A.CallTo(() => fakeService.GetRecommendations(invalidStudentId)).Returns((List<RecommendationResultViewModel>)null);
+        A.CallTo(() => fakeService.GetRecommendations(invalidStudentId)).Returns((List<RecommendationResultDto>)null);
 
         var controller = new RecommendationController(fakeService);
 

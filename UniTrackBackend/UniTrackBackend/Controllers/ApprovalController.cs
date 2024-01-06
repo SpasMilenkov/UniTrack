@@ -1,7 +1,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Models.TypeSafe;
 using UniTrackBackend.Services;
 
@@ -34,7 +34,7 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveStudents(StudentApprovalViewModel models)
+        public async Task<IActionResult> ApproveStudents(StudentApprovalDto models)
         {
             var result = await _approvalService.ApproveStudentsAsync(models);
             if (!result)
@@ -57,35 +57,12 @@ namespace UniTrackBackend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveTeachers(TeacherApprovalViewModel models)
+        public async Task<IActionResult> ApproveTeachers(TeacherApprovalDto models)
         {
             var result = await _approvalService.ApproveTeacherAsync(models);
             if (!result)
                 return new BadRequestResult();
             return Ok("Teachers approved");
-        }
-        
-        /// <summary>
-        /// Approves admin registrations.
-        /// </summary>
-        /// <remarks>
-        /// This endpoint approves pending admin registrations.
-        /// Only accessible to users with the Admin role.
-        /// </remarks>
-        /// <response code="200">Returns a confirmation message when an admin is approved.</response>
-        /// <response code="401">Unauthorized if the user is not authenticated.</response>
-        /// <response code="403">Forbidden if the user does not have the Admin role.</response>
-        [HttpPut("admins")]
-        [Authorize(Roles = Ts.Roles.SuperAdmin)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveAdmins(List<AdminViewModel> models)
-        {
-            // var result = await _approvalService.ApproveStudentsAsync(models);
-            // if (!result)
-            //     return new BadRequestResult();
-            return Ok("Admins approved");
         }
 
         /// <summary>
@@ -99,16 +76,16 @@ namespace UniTrackBackend.Controllers
         /// <response code="401">Unauthorized if the user is not authenticated.</response>
         /// <response code="403">Forbidden if the user does not have the Admin role.</response>
         [HttpPut("parents")]
-        [Authorize(Roles = Ts.Roles.Admin)]
+        // [Authorize(Roles = Ts.Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> ApproveParents(List<ParentViewModel> models)
+        public async Task<IActionResult> ApproveParents(ParentDto models)
         {
             var result = await _approvalService.ApproveParentsAsync(models);
             if (!result)
                 return new BadRequestResult();
-            return Ok("Parents approved");
+            return Ok("Parent approved");
         }
     }
 }

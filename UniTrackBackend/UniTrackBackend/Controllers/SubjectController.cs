@@ -1,8 +1,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
-using UniTrackBackend.Services;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.SubjectService;
 
@@ -24,43 +23,46 @@ namespace UniTrackBackend.Controllers
 
         // GET: api/subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubjectResultViewModel>>> GetAllSubjects()
+        public async Task<ActionResult<IEnumerable<SubjectResultDto>>> GetAllSubjects()
         {
             var subjects = await _subjectService.GetAllSubjectsAsync();
-            return Ok(subjects);
+            
+            return Ok(subjects.Select(s => _mapper.MapSubjectResultDto(s)));
         }
 
         // GET: api/subjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SubjectResultViewModel>> GetSubject(int id)
+        public async Task<ActionResult<SubjectResultDto>> GetSubject(int id)
         {
             var subject = await _subjectService.GetSubjectByIdAsync(id);
-
+            
             if (subject == null)
             {
                 return NotFound();
             }
 
-            return Ok(subject);
+            var response = _mapper.MapSubjectResultDto(subject);
+            return Ok(response);
         }
 
         // POST: api/subjects
         [HttpPost]
-        public async Task<ActionResult<SubjectResultViewModel>> AddSubject(SubjectViewModel subject)
+        public async Task<ActionResult<SubjectResultDto>> AddSubject(SubjectDto subject)
         {
-            var entity = _mapper.MapSubject(subject);
-            var addedSubject = await _subjectService.AddSubjectAsync(entity);
-            return CreatedAtAction(nameof(GetSubject), new { id = addedSubject.Id }, addedSubject);
+            var addedSubject = await _subjectService.AddSubjectAsync(subject);
+            var response = _mapper.MapSubjectResultDto(addedSubject);
+            if (response is null)
+                return new StatusCodeResult(500);
+            return CreatedAtAction(nameof(GetSubject), new { id = response.Id }, response);
         }
 
         // PUT: api/subjects/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, SubjectViewModel subject)
+        public async Task<IActionResult> UpdateSubject(int id, SubjectDto subject)
         {
             try
             {
-                var entity = _mapper.MapSubject(subject);
-                await _subjectService.UpdateSubjectAsync(entity);
+                await _subjectService.UpdateSubjectAsync(id, subject);
             }
             catch
             {
@@ -69,14 +71,7 @@ namespace UniTrackBackend.Controllers
                 return StatusCode(500, "An error occurred while updating the subject.");
             }
 
-            return NoContent();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> AssignTeachersToSubject(SubjectViewModel subjectViewModel)
-        {
-            
-            return Ok();
+            return Ok("Subject updated!");
         }
         // DELETE: api/subjects/5
         [HttpDelete("{id}")]

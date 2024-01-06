@@ -2,7 +2,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
@@ -42,7 +42,7 @@ public class RecommendationService : IRecommendationService
         });
     }
 
-    public async Task<IEnumerable<RecommendationResultViewModel>?> GetRecommendations(int studentId)
+    public async Task<IEnumerable<RecommendationResultDto>?> GetRecommendations(int studentId)
     {
         var student = await _unitOfWork.StudentRepository.FirstOrDefaultAsync(s => s.Id == studentId);
         if (student is null)
@@ -59,7 +59,7 @@ public class RecommendationService : IRecommendationService
             queryList.TryAdd(weakMark.Topic, weakMark.Subject.Name);
         }
 
-        var searchTasks = new List<Task<RecommendationResultViewModel?>>();
+        var searchTasks = new List<Task<RecommendationResultDto?>>();
         foreach (var query in queryList)
         {
             foreach (var token in _subjectToChannel[query.Value])
@@ -75,7 +75,7 @@ public class RecommendationService : IRecommendationService
     }
 
 
-    private async Task<RecommendationResultViewModel?> PerformYouTubeSearch(string topic, string token)
+    private async Task<RecommendationResultDto?> PerformYouTubeSearch(string topic, string token)
     {
         
         var searchRequest = _youTubeService.Search.List("snippet");
@@ -84,7 +84,7 @@ public class RecommendationService : IRecommendationService
         searchRequest.ChannelId = token;
 
         var searchResponse = await searchRequest.ExecuteAsync();
-        var recommendation = searchResponse.Items.Select(i => new RecommendationResultViewModel
+        var recommendation = searchResponse.Items.Select(i => new RecommendationResultDto
         {
             Title = i.Snippet.Title,
             Link = $"https://www.youtube.com/watch?v={i.Id.VideoId}",

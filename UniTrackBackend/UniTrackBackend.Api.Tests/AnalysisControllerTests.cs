@@ -1,6 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Controllers;
 using UniTrackBackend.Services;
 
@@ -14,7 +14,7 @@ public class AnalysisControllerTests
         // Arrange
         var fakeService = A.Fake<IAnalysisService>();
         var studentId = 1;
-        var analysisModel = new StudentAnalysisResultViewModel
+        var analysisModel = new StudentAnalysisResultDto()
         {
             StudentName = null,
             SubjectAvg = null,
@@ -43,7 +43,7 @@ public class AnalysisControllerTests
         var fakeService = A.Fake<IAnalysisService>();
         var invalidStudentId = -1; // Assuming negative IDs are invalid
 
-        A.CallTo(() => fakeService.GenerateAnalysisModel(invalidStudentId)).Returns((StudentAnalysisResultViewModel)null);
+        A.CallTo(() => fakeService.GenerateAnalysisModel(invalidStudentId)).Returns((StudentAnalysisResultDto)null);
 
         var controller = new AnalysisController(fakeService);
 

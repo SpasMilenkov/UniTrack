@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UniTrackBackend.Api.ViewModels;
+namespace UniTrackBackend.Api.DTO;
 
-public class StudentApprovalViewModel
+public class StudentApprovalDto
 {
     public List<string> StudentIds { get; set; }
     public int GradeId { get; set; }

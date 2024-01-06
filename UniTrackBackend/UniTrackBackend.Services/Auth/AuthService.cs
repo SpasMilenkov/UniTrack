@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using UniTrackBackend.Api.ViewModels;
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
@@ -139,7 +139,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<User> RegisterUser(RegisterViewModel model)
+    public async Task<User> RegisterUser(RegisterDto model)
     {
         try
         {
@@ -164,7 +164,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<User?> LoginUser(LoginViewModel model)
+    public async Task<User?> LoginUser(LoginDto model)
     {
         try
         {
@@ -223,17 +223,17 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<IdentityResult?> ResetPassword(ResetPasswordModel model)
+    public async Task<IdentityResult?> ResetPassword(ResetPasswordDto dto)
     {
         try
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user is null)
             {
-                _logger.LogWarning("User with that email does not exist", model.Email);
+                _logger.LogWarning("User with that email does not exist", dto.Email);
                 return null;
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
             return result;
         }
         catch (Exception e)

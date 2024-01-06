@@ -1,4 +1,4 @@
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Data.Commons;

@@ -1,6 +1,6 @@
 using System.Text;
 using Microsoft.Extensions.Logging;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
@@ -69,21 +69,21 @@ namespace UniTrackBackend.Services;
 
         }
 
-        public string? GeneratePerformanceSummary(StudentAnalysisResultViewModel viewModel)
+        public string? GeneratePerformanceSummary(StudentAnalysisResultDto dto)
         {
             try
             {
                 var summary = new StringBuilder();
 
                 // Overall Performance
-                summary.AppendLine($"Overall Performance: {AssessOverallPerformance(viewModel.OverallAverage)}");
+                summary.AppendLine($"Overall Performance: {AssessOverallPerformance(dto.OverallAverage)}");
 
                 // Strengths and Weaknesses in Each Subject
-                foreach (var detailedSubject in viewModel.DetailedSubjectPerformance)
+                foreach (var detailedSubject in dto.DetailedSubjectPerformance)
                 {
                     var subjectName = detailedSubject.SubjectName;
                     var detail = detailedSubject.Details;
-                    var classAverageForSubject = viewModel.ClassAverageComparison
+                    var classAverageForSubject = dto.ClassAverageComparison
                         .FirstOrDefault(ca => ca.ClassName == subjectName)?.Average ?? 0m; // Default to 0 if not found
 
                     var subjectPerformance = AssessSubjectPerformance(detail, classAverageForSubject);
@@ -91,7 +91,7 @@ namespace UniTrackBackend.Services;
                 }
      
                 // Attendance
-                var attendanceImpact = AssessAttendanceImpact(viewModel.Attendance);
+                var attendanceImpact = AssessAttendanceImpact(dto.Attendance);
                 summary.AppendLine($"Attendance Impact: {attendanceImpact}");
 
                 return summary.ToString();
@@ -227,7 +227,7 @@ namespace UniTrackBackend.Services;
 
         }
 
-        public async Task<StudentAnalysisResultViewModel?> GenerateAnalysisModel(int studentId)
+        public async Task<StudentAnalysisResultDto?> GenerateAnalysisModel(int studentId)
         {
             try
             {
@@ -247,7 +247,7 @@ namespace UniTrackBackend.Services;
                 // Calculate class averages
                 var classAverages = await _unitOfWork.MarkRepository.CalculateClassAverages(student.GradeId);
 
-                var model = new StudentAnalysisResultViewModel
+                var model = new StudentAnalysisResultDto
                 {
                     StudentName = student.User.FirstName + ' ' + student.User.LastName,
                     SubjectAvg = successPerSubject,

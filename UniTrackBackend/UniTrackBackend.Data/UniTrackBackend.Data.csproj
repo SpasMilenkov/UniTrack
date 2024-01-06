@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\UniTrackBackend.Api.ViewModels\UniTrackBackend.Api.ViewModels.csproj" />
+      <ProjectReference Include="..\UniTrackBackend.Api.DTO\UniTrackBackend.Api.DTO.csproj" />
       <ProjectReference Include="..\UniTrackBackend.Data.Commons\UniTrackBackend.Data.Commons.csproj" />
       <ProjectReference Include="..\UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj" />
     </ItemGroup>

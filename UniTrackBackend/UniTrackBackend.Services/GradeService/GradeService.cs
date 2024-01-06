@@ -1,4 +1,5 @@
 using UniTrackBackend.Data.Commons;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services;
 

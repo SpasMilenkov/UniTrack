@@ -26,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\UniTrackBackend.Data\UniTrackBackend.Data.csproj" />
       <ProjectReference Include="..\UniTrackBackend.Services\UniTrackBackend.Services.csproj" />
+      <ProjectReference Include="..\UniTrackBackend\UniTrackBackend.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
-using UniTrackBackend.Api.ViewModels.ResultViewModels;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 

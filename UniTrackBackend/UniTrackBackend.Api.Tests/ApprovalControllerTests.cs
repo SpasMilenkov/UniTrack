@@ -1,99 +1,102 @@
-// using FakeItEasy;
-// using Microsoft.AspNetCore.Mvc;
-// using UniTrackBackend.Api.ViewModels;
-// using UniTrackBackend.Controllers;
-// using UniTrackBackend.Services;
-//
-// namespace UniTrackBackend.Api.Tests;
-//
-// public class ApprovalControllerTests
-// {
-//     [Fact]
-//     public async Task ApproveStudents_ValidData_ReturnsOkResult()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var studentModels = new List<StudentViewModel> { /* populate with test data */ };
-//
-//         A.CallTo(() => fakeService.ApproveStudentsAsync(studentModels)).Returns(true);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveStudents(studentModels);
-//
-//         Assert.IsType<OkObjectResult>(result);
-//     }
-//
-//     [Fact]
-//     public async Task ApproveStudents_InvalidData_ReturnsBadRequest()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var studentModels = new List<StudentViewModel> { /* invalid data */ };
-//
-//         A.CallTo(() => fakeService.ApproveStudentsAsync(studentModels)).Returns(false);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveStudents(studentModels);
-//
-//         Assert.IsType<BadRequestResult>(result);
-//     }
-//     [Fact]
-//     public async Task ApproveTeachers_ValidData_ReturnsOkResult()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var teacherModels = new List<TeacherViewModel> { /* populate with test data */ };
-//
-//         A.CallTo(() => fakeService.ApproveTeachersAsync(teacherModels)).Returns(true);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveTeachers(teacherModels);
-//
-//         Assert.IsType<OkObjectResult>(result);
-//     }
-//
-//     [Fact]
-//     public async Task ApproveTeachers_InvalidData_ReturnsBadRequest()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var teacherModels = new List<TeacherViewModel> { /* invalid data */ };
-//
-//         A.CallTo(() => fakeService.ApproveTeachersAsync(teacherModels)).Returns(false);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveTeachers(teacherModels);
-//
-//         Assert.IsType<BadRequestResult>(result);
-//     }
-//     [Fact]
-//     public async Task ApproveParents_ValidData_ReturnsOkResult()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var parentModels = new List<ParentViewModel> { /* populate with test data */ };
-//
-//         A.CallTo(() => fakeService.ApproveParentsAsync(parentModels)).Returns(true);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveParents(parentModels);
-//
-//         Assert.IsType<OkObjectResult>(result);
-//     }
-//
-//     [Fact]
-//     public async Task ApproveParents_InvalidData_ReturnsBadRequest()
-//     {
-//         var fakeService = A.Fake<IApprovalService>();
-//         var parentModels = new List<ParentViewModel> { /* invalid data */ };
-//
-//         A.CallTo(() => fakeService.ApproveParentsAsync(parentModels)).Returns(false);
-//
-//         var controller = new ApprovalController(fakeService);
-//
-//         var result = await controller.ApproveParents(parentModels);
-//
-//         Assert.IsType<BadRequestResult>(result);
-//     }
-//
-// }
+using FakeItEasy;
+using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Controllers;
+using UniTrackBackend.Services;
+
+namespace UniTrackBackend.Api.Tests;
+
+public class ApprovalControllerTests
+{
+    private readonly IApprovalService _fakeApprovalService;
+    private readonly ApprovalController _controller;
+
+    public ApprovalControllerTests()
+    {
+        _fakeApprovalService = A.Fake<IApprovalService>();
+        _controller = new ApprovalController(_fakeApprovalService);
+    }
+    
+    [Fact]
+    public async Task ApproveStudents_WhenSuccessful_ReturnsOkResult()
+    {
+        // Arrange
+        var studentApprovalDto = new StudentApprovalDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveStudentsAsync(studentApprovalDto)).Returns(Task.FromResult(true));
+
+        // Act
+        var result = await _controller.ApproveStudents(studentApprovalDto);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ApproveStudents_WhenFailed_ReturnsBadRequest()
+    {
+        // Arrange
+        var studentApprovalDto = new StudentApprovalDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveStudentsAsync(studentApprovalDto)).Returns(Task.FromResult(false));
+
+        // Act
+        var result = await _controller.ApproveStudents(studentApprovalDto);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+    }
+    
+    [Fact]
+    public async Task ApproveTeachers_WhenSuccessful_ReturnsOkResult()
+    {
+        // Arrange
+        var teacherApprovalDto = new TeacherApprovalDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveTeacherAsync(teacherApprovalDto)).Returns(Task.FromResult(true));
+
+        // Act
+        var result = await _controller.ApproveTeachers(teacherApprovalDto);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ApproveTeachers_WhenFailed_ReturnsBadRequest()
+    {
+        // Arrange
+        var teacherApprovalDto = new TeacherApprovalDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveTeacherAsync(teacherApprovalDto)).Returns(Task.FromResult(false));
+
+        // Act
+        var result = await _controller.ApproveTeachers(teacherApprovalDto);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+    }
+    [Fact]
+    public async Task ApproveParents_WhenSuccessful_ReturnsOkResult()
+    {
+        // Arrange
+        var parentDto = new ParentDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveParentsAsync(parentDto)).Returns(Task.FromResult(true));
+
+        // Act
+        var result = await _controller.ApproveParents(parentDto);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task ApproveParents_WhenFailed_ReturnsBadRequest()
+    {
+        // Arrange
+        var parentDto = new ParentDto { /* Initialize properties */ };
+        A.CallTo(() => _fakeApprovalService.ApproveParentsAsync(parentDto)).Returns(Task.FromResult(false));
+
+        // Act
+        var result = await _controller.ApproveParents(parentDto);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+    }
+}

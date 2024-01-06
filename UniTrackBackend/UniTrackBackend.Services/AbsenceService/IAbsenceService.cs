@@ -7,6 +7,7 @@ namespace UniTrackBackend.Services
             Task<Absence> AddAbsenceAsync(Absence absence);
             Task<IEnumerable<Absence>> GetAbsencesAsync();
             Task<IEnumerable<Absence>> GetAbsencesByStudentIdAsync(int studentId);
+            Task<IEnumerable<Absence>> GetAbsencesByTeacherIdAsync(int studentId);
             Task UpdateAbsenceAsync(Absence absence);
             Task DeleteAbsenceAsync(int absenceId);
             

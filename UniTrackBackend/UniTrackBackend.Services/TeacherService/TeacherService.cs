@@ -1,6 +1,8 @@
-﻿using UniTrackBackend.Data;
+﻿using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Mappings;
+using UniTrackBackend.Services.SubjectService;
 
 namespace UniTrackBackend.Services;
 
@@ -46,11 +48,24 @@ public class TeacherService : ITeacherService
         return teacher;
     }
 
-    public async Task<Teacher> UpdateTeacherAsync(Teacher teacher)
+    public async Task<Teacher> UpdateTeacherAsync(TeacherDto teacher, int id)
     {
-        await _unitOfWork.TeacherRepository.UpdateAsync(teacher);
+        var entity = await _unitOfWork.TeacherRepository.GetByIdAsync(id);
+        
+        if (entity is null) throw new ArgumentException(nameof(entity));
+        
+        await _unitOfWork.TeacherRepository.LoadReferenceAsync(entity, e => e.User);
+        var grade = await _unitOfWork.GradeRepository.GetByIdAsync(teacher.ClassId);
+        
+        if(grade is null) throw new AggregateException(nameof(grade));
+        
+        grade.ClassTeacherId = entity.Id;
+        
+        entity.User.FirstName = teacher.FirstName;
+        entity.User.LastName = teacher.LastName;
+        await _unitOfWork.TeacherRepository.UpdateAsync(entity);
         await _unitOfWork.SaveAsync();
-        return teacher;
+        return entity;
     }
 
     public async Task DeleteTeacherAsync(int id)
@@ -60,6 +75,20 @@ public class TeacherService : ITeacherService
         {
             await _unitOfWork.TeacherRepository.DeleteAsync(teacher.Id);
             await _unitOfWork.SaveAsync();
+        }
+    }
+
+    public async Task<GradeDto?> GetGradeByClassTeacherId(int id)
+    {
+        try
+        {
+            var grade = await _unitOfWork.GradeRepository.FirstOrDefaultAsync(g => g.ClassTeacherId == id);
+            if (grade == null) throw new ArgumentException(nameof(grade));
+            return new GradeDto(grade.Id, grade.Name);
+        }
+        catch (ArgumentException e)
+        {
+            return new GradeDto(-1, "Not a class teacher");
         }
     }
 }

@@ -1,6 +1,7 @@
 using FakeItEasy;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Services.Tests;
 
@@ -8,7 +9,7 @@ public class TeacherServiceTests
 {
     private readonly TeacherService _teacherService;
     private readonly IUnitOfWork _unitOfWork;
-
+    
     public TeacherServiceTests()
     {
         _unitOfWork = A.Fake<IUnitOfWork>();

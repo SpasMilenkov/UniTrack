@@ -1,3 +1,4 @@
+using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.SubjectService;
@@ -5,10 +6,9 @@ namespace UniTrackBackend.Services.SubjectService;
 public interface ISubjectService
 {
     Task<IEnumerable<Subject>> GetAllSubjectsAsync();
-    public Task<Subject> AddSubjectAsync(Subject subject);
+    Task<Subject> AddSubjectAsync(SubjectDto subjectDto);
     public Task<Subject?> GetSubjectByIdAsync(int id);
-    public Task<Subject> UpdateSubjectAsync(Subject subject);
+    Task<Subject> UpdateSubjectAsync(int id, SubjectDto subjectDto);
     public Task DeleteSubjectAsync(int id);
-    public Task<Subject> AssignTeachersToSubject(Subject subject, List<int> teacherIds);
-    public Task<Subject> AssignClassTeacherToSubject(Subject subject, int teacherId);
+    Task<Subject> AssignClassTeacherToSubject(int subjectId, int teacherId);
 }

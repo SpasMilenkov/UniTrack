@@ -1,6 +1,6 @@
-namespace UniTrackBackend.Api.ViewModels.ResultViewModels;
+namespace UniTrackBackend.Api.DTO.ResultDtos;
 
-public class LoginResultViewModel
+public class LoginResultDto
 {
     private string _userRole = null!;
 

@@ -6,43 +6,51 @@
     <members>
         <member name="T:UniTrackBackend.Controllers.AbsencesController">
             <summary>
-            Handles actions related to student absences.
+            Controller for handling operations related to student and teacher absences.
+            Provides functionality for recording, retrieving, updating, and deleting absence records.
             </summary>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.PostAbsence(UniTrackBackend.Data.Models.Absence)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.PostAbsence(UniTrackBackend.Api.DTO.AbsenceDto)">
             <summary>
             Records a new absence.
             </summary>
-            <param name="absence">The absence details to record.</param>
-            <returns>The created absence record.</returns>
+            <param name="absence">The absence details to be recorded.</param>
+            <returns>An ActionResult indicating the result of the operation.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAllAbsences">
             <summary>
             Retrieves all recorded absences.
             </summary>
-            <returns>A list of all absences.</returns>
+            <returns>A list of all absence records.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceById(System.Int32)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceByStudentId(System.Int32)">
             <summary>
-            Retrieves a specific absence by its ID.
+            Retrieves absences for a specific student by their ID.
             </summary>
-            <param name="id">The ID of the absence to retrieve.</param>
-            <returns>The absence record if found, otherwise returns not found.</returns>
+            <param name="id">The ID of the student whose absences are to be retrieved.</param>
+            <returns>An ActionResult containing the student's absence records or a not found result.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AbsencesController.UpdateAbsence(System.Int32,UniTrackBackend.Data.Models.Absence)">
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.GetAbsenceByTeacherId(System.Int32)">
+            <summary>
+            Retrieves absences for a specific teacher by their ID.
+            </summary>
+            <param name="id">The ID of the teacher whose absences are to be retrieved.</param>
+            <returns>An ActionResult containing the teacher's absence records or a not found result.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AbsencesController.UpdateAbsence(System.Int32,UniTrackBackend.Api.DTO.AbsenceDto)">
             <summary>
             Updates an existing absence record.
             </summary>
-            <param name="id">The ID of the absence to update.</param>
+            <param name="id">The ID of the absence record to update.</param>
             <param name="absence">The updated absence details.</param>
-            <returns>Returns no content if the update is successful, otherwise a bad request.</returns>
+            <returns>Returns NoContent if the update is successful, otherwise returns BadRequest.</returns>
         </member>
         <member name="M:UniTrackBackend.Controllers.AbsencesController.DeleteAbsence(System.Int32)">
             <summary>
             Deletes a specific absence record by its ID.
             </summary>
-            <param name="id">The ID of the absence to delete.</param>
-            <returns>Returns no content if the deletion is successful.</returns>
+            <param name="id">The ID of the absence record to delete.</param>
+            <returns>Returns NoContent if the deletion is successful, otherwise NotFound.</returns>
         </member>
         <member name="T:UniTrackBackend.Controllers.AdminController">
             <summary>
@@ -96,7 +104,7 @@
             <param name="studentId">The ID of the student for whom the analysis is to be generated.</param>
             <returns>An analysis model if successful, otherwise a bad request response.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(UniTrackBackend.Api.ViewModels.StudentApprovalViewModel)">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveStudents(UniTrackBackend.Api.DTO.StudentApprovalDto)">
             <summary>
             Approves student registrations.
             </summary>
@@ -108,7 +116,7 @@
             <response code="401">Unauthorized if the user is not authenticated.</response>
             <response code="403">Forbidden if the user does not have the Admin role.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveTeachers(UniTrackBackend.Api.ViewModels.TeacherApprovalViewModel)">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveTeachers(UniTrackBackend.Api.DTO.TeacherApprovalDto)">
             <summary>
             Approves teacher registrations.
             </summary>
@@ -120,19 +128,7 @@
             <response code="401">Unauthorized if the user is not authenticated.</response>
             <response code="403">Forbidden if the user does not have the Admin role.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveAdmins(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.AdminViewModel})">
-            <summary>
-            Approves admin registrations.
-            </summary>
-            <remarks>
-            This endpoint approves pending admin registrations.
-            Only accessible to users with the Admin role.
-            </remarks>
-            <response code="200">Returns a confirmation message when an admin is approved.</response>
-            <response code="401">Unauthorized if the user is not authenticated.</response>
-            <response code="403">Forbidden if the user does not have the Admin role.</response>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveParents(System.Collections.Generic.List{UniTrackBackend.Api.ViewModels.ParentViewModel})">
+        <member name="M:UniTrackBackend.Controllers.ApprovalController.ApproveParents(UniTrackBackend.Api.DTO.ParentDto)">
             <summary>
             Approves parent registrations.
             </summary>
@@ -144,7 +140,7 @@
             <response code="401">Unauthorized if the user is not authenticated.</response>
             <response code="403">Forbidden if the user does not have the Admin role.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AuthController.Login(UniTrackBackend.Api.ViewModels.LoginViewModel)">
+        <member name="M:UniTrackBackend.Controllers.AuthController.Login(UniTrackBackend.Api.DTO.LoginDto)">
             <summary>
             Authenticates a user and provides a JWT and refresh token.
             </summary>
@@ -157,7 +153,7 @@
             <response code="200">Successful login with JWT and refresh token.</response>
             <response code="401">Unauthorized if credentials are invalid.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AuthController.Register(UniTrackBackend.Api.ViewModels.RegisterViewModel)">
+        <member name="M:UniTrackBackend.Controllers.AuthController.Register(UniTrackBackend.Api.DTO.RegisterDto)">
             <summary>
             Registers a new user and provides a JWT and refresh token.
             </summary>
@@ -216,7 +212,7 @@
             <response code="200">Indicates that a password reset link has been sent if an account with the email exists.</response>
             <response code="400">Bad request if the email is missing or invalid.</response>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AuthController.ResetPassword(UniTrackBackend.Api.ViewModels.ResetPasswordModel)">
+        <member name="M:UniTrackBackend.Controllers.AuthController.ResetPassword(UniTrackBackend.Api.DTO.ResetPasswordDto)">
             <summary>
             Resets a user's password.
             </summary>
@@ -224,9 +220,9 @@
             This endpoint allows a user to reset their password using a token received in their email.
             It requires a valid token, the user's email, and the new password.
             </remarks>
-            <param name="model">The model containing the email, token, and new password of the user.</param>
+            <param name="dto">The dto containing the email, token, and new password of the user.</param>
             <response code="200">Password has been reset successfully.</response>
-            <response code="400">Bad request if the model state is invalid or the request is invalid.</response>
+            <response code="400">Bad request if the dto state is invalid or the request is invalid.</response>
         </member>
         <member name="T:UniTrackBackend.Controllers.MarkController">
             <summary>
@@ -243,7 +239,7 @@
             <param name="markService">Service for managing marks.</param>
             <param name="mapper">Automapper for mapping between view models and data models.</param>
         </member>
-        <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Api.ViewModels.MarkViewModel)">
+        <member name="M:UniTrackBackend.Controllers.MarkController.AddMark(UniTrackBackend.Api.DTO.MarkDto)">
             <summary>
             Adds a new mark.
             </summary>
@@ -291,7 +287,7 @@
             <param name="date">The date of interest.</param>
             <returns>A list of marks assigned on the specified date.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.MarkController.UpdateMark(System.Int32,UniTrackBackend.Api.ViewModels.MarkViewModel)">
+        <member name="M:UniTrackBackend.Controllers.MarkController.UpdateMark(System.Int32,UniTrackBackend.Api.DTO.MarkDto)">
             <summary>
             Updates a specific mark.
             </summary>
@@ -322,41 +318,6 @@
             <summary>
             Handles school-related actions such as managing school records.
             </summary>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.AddSchool(UniTrackBackend.Api.ViewModels.SchoolViewModel)">
-            <summary>
-            Adds a new school.
-            </summary>
-            <param name="model">The school view model to create a new school.</param>
-            <returns>Returns the created school object.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.GetSchool(System.Int32)">
-            <summary>
-            Retrieves a specific school by its ID.
-            </summary>
-            <param name="id">The ID of the school to retrieve.</param>
-            <returns>The school object if found, otherwise returns not found.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.GetAllSchools">
-            <summary>
-            Retrieves all schools.
-            </summary>
-            <returns>A list of all schools.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.UpdateSchool(System.Int32,UniTrackBackend.Api.ViewModels.SchoolViewModel)">
-            <summary>
-            Updates the details of an existing school.
-            </summary>
-            <param name="id">The ID of the school to update.</param>
-            <param name="model">The updated school view model.</param>
-            <returns>Returns updated school object if successful, otherwise a bad request or not found.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.SchoolController.DeleteSchool(System.Int32)">
-            <summary>
-            Deletes a school by its ID.
-            </summary>
-            <param name="id">The ID of the school to delete.</param>
-            <returns>Returns no content if deletion is successful, otherwise not found.</returns>
         </member>
         <member name="T:UniTrackBackend.Controllers.StudentController">
             <summary>
@@ -410,14 +371,7 @@
             <param name="id">The ID of the teacher to retrieve.</param>
             <returns>The teacher object if found, otherwise returns not found.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.TeacherController.AddTeacher(UniTrackBackend.Data.Models.Teacher)">
-            <summary>
-            Adds a new teacher.
-            </summary>
-            <param name="teacher">The teacher object to add.</param>
-            <returns>Returns the created teacher object.</returns>
-        </member>
-        <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Data.Models.Teacher)">
+        <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Api.DTO.TeacherDto)">
             <summary>
             Updates an existing teacher's details.
             </summary>

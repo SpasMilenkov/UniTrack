@@ -1,21 +1,22 @@
-﻿using UniTrackBackend.Data.Models;
+﻿using UniTrackBackend.Api.DTO;
+using UniTrackBackend.Api.DTO.ResultDtos;
+using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services
 {
     public interface IMarkService
     {
-        Task<Mark?> AddMarkAsync(Mark? mark);
-        Task<Mark?> GetMarkByIdAsync(int id);
-        Task<IEnumerable<Mark?>?> GetAllMarksAsync();
+        Task<MarkResultDto> AddMarkAsync(Mark? mark);
+        Task<MarkResultDto> GetMarkByIdAsync(int id);
+        Task<IEnumerable<MarkResultDto>> GetAllMarksAsync();
 
-        Task<IEnumerable<Mark>?> GetMarksByStudentAsync(int studentId);
-        Task<IEnumerable<Mark?>?> GetMarksByTeacherAsync(int teacherId);
-        Task<IEnumerable<Mark>?> GetMarksBySubjectAsync(int subjectId);
-        Task<IEnumerable<Mark?>?> GetMarksByDateAsync(DateTime date);
+        Task<IEnumerable<MarkResultDto>> GetMarksByStudentAsync(int studentId);
+        Task<IEnumerable<MarkResultDto>> GetMarksByTeacherAsync(int teacherId);
+        Task<IEnumerable<MarkResultDto>> GetMarksBySubjectAsync(int subjectId);
+        Task<IEnumerable<MarkResultDto>> GetMarksByDateAsync(DateTime date);
 
-        Task<Mark?> UpdateMarkAsync(Mark? mark);
-        Task<bool> DeleteMarkAsync(int id);
-
-        // Additional methods for more specific operations
+        Task<MarkResultDto> UpdateMarkAsync(Mark mark, int markId);
+        Task DeleteMarkAsync(int id);
+        
     }
 }
