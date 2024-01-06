@@ -12,9 +12,9 @@ export class StatisticsService {
 
   constructor(private http: HttpClient, private userService: UserService){}
 
-  getCurrentStudentRecommendationMaterial(): Observable<Statistic> {
+  getCurrentStudentRecommendationMaterial(): Observable<RecommendedMaterial[]> {
     const {id} = this.userService.getCurrentUserProfile();
-    return this.http.get<Statistic>('http://localhost:5036/Recommendation/ByStudentId/' + id, {withCredentials: true})
+    return this.http.get<RecommendedMaterial[]>('http://localhost:5036/Recommendation/ByStudentId/' + id, {withCredentials: true})
   }
 
   getCurrentStudentStatistics(): Observable<Statistic> {

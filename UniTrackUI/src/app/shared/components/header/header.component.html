@@ -19,9 +19,6 @@
     <li class="li-wrapper" routerLink="statistics">
       <mat-icon>leaderboard</mat-icon>
     </li>
-    <li class="li-wrapper">
-      <mat-icon>notifications</mat-icon>
-    </li>
     <li [matMenuTriggerFor]="profileMenu">
       <img
         class="profile-img"
@@ -39,8 +36,8 @@
   </button>
 </div>
 
-<mat-menu #mobileMenu="matMenu" routerLink="profile">
-  <div mat-menu-item>
+<mat-menu #mobileMenu="matMenu">
+  <div mat-menu-item routerLink="profile">
     <mat-icon>text_increase</mat-icon>
     <span>Grades</span>
   </div>
@@ -48,11 +45,7 @@
     <mat-icon>leaderboard</mat-icon>
     <span>Statistics</span>
   </div>
-  <div mat-menu-item>
-    <mat-icon>notifications</mat-icon>
-    <span>Notifications</span>
-  </div>
-  <div mat-menu-item>
+  <div mat-menu-item routerLink="profile">
     <mat-icon>person</mat-icon>
     View profile
   </div>

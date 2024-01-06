@@ -24,7 +24,7 @@ export class StatisticsLayoutComponent implements OnInit {
   detailedSubjectData: any;
   classAvgComparisonData: any;
 
-  recommendedMaterials: RecommendedMaterial[] = [];
+  recommendedMaterials$!: Observable<RecommendedMaterial[]>;
 
   constructor(private statisticsService: StatisticsService) {}
 
@@ -47,7 +47,7 @@ export class StatisticsLayoutComponent implements OnInit {
         )
       );
 
-      this.recommendedMaterials = this.statisticsService.getRecommendedMaterials();
+      this.recommendedMaterials$ = this.statisticsService.getCurrentStudentRecommendationMaterial();
   }
 
   private initAttendanceChart(attendance: Attendance): void {

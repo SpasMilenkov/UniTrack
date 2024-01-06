@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  NonNullableFormBuilder,
-  Validators,
-} from '@angular/forms';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -24,7 +21,7 @@ export class LoginComponent {
   constructor(
     private fb: NonNullableFormBuilder,
     private authService: AuthService,
-     private router: Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -32,7 +29,9 @@ export class LoginComponent {
   onLogin(): void {
     this.authForm.markAllAsTouched();
     if (this.authForm.valid) {
-      this.authService.login(this.authForm.getRawValue()).subscribe(() => this.router.navigateByUrl('profile'));
+      this.authService
+        .login(this.authForm.getRawValue())
+        .subscribe(() => this.router.navigateByUrl('profile'));
     }
   }
 
