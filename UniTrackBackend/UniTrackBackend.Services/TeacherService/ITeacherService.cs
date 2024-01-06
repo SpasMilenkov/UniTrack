@@ -12,6 +12,6 @@ public interface ITeacherService
     Task<Teacher> UpdateTeacherAsync(TeacherDto teacher, int id);
     Task DeleteTeacherAsync(int id);
     Task<GradeDto?> GetGradeByClassTeacherId(int id);
-    
+    Task<Teacher> GetTeacherWithDetailsByUserId(string userId);
 
 }

@@ -2,6 +2,7 @@
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Commons.Exceptions;
 using UniTrackBackend.Services.Mappings;
 
 namespace UniTrackBackend.Services
@@ -45,7 +46,7 @@ namespace UniTrackBackend.Services
 
 
         }
-        public async Task<IEnumerable<School?>?> GetAllSchoolsAsync()
+        public async Task<IEnumerable<School>?> GetAllSchoolsAsync()
         {
             try
             {
@@ -54,11 +55,11 @@ namespace UniTrackBackend.Services
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to get all schools");
-                return null;
+                throw new DataNotFoundException("No registered schools");
             }
 
         }
-        public async Task<School?> UpdateSchoolAsync(School? school)
+        public async Task<School> UpdateSchoolAsync(School school)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace UniTrackBackend.Services
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while trying to update school");
-                return null;
+                throw new ArgumentException("Invalid input, update failed");
             }
         }
 

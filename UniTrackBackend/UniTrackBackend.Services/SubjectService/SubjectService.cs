@@ -21,6 +21,7 @@ public class SubjectService : ISubjectService
         try
         {
             return await _unitOfWork.SubjectRepository.GetAllAsync();
+            
         }
         catch (Exception ex)
         {
