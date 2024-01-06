@@ -43,7 +43,7 @@ namespace UniTrackBackend.Controllers
         /// <param name="id">The ID of the user to retrieve.</param>
         /// <returns>The user object if found, otherwise returns not found.</returns>
         [HttpGet("GetUser/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminResultDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResultDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -51,7 +51,29 @@ namespace UniTrackBackend.Controllers
             if (user == null)
                 return NotFound();
 
-            var result = new AdminResultDto(user.FirstName, user.LastName, user.Email, user.AvatarUrl);
+            var result = new UserResultDto(user.FirstName, user.LastName, user.Email, user.AvatarUrl);
+            return Ok(result);
+        }
+        
+        
+        /// <summary>
+        /// Retrieves an admin by their user ID.
+        /// </summary>
+        /// <param name="id">The ID of the admin to retrieve.</param>
+        /// <returns>The user object if found, otherwise returns not found.</returns>
+        [HttpGet("GetAdminByUserId/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminResultDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAdmin(string id)
+        {
+            var admin = await _adminService.GetAdminByUserId(id);
+
+            var result = new AdminResultDto(admin.User.FirstName,
+                admin.User.LastName,
+                admin.User.Email,
+                admin.User.AvatarUrl,
+                admin.School.Name,
+                admin.SchoolId.ToString());
             return Ok(result);
         }
 

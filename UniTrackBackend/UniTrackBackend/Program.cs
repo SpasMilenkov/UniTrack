@@ -40,6 +40,7 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IAbsenceService, AbsenceService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

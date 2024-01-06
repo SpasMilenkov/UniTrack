@@ -1,5 +1,6 @@
 using FakeItEasy;
 using Microsoft.AspNetCore.Identity;
+using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
 
 namespace UniTrackBackend.Services.Tests;
@@ -8,11 +9,13 @@ public class AdminServiceTests
 {
     private readonly AdminService _adminService;
     private readonly UserManager<User> _userManager;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AdminServiceTests()
+    public AdminServiceTests(IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
         _userManager = A.Fake<UserManager<User>>();
-        _adminService = new AdminService(_userManager);
+        _adminService = new AdminService(_userManager, _unitOfWork);
     }
 
     [Fact]
