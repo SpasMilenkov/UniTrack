@@ -31,4 +31,25 @@ public class MarkRepository :EfRepository<Mark>, IMarkRepository
         return classAverages;
     }
 
+
+    public Task<List<Mark>> GetMarksWithDetailsByStudent(int studentId)
+    {
+        return _context.Marks
+            .Include(m => m.Student)
+            .Include(m => m.Teacher)
+            .ThenInclude(t => t.User)
+            .Include(m => m.Subject)
+            .Where(m => m.StudentId == studentId)
+            .ToListAsync();
+    }
+    public Task<List<Mark>> GetMarksWithDetailsByTeacher(int teacherId)
+    {
+        return _context.Marks
+            .Include(m => m.Student)
+            .Include(m => m.Teacher)
+            .ThenInclude(t => t.User)
+            .Include(m => m.Subject)
+            .Where(m => m.TeacherId == teacherId)
+            .ToListAsync();
+    }
 }

@@ -82,11 +82,13 @@ namespace UniTrackBackend.Controllers
         /// </summary>
         /// <returns>A list of all users.</returns>
         [HttpGet("GetAllUsers")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<User>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResultDto>))]
         public Task<IActionResult> GetAllUsers()
         {
             var users = _adminService.GetAllUsers();
-            return Task.FromResult<IActionResult>(Ok(users));
+
+            var result = users.Select(u => new UserResultDto(u.FirstName, u.LastName, u.Email, u.AvatarUrl));
+            return Task.FromResult<IActionResult>(Ok(result));
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace UniTrackBackend.Services
         {
             try
             {
-                var marks = await _context.MarkRepository.GetAsync(m => m.Student.Id == studentId);
+                var marks = await _context.MarkRepository.GetMarksWithDetailsByStudent(studentId);
                 if (marks == null) throw new ArgumentNullException(nameof(marks));  
 
                 return marks.Select(m => _mapper.MapMarkDto(m));
@@ -90,7 +90,7 @@ namespace UniTrackBackend.Services
         {
             try
             {
-                var marks = await _context.MarkRepository.GetAsync(m => m.Teacher.Id == teacherId);
+                var marks = await _context.MarkRepository.GetMarksWithDetailsByTeacher(teacherId);
                 if (marks == null) throw new ArgumentNullException(nameof(marks));  
 
                 return marks.Select(m => _mapper.MapMarkDto(m));

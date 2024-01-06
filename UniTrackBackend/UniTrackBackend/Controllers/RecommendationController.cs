@@ -22,7 +22,7 @@ namespace UniTrackBackend.Controllers
         /// </summary>
         /// <param name="studentId">The ID of the student for whom recommendations are being requested.</param>
         /// <returns>A list of recommendations if available, otherwise a bad request response.</returns>
-        [HttpGet]
+        [HttpGet("ByStudentId/{studentId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAnalysis(int studentId)
