@@ -3,6 +3,7 @@ import { Observable, tap } from 'rxjs';
 import { Attendance } from 'src/app/shared/models/attendance';
 import { ClassAverageComparison } from 'src/app/shared/models/class-average-comparison';
 import { DetailedSubjectPerformance } from 'src/app/shared/models/detailed-subject-performance';
+import { RecommendedMaterial } from 'src/app/shared/models/recommended-material';
 import { Statistic } from 'src/app/shared/models/statistic';
 import { SubjectAverage } from 'src/app/shared/models/subject-average';
 import { StatisticsService } from 'src/app/shared/services/statistics.service';
@@ -22,6 +23,8 @@ export class StatisticsLayoutComponent implements OnInit {
   subjectAvgData: any;
   detailedSubjectData: any;
   classAvgComparisonData: any;
+
+  recommendedMaterials: RecommendedMaterial[] = [];
 
   constructor(private statisticsService: StatisticsService) {}
 
@@ -43,6 +46,8 @@ export class StatisticsLayoutComponent implements OnInit {
           }
         )
       );
+
+      this.recommendedMaterials = this.statisticsService.getRecommendedMaterials();
   }
 
   private initAttendanceChart(attendance: Attendance): void {

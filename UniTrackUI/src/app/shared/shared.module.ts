@@ -8,6 +8,7 @@ import { EventCardComponent } from './components/event-card/event-card.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddGradeAbsenceDialogComponent } from './components/add-grade-absence-dialog/add-grade-absence-dialog.component';
 import { PrimeNgModule } from './prime-ng.module';
+import { RecommendedMaterialCardComponent } from './components/recommended-material-card/recommended-material-card.component';
 
 
 @NgModule({
@@ -15,13 +16,15 @@ import { PrimeNgModule } from './prime-ng.module';
     HeaderComponent,
     FooterComponent,
     EventCardComponent,
-    AddGradeAbsenceDialogComponent
+    AddGradeAbsenceDialogComponent,
+    RecommendedMaterialCardComponent
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     EventCardComponent,
-    AddGradeAbsenceDialogComponent
+    AddGradeAbsenceDialogComponent,
+    RecommendedMaterialCardComponent
   ],
   imports: [
     CommonModule,
