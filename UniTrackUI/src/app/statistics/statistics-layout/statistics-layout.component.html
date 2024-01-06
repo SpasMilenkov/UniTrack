@@ -5,7 +5,7 @@
     </h1>
   </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
       <div class="row">
         <div class="mb-4">
           <h1
@@ -23,7 +23,9 @@
             {{ statisticObj.PerformanceSummary }}
           </h1>
         </div>
-        <div class="mb-5 w-100 d-block d-md-flex justify-content-around align-items-center">
+        <div
+          class="mb-5 w-100 d-block d-md-flex justify-content-around align-items-center"
+        >
           <h2 class="fw-bold text-ut-dark-grey">Student's attendance:</h2>
           <p-chart
             type="pie"
@@ -57,6 +59,17 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4"></div>
+    <div class="col-lg-3 ">
+      <div class="p-3 rounded bg-ut-accent">
+        <h1 class="mt-3 text-ut-white">Recommended Materials:</h1>
+        <div class="row">
+          <app-recommended-material-card
+            *ngFor="let material of recommendedMaterials"
+            [recommendedMaterial]="material"
+            class="col-lg-12 col-md-4 col-sm-6"
+          ></app-recommended-material-card>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

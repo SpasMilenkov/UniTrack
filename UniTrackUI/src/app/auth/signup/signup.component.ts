@@ -41,9 +41,6 @@ export class SignupComponent implements OnInit {
   onSignup(): void {
     this.authForm.markAllAsTouched();
     console.log(this.authForm.value);
-
-    if(this.authForm.valid){
-    }
   }
 
   toggleHidePassword(event: any): void{
