@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
 
@@ -42,7 +43,7 @@ namespace UniTrackBackend.Controllers
         /// <param name="id">The ID of the user to retrieve.</param>
         /// <returns>The user object if found, otherwise returns not found.</returns>
         [HttpGet("GetUser/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminResultDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -50,7 +51,8 @@ namespace UniTrackBackend.Controllers
             if (user == null)
                 return NotFound();
 
-            return Ok(user);
+            var result = new AdminResultDto(user.FirstName, user.LastName, user.Email, user.AvatarUrl);
+            return Ok(result);
         }
 
         /// <summary>
