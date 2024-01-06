@@ -301,11 +301,12 @@ public class AuthService : IAuthService
     public async Task<string> GetUserRole(User user)
     {
         var roleList = await _userManager.GetRolesAsync(user);
-        
-        // the system does not allow more than one role per user
-        // no time to allow it to handle more than one :^) so
-        // we assume that there is no other thing in the list than the role we need
-        return roleList.First();
+        var role = roleList.FirstOrDefault();
+        return role is null ? Ts.Roles.Guest :
+            // the system does not allow more than one role per user
+            // no time to allow it to handle more than one :^) so
+            // we assume that there is no other thing in the list than the role we need
+            roleList.First();
     }
 }
 
