@@ -21,7 +21,7 @@ namespace UniTrackBackend.Services
             _mapper = mapper;
         }
 
-        public async Task<MarkResultDto> AddMarkAsync(Mark? mark)
+        public async Task AddMarkAsync(Mark? mark)
         {
             try
             {
@@ -31,9 +31,8 @@ namespace UniTrackBackend.Services
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while adding mark");
-                return null;
+                throw;
             }
-            return _mapper.MapMarkDto(mark);
         }
 
         public async Task<MarkResultDto> GetMarkByIdAsync(int id)

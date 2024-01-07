@@ -78,7 +78,7 @@
             <param name="id">The ID of the admin to retrieve.</param>
             <returns>The user object if found, otherwise returns not found.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AdminController.GetAllUsers">
+        <member name="M:UniTrackBackend.Controllers.AdminController.GetAllUsers(System.Int32)">
             <summary>
             Retrieves all registered users.
             </summary>
