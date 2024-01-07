@@ -4,6 +4,7 @@
       <button
         mat-raised-button
         class="primary-btn-lg text-ut-white w-100 my-2"
+        [disabled]="!selection.selected.length"
         (click)="approve(roles.STUDENT)"
       >
         <mat-icon>done</mat-icon>

@@ -34,10 +34,11 @@ export class ApprovalTableComponent implements OnInit {
       .getUserApprovalRequests()
       .pipe(
         tap(
-          (userRequests: UserRequest[]) =>
-            (this.dataSource = new MatTableDataSource<UserRequest>(
+          (userRequests: UserRequest[]) => {
+            this.dataSource = new MatTableDataSource<UserRequest>(
               userRequests
-            ))
+            )
+          }
         )
       );
   }
@@ -69,13 +70,10 @@ export class ApprovalTableComponent implements OnInit {
   approve(id?: string): void {
     const clonedIds = this.selection.selected.map(({ id }) => id);
     const selectedIds = id ? id : clonedIds;
-
     this.onApprove.emit(selectedIds);
   }
 
   selectRow(row: any): void {
-    if (row.type === this.roles.STUDENT) {
-      this.selection.toggle(row);
-    }
+    this.selection.toggle(row);
   }
 }

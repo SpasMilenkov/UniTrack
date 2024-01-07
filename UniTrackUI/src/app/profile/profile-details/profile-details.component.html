@@ -17,7 +17,6 @@
     </div>
     <div *ngIf="profile.type === roles.TEACHER">
       <span>{{ getTeacherProfile().subjects.join(', ')  }}</span>
-      <span>{{ getTeacherClasses() }}</span>
     </div>
     <div>{{ profile.className }}</div>
   </div>

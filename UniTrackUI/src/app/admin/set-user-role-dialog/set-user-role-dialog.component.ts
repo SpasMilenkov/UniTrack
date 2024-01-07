@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Roles } from 'src/app/shared/enums/roles.enum';
@@ -8,24 +8,24 @@ import { Roles } from 'src/app/shared/enums/roles.enum';
   templateUrl: './set-user-role-dialog.component.html',
   styleUrls: ['./set-user-role-dialog.component.scss'],
 })
-export class SetUserRoleDialogComponent {
+export class SetUserRoleDialogComponent implements OnInit {
   form = this.fb.group({
     role: this.fb.control('', Validators.required),
   });
-  roles = Object.values(Roles).filter((role: string) => {
-    const isAdmin = role === Roles.ADMIN;
-    const isGuest = role === Roles.GUEST;
-    const multipleIdsForTeacher =
-      Array.isArray(this.data.ids) && role === Roles.TEACHER;
-
-    return !isGuest && !isAdmin && !multipleIdsForTeacher;
-  });
+  roles = [Roles.STUDENT];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { ids: string[] | string },
     public dialogRef: MatDialogRef<SetUserRoleDialogComponent>,
     private fb: NonNullableFormBuilder
   ) {}
+
+  ngOnInit(): void {
+    console.log(this.data.ids)
+    if(this.data && Array.isArray(this.data.ids)){
+      this.roles.push(Roles.TEACHER);
+    }
+  }
 
   onSubmit(): void {
     this.form.markAllAsTouched();

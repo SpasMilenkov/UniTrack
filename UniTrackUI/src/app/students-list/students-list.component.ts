@@ -4,6 +4,7 @@ import { TeacherDetailsCardTypes } from '../shared/enums/teacher-details-card-ty
 import { MatDialog } from '@angular/material/dialog';
 import { AddGradeAbsenceDialogComponent } from '../shared/components/add-grade-absence-dialog/add-grade-absence-dialog.component';
 import { TeachersService } from '../shared/services/teachers.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-students-list',
@@ -28,7 +29,10 @@ export class StudentsListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.studentsData = this.teachersService.getAllStudents();
+    this.teachersService
+      .getAllStudents()
+      .pipe(tap((students) => (this.studentsData = students)))
+      .subscribe();
   }
 
   openDialog(
@@ -42,11 +46,11 @@ export class StudentsListComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(type === this.teacherDetailsCardTypes.ADD_GRADE){
-        this.teachersService.addGrade(studentId, result);
+      if (type === this.teacherDetailsCardTypes.ADD_GRADE) {
+        this.teachersService.addGrade(studentId, result).subscribe();
         return;
-      }else if(type === this.teacherDetailsCardTypes.ADD_ABSENCE){
-        this.teachersService.addAbsence(studentId, result);
+      } else if (type === this.teacherDetailsCardTypes.ADD_ABSENCE) {
+        this.teachersService.addAbsence(studentId, result).subscribe();
         return;
       }
     });

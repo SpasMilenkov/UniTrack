@@ -26,7 +26,7 @@ export class UserService {
   }
 
   getTeacherById(id: number): Observable<any>{
-    return this.http.get(`http://localhost:5036/api/Teacher/${id}`, {withCredentials: true});
+    return this.http.get(`http://localhost:5036/api/Teacher/UserId/${id}`, {withCredentials: true});
   }
 
   getAdminById(id: number): Observable<any>{
@@ -34,6 +34,6 @@ export class UserService {
   }
 
   getCurrentUserProfile(): Profile | StudentProfile {
-    return JSON.parse(localStorage.getItem(LocalStorageKeys.CURRENT_USER) || '');
+    return localStorage.getItem(LocalStorageKeys.CURRENT_USER) ? JSON.parse(localStorage.getItem(LocalStorageKeys.CURRENT_USER) || '') : {};
   }
 }

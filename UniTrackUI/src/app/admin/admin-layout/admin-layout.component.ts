@@ -52,14 +52,16 @@ export class AdminLayoutComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((role) => {
-      switch(role.role) {
-        case Roles.STUDENT: {
-          this.onApproveStudents(Array.isArray(ids) ? ids : [ids]);
-          break;
-        }
-        case Roles.TEACHER: {
-          this.onApproveTeacher(Array.isArray(ids) ? ids[0] : ids);
-          break;
+      if(role?.role){
+        switch(role.role) {
+          case Roles.STUDENT: {
+            this.onApproveStudents(Array.isArray(ids) ? ids : [ids]);
+            break;
+          }
+          case Roles.TEACHER: {
+            this.onApproveTeacher(Array.isArray(ids) ? ids[0] : ids);
+            break;
+          }
         }
       }
     });

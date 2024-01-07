@@ -10,4 +10,5 @@ export interface Grade {
   subjectName: string;
   teacherFirstName: string;
   teacherLastName: string;
+  date?: string;
 }

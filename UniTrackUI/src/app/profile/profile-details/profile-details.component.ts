@@ -24,9 +24,4 @@ export class ProfileDetailsComponent {
   getTeacherProfile(): TeacherProfile {
     return this.profile as TeacherProfile;
   }
-
-  getTeacherClasses(): string {
-    const teacher= this.getTeacherProfile();
-    return teacher.classes.map(({classId})=>classId).join(', ');
-  }
 }
