@@ -10,4 +10,5 @@ public class Grade
     public int ClassTeacherId { get; set; }
     public Teacher ClassTeacher { get; set; } = null!;
     public ICollection<Teacher> Teachers { get; set; } = null!;
+    public ICollection<GradeSubjectTeacher> GradeSubjectTeachers { get; set; }
 }
