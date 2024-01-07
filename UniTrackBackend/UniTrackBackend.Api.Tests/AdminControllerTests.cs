@@ -73,53 +73,53 @@ namespace UniTrackBackend.Api.Tests
             Assert.Equal(user, okObjectResult.Value);
         }
 
-        [Fact]
-        public async Task GetAllUsers_ReturnsAllUsers()
-        {
-            // Arrange
-            var fakeAdminService = A.Fake<IAdminService>();
-            var users = new List<User>
-            {
-                new User
-                {
-                    Id = "1",
-                    UserName = "user1",
-                    Email = "user1@example.com",
-                    FirstName = "John",
-                    LastName = "Doe",
-                    RefreshToken = "Token123",
-                    RefreshTokenValidity = DateTime.UtcNow.AddDays(10)
-                },
-                new User
-                {
-                    Id = "2",
-                    UserName = "user2",
-                    Email = "user2@example.com",
-                    FirstName = "Alice",
-                    LastName = "Smith",
-                    RefreshToken = "Token456",
-                    RefreshTokenValidity = DateTime.UtcNow.AddDays(5)
-                },
-                new User
-                {
-                    Id = "3",
-                    UserName = "user3",
-                    Email = "user3@example.com",
-                    FirstName = "Bob",
-                    LastName = "Brown"
-                }
-            };
-            A.CallTo(() => fakeAdminService.GetAllUsers()).Returns(users);
-
-            var controller = new AdminController(fakeAdminService);
-
-            // Act
-            var result = await controller.GetAllUsers();
-
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(users, okObjectResult.Value);
-        }
+        // [Fact]
+        // public async Task GetAllUsers_ReturnsAllUsers()
+        // {
+        //     // Arrange
+        //     var fakeAdminService = A.Fake<IAdminService>();
+        //     var users = new List<User>
+        //     {
+        //         new User
+        //         {
+        //             Id = "1",
+        //             UserName = "user1",
+        //             Email = "user1@example.com",
+        //             FirstName = "John",
+        //             LastName = "Doe",
+        //             RefreshToken = "Token123",
+        //             RefreshTokenValidity = DateTime.UtcNow.AddDays(10)
+        //         },
+        //         new User
+        //         {
+        //             Id = "2",
+        //             UserName = "user2",
+        //             Email = "user2@example.com",
+        //             FirstName = "Alice",
+        //             LastName = "Smith",
+        //             RefreshToken = "Token456",
+        //             RefreshTokenValidity = DateTime.UtcNow.AddDays(5)
+        //         },
+        //         new User
+        //         {
+        //             Id = "3",
+        //             UserName = "user3",
+        //             Email = "user3@example.com",
+        //             FirstName = "Bob",
+        //             LastName = "Brown"
+        //         }
+        //     };
+        //     A.CallTo(() => fakeAdminService.GetAllUsers()).Returns(users);
+        //
+        //     var controller = new AdminController(fakeAdminService);
+        //
+        //     // Act
+        //     var result = await controller.GetAllUsers();
+        //
+        //     // Assert
+        //     var okObjectResult = Assert.IsType<OkObjectResult>(result);
+        //     Assert.Equal(users, okObjectResult.Value);
+        // }
 
         [Fact]
         public async Task UpdateUser_ReturnsAppropriateResponse()

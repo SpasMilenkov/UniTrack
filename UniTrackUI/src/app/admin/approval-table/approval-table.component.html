@@ -1,11 +1,11 @@
-<ng-container *ngIf="userRequests$ | async">
+<ng-container>
   <div class="row mb-4">
     <div class="col-md-5">
       <button
         mat-raised-button
         class="primary-btn-lg text-ut-white w-100 my-2"
         [disabled]="!selection.selected.length"
-        (click)="approve(roles.STUDENT)"
+        (click)="approve()"
       >
         <mat-icon>done</mat-icon>
         Approve

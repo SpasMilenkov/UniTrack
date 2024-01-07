@@ -9,6 +9,7 @@ import { LocalStorageKeys } from 'src/app/shared/enums/local-storage-keys.enum';
 import { Profile } from 'src/app/shared/models/profile';
 import { SetUserRoleDialogComponent } from '../set-user-role-dialog/set-user-role-dialog.component';
 import { Roles } from 'src/app/shared/enums/roles.enum';
+import { switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-admin-layout',
@@ -16,12 +17,19 @@ import { Roles } from 'src/app/shared/enums/roles.enum';
   styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit {
-  approvedUserRequests!: UserRequest[];
+  userRequests!: UserRequest[];
   schoolId: string = '';
 
   constructor(private adminService: AdminService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.adminService
+      .getUserApprovalRequests()
+      .pipe(
+        tap(
+          (userRequests: UserRequest[]) => this.userRequests = userRequests
+        )
+      ).subscribe();
     this.schoolId = (JSON.parse(localStorage.getItem(LocalStorageKeys.CURRENT_USER) || '2') as Profile).schoolId;
   }
 
@@ -29,7 +37,15 @@ export class AdminLayoutComponent implements OnInit {
     const dialogRef = this.dialog.open(ApproveStudentsDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.adminService.approveStudents({ schoolId: this.schoolId,  studentIds: ids, ...result }).subscribe();
+
+      this.adminService.approveStudents({ schoolId: this.schoolId,  studentIds: ids, ...result })
+      .pipe(switchMap(() => this.adminService
+      .getUserApprovalRequests()
+      .pipe(
+        tap(
+          (userRequests: UserRequest[]) => this.userRequests = userRequests
+        )
+      ))).subscribe();
     });
   }
 

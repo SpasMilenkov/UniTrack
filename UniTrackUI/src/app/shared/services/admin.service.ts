@@ -16,6 +16,7 @@ export class AdminService {
   constructor(private http: HttpClient, private userService: UserService) {}
 
   approveStudents(usersData: any): Observable<any> {
+    console.log(usersData)
     return this.http.put<any>('http://localhost:5036/api/Approval/students', usersData, {withCredentials: true});
   }
 

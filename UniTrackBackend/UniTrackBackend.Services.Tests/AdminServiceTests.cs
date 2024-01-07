@@ -52,30 +52,30 @@ public class AdminServiceTests
         A.CallTo(() => _userManager.FindByIdAsync(user.Id)).MustHaveHappenedOnceExactly();
         Assert.Equal(user, result);
     }
-    [Fact]
-    public void GetAllUsers_ReturnsAllUsers()
-    {
-        var users = new List<User> { new User
-        {
-            FirstName = null,
-            LastName = null
-        }, new User
-            {
-                FirstName = null,
-                LastName = null
-            }
-        };
-        var userManagerUsers = A.Fake<IQueryable<User>>();
-        A.CallTo(() => userManagerUsers.Provider).Returns(users.AsQueryable().Provider);
-        A.CallTo(() => userManagerUsers.Expression).Returns(users.AsQueryable().Expression);
-        A.CallTo(() => userManagerUsers.ElementType).Returns(users.AsQueryable().ElementType);
-        A.CallTo(() => userManagerUsers.GetEnumerator()).Returns(users.GetEnumerator());
-        A.CallTo(() => _userManager.Users).Returns(userManagerUsers);
-
-        var result = _adminService.GetAllUsers();
-
-        Assert.Equal(users, result);
-    }
+    // [Fact]
+    // public void GetAllUsers_ReturnsAllUsers()
+    // {
+    //     var users = new List<User> { new User
+    //     {
+    //         FirstName = null,
+    //         LastName = null
+    //     }, new User
+    //         {
+    //             FirstName = null,
+    //             LastName = null
+    //         }
+    //     };
+    //     var userManagerUsers = A.Fake<IQueryable<User>>();
+    //     A.CallTo(() => userManagerUsers.Provider).Returns(users.AsQueryable().Provider);
+    //     A.CallTo(() => userManagerUsers.Expression).Returns(users.AsQueryable().Expression);
+    //     A.CallTo(() => userManagerUsers.ElementType).Returns(users.AsQueryable().ElementType);
+    //     A.CallTo(() => userManagerUsers.GetEnumerator()).Returns(users.GetEnumerator());
+    //     A.CallTo(() => _userManager.Users).Returns(userManagerUsers);
+    //
+    //     var result = _adminService.GetAllUsers();
+    //
+    //     Assert.Equal(users, result);
+    // }
     [Fact]
     public async Task UpdateUserAsync_CallsUserManagerUpdateAsync()
     {

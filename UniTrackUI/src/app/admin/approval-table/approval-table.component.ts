@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, tap } from 'rxjs';
 import { Roles } from 'src/app/shared/enums/roles.enum';
@@ -11,7 +11,7 @@ import { AdminService } from 'src/app/shared/services/admin.service';
   templateUrl: './approval-table.component.html',
   styleUrls: ['./approval-table.component.scss'],
 })
-export class ApprovalTableComponent implements OnInit {
+export class ApprovalTableComponent implements OnInit, OnChanges {
   displayedColumns: string[] = [
     'select',
     'email',
@@ -24,23 +24,25 @@ export class ApprovalTableComponent implements OnInit {
   roles = Roles;
 
   dataSource!: MatTableDataSource<UserRequest>;
-  userRequests$!: Observable<UserRequest[]>;
+  @Input() userRequests: UserRequest[] = [];
   @Output() onApprove = new EventEmitter<string[] | string>();
 
   constructor(private adminService: AdminService) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+      console.log(changes)
+      if (changes['userRequests'].currentValue) {
+        this.dataSource = new MatTableDataSource<UserRequest>(
+        changes['userRequests'].currentValue
+      )
+    }
+  }
+
   ngOnInit(): void {
-    this.userRequests$ = this.adminService
-      .getUserApprovalRequests()
-      .pipe(
-        tap(
-          (userRequests: UserRequest[]) => {
-            this.dataSource = new MatTableDataSource<UserRequest>(
-              userRequests
-            )
-          }
-        )
-      );
+    console.log(this.userRequests)
+    this.dataSource = new MatTableDataSource<UserRequest>(
+      this.userRequests
+    )
   }
 
   isAllSelected() {
@@ -68,7 +70,9 @@ export class ApprovalTableComponent implements OnInit {
   }
 
   approve(id?: string): void {
-    const clonedIds = this.selection.selected.map(({ id }) => id);
+    const clonedIds = this.selection.selected.map(({ userId }) => userId);
+
+
     const selectedIds = id ? id : clonedIds;
     this.onApprove.emit(selectedIds);
   }
