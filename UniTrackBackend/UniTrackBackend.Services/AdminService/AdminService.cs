@@ -2,6 +2,7 @@
 using UniTrackBackend.Data;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Data.Models.TypeSafe;
 using UniTrackBackend.Services.Commons.Exceptions;
 
 namespace UniTrackBackend.Services;
@@ -27,11 +28,12 @@ public class AdminService : IAdminService
         return await _userManager.FindByIdAsync(id);
     }
 
-    public IEnumerable<User> GetAllUsers()
+    public async Task<IEnumerable<User>> GetAllUsers(int schoolId)
     {
         // UserManager does not have a direct method to retrieve all users
         // This will depend on your UserStore implementation
-        return _userManager.Users.ToList();
+        var guests = await _userManager.GetUsersInRoleAsync(Ts.Roles.Guest);
+        return guests.Where(g => g.SchoolId == schoolId);
     }
 
     public async Task<IdentityResult> UpdateUserAsync(User user)
