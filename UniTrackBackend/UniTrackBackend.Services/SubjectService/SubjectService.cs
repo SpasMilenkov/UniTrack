@@ -20,7 +20,7 @@ public class SubjectService : ISubjectService
     {
         try
         {
-            return await _unitOfWork.SubjectRepository.GetAllAsync();
+            return await _unitOfWork.SubjectRepository.GetSubjectsWithDetails(new HashSet<int>());
             
         }
         catch (Exception ex)

@@ -207,7 +207,7 @@ public class Mapper : IMapper
                 subject.Id.ToString(),
                 subject.Name,
                 subject.Teachers.
-                    Select(t => new ShortTeacherResultDto(
+                    Select(t => new MinimalTeacherResultDto(
                         t.Id.ToString(),
                         t.User.FirstName,
                         t.User.LastName)));
