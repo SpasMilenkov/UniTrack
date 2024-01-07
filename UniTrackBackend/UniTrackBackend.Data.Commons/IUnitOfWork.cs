@@ -5,6 +5,7 @@ namespace UniTrackBackend.Data.Commons;
 public interface IUnitOfWork : IDisposable
 {
     IRepository<School> SchoolRepository { get; }
+    IRepository<GradeSubjectTeacher> GradeSubjectTeacherRepository { get; }
     IAbsenceRepository AbsenceRepository { get; }
     IGradeRepository GradeRepository { get; }
     IMarkRepository MarkRepository { get; }
