@@ -20,7 +20,6 @@ export class TeachersService {
 
   addGrade(studentId: string, grade: Grade): Observable<any> {
     const {id} = this.userService.getCurrentUserProfile();
-    console.log(grade)
     const body = {
       ...grade,
       gradedOn: grade.date,
@@ -33,7 +32,6 @@ export class TeachersService {
 
   addAbsence(studentId: string, absence: Absence) {
     const {id} = this.userService.getCurrentUserProfile();
-    console.log(absence)
     const body = {
       ...absence,
       time: absence.date,

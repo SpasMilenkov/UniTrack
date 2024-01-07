@@ -21,7 +21,7 @@ export class ApproveTeacherDialogComponent implements OnInit {
     subjectIds: this.fb.control([], Validators.required),
     classId: this.fb.control(''),
   });
-  allClasses!: StudentsClass[];
+  allClasses$!: Observable<StudentsClass[]>;
   allSubjects$!: Observable<Subject[]>;
 
   constructor(
@@ -31,7 +31,7 @@ export class ApproveTeacherDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.allClasses = this.adminService.getAllClasses();
+    this.allClasses$ = this.adminService.getAllClasses();
     this.allSubjects$ = this.adminService.getAllSubjects();
   }
 

@@ -75,7 +75,6 @@ export class AddGradeAbsenceDialogComponent {
   }
 
   onSubmit(): void {
-    console.log(this.form.getRawValue(), this.form.valid)
     if (this.form.valid) {
       this.dialogRef.close(this.form.getRawValue());
     }

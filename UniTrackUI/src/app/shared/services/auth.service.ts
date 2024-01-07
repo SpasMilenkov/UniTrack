@@ -22,7 +22,6 @@ export class AuthService {
   ) {}
 
   login(userCredentials: userCredentials): Observable<any> {
-    console.log(userCredentials);
     return this.http
       .post('http://localhost:5036/api/Auth/login', userCredentials, {
         withCredentials: true,
@@ -68,16 +67,12 @@ export class AuthService {
         tap(() => {
           localStorage.removeItem(LocalStorageKeys.CURRENT_USER);
           localStorage.removeItem(LocalStorageKeys.USER_ROLE);
-          this.router.navigate(['auth','login']);
+          this.router.navigate(['auth', 'login']);
         })
       );
   }
 
-  confirmEmail(confirmEmailData: ConfirmEmailData): void {
-    // console.log(confirmEmailData)
-  }
+  confirmEmail(confirmEmailData: ConfirmEmailData): void {}
 
-  resetPassword(resetPasswordData: ResetPasswordData): void {
-    // console.log(resetPasswordData)
-  }
+  resetPassword(resetPasswordData: ResetPasswordData): void {}
 }

@@ -18,7 +18,7 @@
       </mat-form-field>
 
       <mat-label>Select classes:</mat-label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" *ngIf="allClasses$ | async as allClasses">
         <mat-select formControlName="gradeIds" multiple>
           <mat-option
             *ngFor="let class of allClasses"
@@ -30,7 +30,7 @@
 
       <mat-label>Set a class teacher:</mat-label>
       <mat-form-field appearance="outline">
-        <mat-select formControlName="classId">
+        <mat-select formControlName="classId" *ngIf="allClasses$ | async as allClasses">
           <mat-option
             *ngFor="let class of allClasses"
             [value]="class.classId"

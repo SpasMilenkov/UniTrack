@@ -16,16 +16,17 @@ export class AdminService {
   constructor(private http: HttpClient, private userService: UserService) {}
 
   approveStudents(usersData: any): Observable<any> {
-    console.log(usersData);
     return this.http.put<any>('http://localhost:5036/api/Approval/students', usersData, {withCredentials: true});
   }
 
   approveTeacher(teacherData: ApproveTeacherData) {
-    console.log(teacherData);
-  }
-
-  disApproveUsers(userIds: string) {
-    console.log(userIds);
+    const body = {
+      classId: +teacherData.classId,
+      schoolId: +teacherData.schoolId,
+      gradeIds: teacherData.gradeIds?.map(grade => +grade),
+      subjectIds: teacherData.subjectIds.map(subject => +subject)
+    }
+    return this.http.put<any>('http://localhost:5036/api/Approval/teachers', body, {withCredentials: true});
   }
 
   getAllSubjects(): Observable<Subject[]> {
@@ -33,26 +34,17 @@ export class AdminService {
   }
 
   getAllSchools(): Observable<School[]> {
-    // return this.http.get<School[]>('http://localhost:5036/api/Schools', {withCredentials: true})
-    return of([
-      { name: 'School 1', id: '1' },
-      { name: 'School 2', id: '2' },
-    ]);
+    return this.http.get<School[]>('http://localhost:5036/api/School', {withCredentials: true})
   }
 
-  getAllClasses(): StudentsClass[] {
-    // return this.http.post('http://localhost:5036/api/', {withCredentials: true})
-    return [
-      { classId: 1, className: 'Class A', students: [] },
-      { classId: 2, className: 'Class B', students: [] },
-      { classId: 3, className: 'Class C', students: [] },
-      { classId: 4, className: 'Class D', students: [] },
-    ];
+  getAllClasses(): Observable<StudentsClass[]> {
+    const {schoolId} = this.userService.getCurrentUserProfile();
+    return this.http.get<StudentsClass[]>(`http://localhost:5036/api/Grade/getSubjectsBySchoolId/${schoolId}`, {withCredentials: true})
   }
 
   getUserApprovalRequests(): Observable<UserRequest[]> {
     const {schoolId} = this.userService.getCurrentUserProfile();
 
-    return this.http.get<UserRequest[]>('http://localhost:5036/api/Admin/GetAllGuests/' + schoolId, {withCredentials: true})
+    return this.http.get<UserRequest[]>('http://localhost:5036/api/Admin/GetAllUsers/' + schoolId, {withCredentials: true})
   }
 }

@@ -7,7 +7,7 @@
     </h1>
     <div mat-dialog-content class="d-flex flex-column justify-content-center">
       <mat-label>Select class:</mat-label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" *ngIf="allClasses$ | async as allClasses">
         <mat-select formControlName="gradeId">
           <mat-option
             *ngFor="let class of allClasses"

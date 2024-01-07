@@ -34,7 +34,6 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   onApproveTeacher(userId: string): void {
-    console.log(userId);
     const dialogRef = this.dialog.open(ApproveTeacherDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -42,7 +41,7 @@ export class AdminLayoutComponent implements OnInit {
         schoolId: this.schoolId,
         userId,
         ...result,
-      } as ApproveTeacherData);
+      } as ApproveTeacherData).subscribe();
     });
   }
 

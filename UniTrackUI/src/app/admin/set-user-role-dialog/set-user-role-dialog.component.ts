@@ -21,7 +21,6 @@ export class SetUserRoleDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data.ids)
     if(this.data && Array.isArray(this.data.ids)){
       this.roles.push(Roles.TEACHER);
     }
