@@ -51,7 +51,7 @@ namespace UniTrackBackend.Controllers
             if (user == null)
                 return NotFound();
 
-            var result = new UserResultDto(user.FirstName, user.LastName, user.Email, user.AvatarUrl);
+            var result = new UserResultDto(user.Id, user.FirstName, user.LastName, user.Email, user.AvatarUrl);
             return Ok(result);
         }
         
@@ -81,14 +81,14 @@ namespace UniTrackBackend.Controllers
         /// Retrieves all registered users.
         /// </summary>
         /// <returns>A list of all users.</returns>
-        [HttpGet("GetAllUsers")]
+        [HttpGet("GetAllUsers/{schoolId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResultDto>))]
-        public Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers(int schoolId)
         {
-            var users = _adminService.GetAllUsers();
+            var users = await _adminService.GetAllUsers(schoolId);
 
-            var result = users.Select(u => new UserResultDto(u.FirstName, u.LastName, u.Email, u.AvatarUrl));
-            return Task.FromResult<IActionResult>(Ok(result));
+            var result = users.Select(u => new UserResultDto(u.Id, u.FirstName, u.LastName, u.Email, u.AvatarUrl));
+            return Ok(result);
         }
 
         /// <summary>
