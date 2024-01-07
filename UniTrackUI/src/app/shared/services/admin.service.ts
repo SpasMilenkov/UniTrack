@@ -7,12 +7,13 @@ import { StudentsClass } from '../models/students-class';
 import { Subject } from '../models/subject';
 import { ApproveTeacherData } from '../models/approve-teacher-data';
 import { School } from '../models/school';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   approveStudents(usersData: any): Observable<any> {
     console.log(usersData);
@@ -50,6 +51,8 @@ export class AdminService {
   }
 
   getUserApprovalRequests(): Observable<UserRequest[]> {
-    return this.http.get<UserRequest[]>('http://localhost:5036/api/Admin/GetAllUsers', {withCredentials: true})
+    const {schoolId} = this.userService.getCurrentUserProfile();
+
+    return this.http.get<UserRequest[]>('http://localhost:5036/api/Admin/GetAllGuests/' + schoolId, {withCredentials: true})
   }
 }
