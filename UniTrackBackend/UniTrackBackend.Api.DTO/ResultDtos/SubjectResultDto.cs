@@ -11,5 +11,5 @@ namespace UniTrackBackend.Api.DTO.ResultDtos;
 public record SubjectResultDto(
     string Id,
     string Name,
-    IEnumerable<ShortTeacherResultDto> Teachers
+    IEnumerable<MinimalTeacherResultDto> Teachers
     );
