@@ -27,5 +27,7 @@ public class RegisterDto
 
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public required string ConfirmPassword { get; set; }
+    [Required(ErrorMessage = "School ID is required.")]
+    public required int SchoolId { get; set; }
     
 }

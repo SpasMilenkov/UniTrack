@@ -11,6 +11,9 @@ export const profileGuard: CanActivateFn = (route, state) => {
   if(role === Roles.ADMIN){
     router.navigateByUrl('approval-table');
   }
+  if(role === Roles.GUEST){
+    router.navigateByUrl('auth/login')
+  }
 
   return (role === Roles.STUDENT || userService.getRole() === Roles.TEACHER);
 };

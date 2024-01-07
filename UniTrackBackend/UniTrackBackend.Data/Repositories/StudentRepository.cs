@@ -41,6 +41,7 @@ public class StudentRepository: EfRepository<Student>, IStudentRepository
             // Load Marks - Similar considerations as Absences
             await _context.Entry(student).Collection(s => s.Marks)
                 .Query() // Possibly add filters or sorting
+                .Include(m => m.Subject)
                 .LoadAsync();
         }
         return student;
@@ -77,6 +78,7 @@ public class StudentRepository: EfRepository<Student>, IStudentRepository
 
             await _context.Entry(student).Collection(s => s.Marks)
                 .Query()
+                .Include(m => m.Subject)
                 .LoadAsync();
         }
     
@@ -102,6 +104,7 @@ public class StudentRepository: EfRepository<Student>, IStudentRepository
             
             await _context.Entry(student).Collection(s => s.Marks)
                 .Query() 
+                .Include(m => m.Subject)
                 .LoadAsync();
         }
         return student;
@@ -128,6 +131,7 @@ public class StudentRepository: EfRepository<Student>, IStudentRepository
             // Load Marks
             await _context.Entry(student).Collection(s => s.Marks)
                 .Query()
+                .Include(m => m.Subject)
                 .LoadAsync();
         }
         

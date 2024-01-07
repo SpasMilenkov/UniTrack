@@ -48,6 +48,7 @@ public class ApprovalService : IApprovalService
                 };
                 await _unitOfWork.StudentRepository.AddAsync(newEntry);
                 await _userManager.AddToRoleAsync(user, Ts.Roles.Student);
+                await _userManager.RemoveFromRoleAsync(user, Ts.Roles.Guest);
             }
 
             await _unitOfWork.SaveAsync();
@@ -78,6 +79,9 @@ public class ApprovalService : IApprovalService
         };
         await _unitOfWork.ParentRepository.AddAsync(entity);
         await _unitOfWork.SaveAsync();
+        
+        await _userManager.AddToRoleAsync(user, Ts.Roles.Parent);
+        await _userManager.RemoveFromRoleAsync(user, Ts.Roles.Guest);
         return true;
     }
 
@@ -86,28 +90,40 @@ public class ApprovalService : IApprovalService
         var teacherUId = approvalModel.UserId;
 
         // Validate the teacher ID
-        var teacherExists = await _unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == teacherUId);
+        var teacherExists = await _unitOfWork.TeacherRepository
+            .FirstOrDefaultAsync(t => t.UserId == teacherUId);
         if (teacherExists != null) return false;
-        
+        var user = await _userManager.FindByIdAsync(approvalModel.UserId);
         var filter = approvalModel.SubjectIds.ToHashSet();
-        var subjects = await _unitOfWork.SubjectRepository.GetAsync(s => filter.Contains(s.Id));
+        var subjects = await _unitOfWork.SubjectRepository
+                
+            .GetAsync(s => filter.Contains(s.Id));
+        var gradeFilter = approvalModel.GradeIds.ToHashSet();
+        var grades = await _unitOfWork.GradeRepository.GetAsync(g => gradeFilter.Contains(g.Id));
+        
         var teacher = new Teacher()
         {
             // Assign the teacher to the class
             UserId = teacherUId,
             SchoolId = approvalModel.SchoolId,
             Subjects = subjects.ToList(),
+            Grades = grades.ToList()
         };
         await _unitOfWork.TeacherRepository.AddAsync(teacher);
         await _unitOfWork.SaveAsync();
         if (approvalModel.ClassId is -1) return true;
 
 
-        var grade = await _unitOfWork.GradeRepository.GetByIdAsync(approvalModel.ClassId);
-        var newTeacher = await _unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == teacherUId);
+        var grade = await _unitOfWork.GradeRepository
+            .GetByIdAsync(approvalModel.ClassId);
+        var newTeacher = await _unitOfWork.TeacherRepository
+            .FirstOrDefaultAsync(t => t.UserId == teacherUId);
         grade.ClassTeacherId = newTeacher.Id;
         await _unitOfWork.GradeRepository.UpdateAsync(grade);
         await _unitOfWork.SaveAsync();
+        
+        await _userManager.AddToRoleAsync(user, Ts.Roles.Teacher);
+        await _userManager.RemoveFromRoleAsync(user, Ts.Roles.Guest);
         return true;
     }
 }

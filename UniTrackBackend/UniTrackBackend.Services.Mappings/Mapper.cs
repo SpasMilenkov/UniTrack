@@ -139,7 +139,6 @@ public class Mapper : IMapper
                 mark.Subject.Name,
                 mark.Teacher.User.FirstName,
                 mark.Teacher.User.LastName
-                
                 );
             return model;
         }

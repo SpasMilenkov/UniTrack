@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getRole(): Roles {
-    return localStorage.getItem(LocalStorageKeys.USER_ROLE) ? JSON.parse(localStorage.getItem(LocalStorageKeys.USER_ROLE) || '') : '';
+    return localStorage.getItem(LocalStorageKeys.USER_ROLE) ? JSON.parse(localStorage.getItem(LocalStorageKeys.USER_ROLE) || 'GUEST') : 'GUEST';
   }
 
   getUserById(id: number): Observable<any>{

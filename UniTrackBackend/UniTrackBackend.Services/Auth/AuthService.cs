@@ -149,12 +149,14 @@ public class AuthService : IAuthService
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                AvatarUrl = "https://cdn-icons-png.flaticon.com/512/1154/1154955.png"
+                AvatarUrl = "https://cdn-icons-png.flaticon.com/512/1154/1154955.png",
+                SchoolId = model.SchoolId
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 throw new DataException();
-        
+
+            await _userManager.AddToRoleAsync(user, Ts.Roles.Guest);
             return user;
         }
         catch (Exception e)

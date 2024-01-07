@@ -12,4 +12,6 @@ public class TeacherApprovalDto
     public int SchoolId { get; set; }
     [Required]
     public List<int> SubjectIds { get; set; }
+    [Required]
+    public List<int> GradeIds { get; set; }
 }
