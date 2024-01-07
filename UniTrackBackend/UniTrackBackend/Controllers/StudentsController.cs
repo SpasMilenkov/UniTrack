@@ -64,6 +64,12 @@ namespace UniTrackBackend.Controllers
             var students = await _studentService.GetAllStudentsAsync();
             return Ok(students);
         }
+        [HttpGet("ByTeacherId/{teacherId}")]
+        public async Task<IActionResult> GetStudentsByTeacherId(int teacherId)
+        {
+            var students = await _studentService.GetStudentsByTeacherId(teacherId);
+            return Ok(students.Select(s => _mapper.MapStudentDto(s)));
+        }
 
         /// <summary>
         /// Deletes a student record by their ID.
@@ -80,7 +86,7 @@ namespace UniTrackBackend.Controllers
                     return BadRequest();
                 return NoContent();
             }
-            catch (System.Collections.Generic.KeyNotFoundException e)
+            catch (KeyNotFoundException e)
             {
                 return NotFound();
             }

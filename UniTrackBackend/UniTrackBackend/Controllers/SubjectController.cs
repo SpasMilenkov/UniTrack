@@ -66,8 +66,6 @@ namespace UniTrackBackend.Controllers
             }
             catch
             {
-                // Here, you might check if the subject doesn't exist and return NotFound.
-                // Otherwise, return a generic error.
                 return StatusCode(500, "An error occurred while updating the subject.");
             }
 
@@ -83,7 +81,6 @@ namespace UniTrackBackend.Controllers
             }
             catch
             {
-                // Handle the error appropriately - for instance, return NotFound if the subject doesn't exist
                 return StatusCode(500, "An error occurred while deleting the subject.");
             }
 

@@ -378,6 +378,13 @@
             <param name="id">The ID of the teacher to retrieve.</param>
             <returns>The teacher object if found, otherwise returns not found.</returns>
         </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.GetTeacherByUserId(System.String)">
+            <summary>
+            Retrieves a specific teacher by their user ID.
+            </summary>
+            <param name="id">The ID of the teacher to retrieve.</param>
+            <returns>The teacher object if found, otherwise returns not found.</returns>
+        </member>
         <member name="M:UniTrackBackend.Controllers.TeacherController.UpdateTeacher(System.Int32,UniTrackBackend.Api.DTO.TeacherDto)">
             <summary>
             Updates an existing teacher's details.
