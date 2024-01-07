@@ -6,7 +6,7 @@ namespace UniTrackBackend.Services
 {
     public interface IMarkService
     {
-        Task<MarkResultDto> AddMarkAsync(Mark? mark);
+        Task AddMarkAsync(Mark? mark);
         Task<MarkResultDto> GetMarkByIdAsync(int id);
         Task<IEnumerable<MarkResultDto>> GetAllMarksAsync();
 

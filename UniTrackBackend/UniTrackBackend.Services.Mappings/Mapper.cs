@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Api.DTO.ResultDtos;
@@ -128,16 +129,17 @@ public class Mapper : IMapper
     {
         try
         {
-            var model  = new MarkResultDto
-            {
-                Id = mark.Id,
-                Value = mark.Value,
-                StudentId = mark.StudentId,
-                TeacherId = mark.TeacherId,
-                SubjectId = mark.SubjectId,
-                GradedOn = mark.GradedOn,
-                Topic = mark.Topic
-            };
+            var model = new MarkResultDto(
+                Math.Round(mark.Value).ToString(CultureInfo.InvariantCulture),
+                mark.StudentId.ToString(),
+                mark.TeacherId.ToString(),
+                mark.SubjectId.ToString(),
+                mark.Topic,
+                mark.GradedOn.ToString("O"),
+                mark.Subject.Name,
+                mark.Teacher.User.FirstName,
+                mark.Teacher.User.LastName
+                );
             return model;
         }
         catch (Exception e)
@@ -200,12 +202,14 @@ public class Mapper : IMapper
     {
         try
         {
-            var viewModel = new SubjectResultDto
-            {
-                Id = subject.Id,
-                Name = subject.Name,
-                TeacherNames = subject.Teachers.Select(t => t.Id.ToString())
-            };
+            var viewModel = new SubjectResultDto(
+                subject.Id.ToString(),
+                subject.Name,
+                subject.Teachers.
+                    Select(t => new MinimalTeacherResultDto(
+                        t.Id.ToString(),
+                        t.User.FirstName,
+                        t.User.LastName)));
 
             return viewModel;
         }

@@ -71,7 +71,14 @@
             <param name="id">The ID of the user to retrieve.</param>
             <returns>The user object if found, otherwise returns not found.</returns>
         </member>
-        <member name="M:UniTrackBackend.Controllers.AdminController.GetAllUsers">
+        <member name="M:UniTrackBackend.Controllers.AdminController.GetAdmin(System.String)">
+            <summary>
+            Retrieves an admin by their user ID.
+            </summary>
+            <param name="id">The ID of the admin to retrieve.</param>
+            <returns>The user object if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.AdminController.GetAllUsers(System.Int32)">
             <summary>
             Retrieves all registered users.
             </summary>
@@ -367,6 +374,13 @@
         <member name="M:UniTrackBackend.Controllers.TeacherController.GetTeacher(System.Int32)">
             <summary>
             Retrieves a specific teacher by their ID.
+            </summary>
+            <param name="id">The ID of the teacher to retrieve.</param>
+            <returns>The teacher object if found, otherwise returns not found.</returns>
+        </member>
+        <member name="M:UniTrackBackend.Controllers.TeacherController.GetTeacherByUserId(System.String)">
+            <summary>
+            Retrieves a specific teacher by their user ID.
             </summary>
             <param name="id">The ID of the teacher to retrieve.</param>
             <returns>The teacher object if found, otherwise returns not found.</returns>

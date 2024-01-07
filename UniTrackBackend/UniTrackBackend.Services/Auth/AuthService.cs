@@ -149,12 +149,14 @@ public class AuthService : IAuthService
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                AvatarUrl = "https://cdn-icons-png.flaticon.com/512/1154/1154955.png"
+                AvatarUrl = "https://cdn-icons-png.flaticon.com/512/1154/1154955.png",
+                SchoolId = model.SchoolId
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 throw new DataException();
-        
+
+            await _userManager.AddToRoleAsync(user, Ts.Roles.Guest);
             return user;
         }
         catch (Exception e)
@@ -301,11 +303,12 @@ public class AuthService : IAuthService
     public async Task<string> GetUserRole(User user)
     {
         var roleList = await _userManager.GetRolesAsync(user);
-        
-        // the system does not allow more than one role per user
-        // no time to allow it to handle more than one :^) so
-        // we assume that there is no other thing in the list than the role we need
-        return roleList.First();
+        var role = roleList.FirstOrDefault();
+        return role is null ? Ts.Roles.Guest :
+            // the system does not allow more than one role per user
+            // no time to allow it to handle more than one :^) so
+            // we assume that there is no other thing in the list than the role we need
+            roleList.First();
     }
 }
 

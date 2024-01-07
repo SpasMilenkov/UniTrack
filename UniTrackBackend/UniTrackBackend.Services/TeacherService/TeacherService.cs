@@ -1,6 +1,7 @@
 ﻿using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Commons.Exceptions;
 using UniTrackBackend.Services.Mappings;
 using UniTrackBackend.Services.SubjectService;
 
@@ -90,5 +91,13 @@ public class TeacherService : ITeacherService
         {
             return new GradeDto(-1, "Not a class teacher");
         }
+    }
+
+    public async Task<Teacher> GetTeacherWithDetailsByUserId(string userId)
+    {
+        var teacher = await _unitOfWork.TeacherRepository.GetTeacherWithDetailsByUserIdAsync(userId);
+        if (teacher is null) throw new DataNotFoundException("User with these credentials does not exist");
+
+        return teacher;
     }
 }

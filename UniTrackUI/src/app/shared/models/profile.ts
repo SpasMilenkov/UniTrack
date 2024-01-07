@@ -1,12 +1,11 @@
-import { ProfileTypes } from "../enums/profile-types.enum";
+import { Roles } from "../enums/roles.enum";
 
 export interface Profile{
   id: string;
-  uniId: string;
+  schoolId: string;
   avatarUrl: string;
   firstName: string;
   lastName: string;
-  type: ProfileTypes;
-  classId: string;
-  className: string;
+  type?: Roles;
+  className?: string;
 }

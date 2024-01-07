@@ -10,43 +10,43 @@
             <app-student-details-card
               class="col-md-6 my-1"
               [type]="studentDetailsCardTypes.GRADES"
-              [grades]="getStudentProfile().grades || []"
-              *ngIf="profile.type === profileTypes.STUDENT"
+              [grades]="getStudentProfile().marks || []"
+              *ngIf="profile.type === roles.STUDENT"
             ></app-student-details-card>
             <app-student-details-card
               class="col-md-6 my-1"
               [purpleCard]="true"
               [type]="studentDetailsCardTypes.ABSENCES"
               [absences]="getStudentProfile().absences || []"
-              *ngIf="profile.type === profileTypes.STUDENT"
+              *ngIf="profile.type === roles.STUDENT"
             ></app-student-details-card>
             <app-teacher-details-card
               class="col-md-4 my-1"
               [type]="teacherDetailsCardTypes.ADD_GRADE"
-              *ngIf="profile.type === profileTypes.TEACHER"
+              *ngIf="profile.type === roles.TEACHER"
             >
             </app-teacher-details-card>
             <app-teacher-details-card
               class="col-md-4 my-1"
               [purpleCard]="true"
               [type]="teacherDetailsCardTypes.ADD_ABSENCE"
-              *ngIf="profile.type === profileTypes.TEACHER"
+              *ngIf="profile.type === roles.TEACHER"
             >
             </app-teacher-details-card>
             <app-teacher-details-card
               class="col-md-4 my-1"
               [type]="teacherDetailsCardTypes.ADD_EVENT"
-              *ngIf="profile.type === profileTypes.TEACHER"
+              *ngIf="profile.type === roles.TEACHER"
             >
             </app-teacher-details-card>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-12 my-5" *ngIf="profile.type === profileTypes.STUDENT">
+        <div class="col-12 my-5" *ngIf="profile.type === roles.STUDENT">
           <h1 class="fw-bold text-ut-accent">Grades: </h1>
           <app-grades-table
-            [grades]="getStudentProfile().grades || []"
+            [grades]="getStudentProfile().marks || []"
           ></app-grades-table>
           <div class="my-4">
             <h1 class="fw-bold text-ut-primary">Absences: </h1>

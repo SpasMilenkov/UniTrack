@@ -11,10 +11,4 @@ export class TeacherDetailsCardComponent {
   @Input() purpleCard = false;
 
   teacherDetailsCardTypes = TeacherDetailsCardTypes;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -19,6 +19,7 @@ builder.Services.AddCors(c =>
                 "http://127.0.0.1:5500",
                 "http://localhost:5173/",
                 "http://localhost:5173",
+                "http://localhost:4200",
                 "http://localhost")
             .AllowCredentials()
             .AllowAnyMethod()
@@ -39,6 +40,8 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IAbsenceService, AbsenceService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

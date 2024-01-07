@@ -46,10 +46,10 @@ public class MarkController : ControllerBase
             return BadRequest();
         
         var mark = _mapper.MapMark(model);
+        await _markService.AddMarkAsync(mark);
         if (mark is null)
             return BadRequest();
-        var createdMark = await _markService.AddMarkAsync(mark);
-        return CreatedAtAction(nameof(GetMark), new { id = createdMark.Id }, createdMark);
+        return Ok();
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public class MarkController : ControllerBase
             return NotFound();
         var updatedMark = await _markService.UpdateMarkAsync(mark, id);
         
-        if (updatedMark is null || updatedMark.Id != id)
+        if (updatedMark is null)
             return NotFound();
 
         return Ok(updatedMark);

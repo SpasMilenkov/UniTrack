@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { User } from 'src/app/shared/models/user';
+import { FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { School } from 'src/app/shared/models/school';
+import { AdminService } from 'src/app/shared/services/admin.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
 
@@ -24,23 +27,31 @@ export class SignupComponent implements OnInit {
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
       ]),
       confirmPassword: this.fb.control('', Validators.required),
+      schoolId: this.fb.control('', Validators.required)
     },
     {
       validators: differentPasswordsValidator(),
     }
   );
   hidePassword = true;
+  schools$!: Observable<School[]>;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
+    private fb: NonNullableFormBuilder,
+    private authService: AuthService,
+    private adminService: AdminService,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.schools$ = this.adminService.getAllSchools();
+  }
 
   onSignup(): void {
     this.authForm.markAllAsTouched();
-    console.log(this.authForm.value);
+    if(this.authForm.valid){
+      this.authService.signup(this.authForm.getRawValue()).subscribe(() => this.router.navigateByUrl('login'));
+    }
   }
 
   toggleHidePassword(event: any): void{

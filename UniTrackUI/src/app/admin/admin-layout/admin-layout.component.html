@@ -1,11 +1,7 @@
 <div class="container-fluid p-0">
   <div class="row m-0">
     <div class="my-5 offset-lg-1 col-lg-10">
-      <app-approval-table
-        [userRequests]="userRequests"
-        (onApprove)="onApprove($event)"
-        (onDisapprove)="onDisapprove($event)"
-      ></app-approval-table>
+      <app-approval-table [userRequests]="userRequests" (onApprove)="onApprove($event)"></app-approval-table>
     </div>
   </div>
 </div>

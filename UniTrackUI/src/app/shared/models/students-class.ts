@@ -2,7 +2,8 @@ import { StudentProfile } from "./student-profile";
 import { TeacherProfile } from "./teacher-profile";
 
 export interface StudentsClass{
-  classId: string;
+  classId: number;
+  className: string;
   students: StudentProfile[];
-  classTeacher: TeacherProfile;
+  classTeacher?: TeacherProfile;
 }

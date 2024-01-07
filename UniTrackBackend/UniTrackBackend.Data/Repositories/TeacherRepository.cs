@@ -15,13 +15,25 @@ public class TeacherRepository : EfRepository<Teacher>, ITeacherRepository
 
     public async Task<Teacher?> GetWithDetailsAsync(int id)
     {
-        var teacher = _context.Teachers
+        var teacher = await _context.Teachers
             .Include(t => t.User)
             .Include(t => t.School)
             .Include(t => t.Subjects)
             .Include(t => t.Absences)
             .Include(t => t.Marks)
-            .FirstOrDefault(t => t.Id == id); // Replace yourTeacherId with the actual teacher ID
+            .FirstOrDefaultAsync(t => t.Id == id);
+
+        return teacher;
+    }
+    public async Task<Teacher?> GetTeacherWithDetailsByUserIdAsync(string userId)
+    {
+        var teacher = await _context.Teachers
+            .Include(t => t.User)
+            .Include(t => t.School)
+            .Include(t => t.Subjects)
+            .Include(t => t.Absences)
+            .Include(t => t.Marks)
+            .FirstOrDefaultAsync(t => t.UserId == userId);
 
         return teacher;
     }

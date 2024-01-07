@@ -11,19 +11,18 @@
       </h2>
       <mat-label>Select subject</mat-label>
       <mat-form-field appearance="outline">
-        <mat-select formControlName="subject">
-          <mat-option
-            *ngFor="let subject of teacher.subjects"
-            [value]="subject"
-            >{{ subject }}</mat-option
-          >
+        <mat-select formControlName="subjectId">
+          <mat-option *ngFor="let subject of subjects" [value]="subject.id">{{
+            subject.name
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-label>Write value</mat-label>
+      <mat-form-field appearance="outline">
+        <input type="number" formControlName="value" matInput />
+      </mat-form-field>
       <ng-container *ngIf="data.type === types.ADD_GRADE">
-        <mat-label>Write grade</mat-label>
-        <mat-form-field appearance="outline">
-          <input type="number" formControlName="grade" matInput />
-        </mat-form-field>
         <mat-label>Add a topic</mat-label>
         <mat-form-field appearance="outline">
           <textarea type="text" formControlName="topic" matInput></textarea>

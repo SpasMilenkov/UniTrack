@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTrackBackend.Api.DTO;
 using UniTrackBackend.Api.DTO.ResultDtos;
-using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
 using UniTrackBackend.Services.Mappings;
 
@@ -70,7 +69,28 @@ public class TeacherController : ControllerBase
         var model = _mapper.MapTeacherDto(teacher);
         return Ok(model);
     }
-    
+    /// <summary>
+    /// Retrieves a specific teacher by their user ID.
+    /// </summary>
+    /// <param name="id">The ID of the teacher to retrieve.</param>
+    /// <returns>The teacher object if found, otherwise returns not found.</returns>
+    [HttpGet("UserId/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeacherResultDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetTeacherByUserId(string id)
+    {
+        var teacher = await _teacherService.GetTeacherWithDetailsByUserId(id);
+        if (teacher == null)
+            return NotFound();
+        var gradeInfo = await _gradeService.GetClassTeacherData(teacher.Id);
+        if (gradeInfo is not  null)
+        {
+            var classTeacherModel = _mapper.MapTeacherDto(teacher, gradeInfo.Value.Key, gradeInfo.Value.Value);
+            return Ok(classTeacherModel);
+        }
+        var model = _mapper.MapTeacherDto(teacher);
+        return Ok(model);
+    }
 
     /// <summary>
     /// Updates an existing teacher's details.

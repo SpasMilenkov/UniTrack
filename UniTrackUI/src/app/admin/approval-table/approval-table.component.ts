@@ -1,36 +1,48 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProfileTypes } from 'src/app/shared/enums/profile-types.enum';
+import { Observable, tap } from 'rxjs';
+import { Roles } from 'src/app/shared/enums/roles.enum';
 import { UserRequest } from 'src/app/shared/models/user-request';
+import { AdminService } from 'src/app/shared/services/admin.service';
 
 @Component({
   selector: 'app-approval-table',
   templateUrl: './approval-table.component.html',
   styleUrls: ['./approval-table.component.scss'],
 })
-export class ApprovalTableComponent implements OnInit {
+export class ApprovalTableComponent implements OnInit, OnChanges {
   displayedColumns: string[] = [
     'select',
     'email',
-    'type',
     'firstName',
     'lastName',
     'approved',
     'actions',
   ];
   selection = new SelectionModel<UserRequest>(true, []);
-  profileTypes = ProfileTypes;
+  roles = Roles;
 
   dataSource!: MatTableDataSource<UserRequest>;
   @Input() userRequests: UserRequest[] = [];
-  @Output() onApprove = new EventEmitter<string[]>();
-  @Output() onDisapprove = new EventEmitter<string[]>();
+  @Output() onApprove = new EventEmitter<string[] | string>();
 
-  constructor() {}
+  constructor(private adminService: AdminService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+      console.log(changes)
+      if (changes['userRequests'].currentValue) {
+        this.dataSource = new MatTableDataSource<UserRequest>(
+        changes['userRequests'].currentValue
+      )
+    }
+  }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<UserRequest>(this.userRequests);
+    console.log(this.userRequests)
+    this.dataSource = new MatTableDataSource<UserRequest>(
+      this.userRequests
+    )
   }
 
   isAllSelected() {
@@ -58,20 +70,14 @@ export class ApprovalTableComponent implements OnInit {
   }
 
   approve(id?: string): void {
-    if (id) {
-      this.onApprove.emit([id]);
-      return;
-    }
-    const clonedIds = this.selection.selected.map(({ id }) => id);
-    this.onApprove.emit(clonedIds);
+    const clonedIds = this.selection.selected.map(({ userId }) => userId);
+
+
+    const selectedIds = id ? id : clonedIds;
+    this.onApprove.emit(selectedIds);
   }
 
-  disapprove(id?: string): void {
-    if (id) {
-      this.onDisapprove.emit([id]);
-      return;
-    }
-    const clonedIds = this.selection.selected.map(({ id }) => id);
-    this.onDisapprove.emit(clonedIds);
+  selectRow(row: any): void {
+    this.selection.toggle(row);
   }
 }

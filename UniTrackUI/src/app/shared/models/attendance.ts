@@ -1,5 +1,5 @@
 export interface Attendance {
-  TotalAbsence: number;
-  UnExcusedAbsence: number;
-  ExcusedAbsence: number;
+  totalAbsence: number;
+  unExcusedAbsence: number;
+  excusedAbsence: number;
 }

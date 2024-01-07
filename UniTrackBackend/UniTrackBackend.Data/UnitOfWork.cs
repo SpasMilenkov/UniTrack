@@ -9,7 +9,7 @@ public class UnitOfWork : IDisposable, IUnitOfWork
 {
     private readonly UniTrackDbContext _context;
     private IAbsenceRepository? _absenceRepository;
-    private EfRepository<Grade>? _gradeRepository;
+    private IGradeRepository? _gradeRepository;
     private MarkRepository? _markRepository;
     private EfRepository<Parent>? _parentRepository;
     private StudentRepository? _studentRepository;
@@ -17,6 +17,7 @@ public class UnitOfWork : IDisposable, IUnitOfWork
     private ITeacherRepository? _teacherRepository;
     private EfRepository<School>? _schoolRepository;
     private EfRepository<Admin>? _adminRepository;
+    private IRepository<GradeSubjectTeacher> _gradeSubjectTeacherRepository;
     
     public UnitOfWork(UniTrackDbContext context)
     {
@@ -32,6 +33,15 @@ public class UnitOfWork : IDisposable, IUnitOfWork
         }
     }
 
+    public IRepository<GradeSubjectTeacher> GradeSubjectTeacherRepository
+    {
+        get
+        {
+            var gradeSubjectTeacherRepository = _gradeSubjectTeacherRepository ??= new EfRepository<GradeSubjectTeacher>(_context);
+            return gradeSubjectTeacherRepository;
+        }
+    }
+
     public IAbsenceRepository AbsenceRepository
     {
         get
@@ -42,11 +52,11 @@ public class UnitOfWork : IDisposable, IUnitOfWork
         }
     }
 
-    public IRepository<Grade> GradeRepository
+    public IGradeRepository GradeRepository
     {
         get
         {
-            _gradeRepository ??= new EfRepository<Grade>(_context);
+            _gradeRepository ??= new GradeRepository(_context);
             return _gradeRepository;
         }
     }

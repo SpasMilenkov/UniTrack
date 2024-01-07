@@ -122,7 +122,8 @@ public class AuthControllerTests
             UserName = "string",
             FirstName = "string",
             LastName = "string",
-            ConfirmPassword = "Password123!"
+            ConfirmPassword = "Password123!",
+            SchoolId = 1
         };
         var user = new User
         {
@@ -172,7 +173,8 @@ public class AuthControllerTests
             LastName = null,
             Email = null,
             Password = null,
-            ConfirmPassword = null
+            ConfirmPassword = null,
+            SchoolId = 1
         }; // Invalid model (empty or incorrect data)
 
         // Act
@@ -194,6 +196,7 @@ public class AuthControllerTests
             LastName = "string",
             Password = "Password123!",
             ConfirmPassword = "Password123!",
+            SchoolId = 1,
             // Other properties...
         };
         var user = new User
@@ -226,6 +229,7 @@ public class AuthControllerTests
             LastName = "string",
             Password = "Password123!",
             ConfirmPassword = "Password123!",
+            SchoolId = 1,
             // Other properties...
         };
 

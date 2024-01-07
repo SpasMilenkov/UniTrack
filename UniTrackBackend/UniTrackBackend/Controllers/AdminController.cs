@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniTrackBackend.Api.DTO.ResultDtos;
 using UniTrackBackend.Data.Models;
 using UniTrackBackend.Services;
 
@@ -42,7 +43,7 @@ namespace UniTrackBackend.Controllers
         /// <param name="id">The ID of the user to retrieve.</param>
         /// <returns>The user object if found, otherwise returns not found.</returns>
         [HttpGet("GetUser/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResultDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -50,19 +51,44 @@ namespace UniTrackBackend.Controllers
             if (user == null)
                 return NotFound();
 
-            return Ok(user);
+            var result = new UserResultDto(user.Id, user.FirstName, user.LastName, user.Email, user.AvatarUrl);
+            return Ok(result);
+        }
+        
+        
+        /// <summary>
+        /// Retrieves an admin by their user ID.
+        /// </summary>
+        /// <param name="id">The ID of the admin to retrieve.</param>
+        /// <returns>The user object if found, otherwise returns not found.</returns>
+        [HttpGet("GetAdminByUserId/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminResultDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAdmin(string id)
+        {
+            var admin = await _adminService.GetAdminByUserId(id);
+
+            var result = new AdminResultDto(admin.User.FirstName,
+                admin.User.LastName,
+                admin.User.Email,
+                admin.User.AvatarUrl,
+                admin.School.Name,
+                admin.SchoolId.ToString());
+            return Ok(result);
         }
 
         /// <summary>
         /// Retrieves all registered users.
         /// </summary>
         /// <returns>A list of all users.</returns>
-        [HttpGet("GetAllUsers")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<User>))]
-        public Task<IActionResult> GetAllUsers()
+        [HttpGet("GetAllUsers/{schoolId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResultDto>))]
+        public async Task<IActionResult> GetAllUsers(int schoolId)
         {
-            var users = _adminService.GetAllUsers();
-            return Task.FromResult<IActionResult>(Ok(users));
+            var users = await _adminService.GetAllUsers(schoolId);
+
+            var result = users.Select(u => new UserResultDto(u.Id, u.FirstName, u.LastName, u.Email, u.AvatarUrl));
+            return Ok(result);
         }
 
         /// <summary>

@@ -13,4 +13,5 @@ public class User : IdentityUser
     public DateTime? RefreshTokenValidity { get; set; }
 
     public string AvatarUrl { get; set; } = null!;
+    public int SchoolId { get; set; }
 }

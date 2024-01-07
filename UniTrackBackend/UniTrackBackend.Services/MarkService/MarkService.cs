@@ -21,7 +21,7 @@ namespace UniTrackBackend.Services
             _mapper = mapper;
         }
 
-        public async Task<MarkResultDto> AddMarkAsync(Mark? mark)
+        public async Task AddMarkAsync(Mark? mark)
         {
             try
             {
@@ -31,9 +31,8 @@ namespace UniTrackBackend.Services
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while adding mark");
-                return null;
+                throw;
             }
-            return _mapper.MapMarkDto(mark);
         }
 
         public async Task<MarkResultDto> GetMarkByIdAsync(int id)
@@ -73,7 +72,7 @@ namespace UniTrackBackend.Services
         {
             try
             {
-                var marks = await _context.MarkRepository.GetAsync(m => m.Student.Id == studentId);
+                var marks = await _context.MarkRepository.GetMarksWithDetailsByStudent(studentId);
                 if (marks == null) throw new ArgumentNullException(nameof(marks));  
 
                 return marks.Select(m => _mapper.MapMarkDto(m));
@@ -90,7 +89,7 @@ namespace UniTrackBackend.Services
         {
             try
             {
-                var marks = await _context.MarkRepository.GetAsync(m => m.Teacher.Id == teacherId);
+                var marks = await _context.MarkRepository.GetMarksWithDetailsByTeacher(teacherId);
                 if (marks == null) throw new ArgumentNullException(nameof(marks));  
 
                 return marks.Select(m => _mapper.MapMarkDto(m));

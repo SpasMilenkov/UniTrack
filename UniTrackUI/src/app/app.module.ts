@@ -8,8 +8,9 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { StudentsListModule } from './students-list/students-list.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AdminModule } from './admin/admin.module';
+import { ErrorInterceptor } from './shared/services/error-handler.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,13 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

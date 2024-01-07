@@ -1,0 +1,60 @@
+<div
+  class="main-wrapper d-flex flex-column align-items-center justify-content-center px-5 py-3"
+>
+  <form [formGroup]="form">
+    <h1 mat-dialog-title class="text-center fw-bold mb-3">
+      Add detailed teacher's information:
+    </h1>
+    <div mat-dialog-content class="d-flex flex-column justify-content-center">
+      <mat-label>Select subjects:</mat-label>
+      <mat-form-field appearance="outline" *ngIf="allSubjects$ | async as allSubjects">
+        <mat-select formControlName="subjectIds" multiple>
+          <mat-option
+            *ngFor="let subject of allSubjects"
+            [value]="subject.id"
+            >{{ subject.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-label>Select classes:</mat-label>
+      <mat-form-field appearance="outline" *ngIf="allClasses$ | async as allClasses">
+        <mat-select formControlName="gradeIds" multiple>
+          <mat-option
+            *ngFor="let class of allClasses"
+            [value]="class.classId"
+            >{{ class.className }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-label>Set a class teacher:</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="classId" *ngIf="allClasses$ | async as allClasses">
+          <mat-option
+            *ngFor="let class of allClasses"
+            [value]="class.classId"
+            >{{ class.className }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="d-flex flex-column">
+      <button
+        mat-raised-button
+        mat-dialog-close
+        class="my-2 accent-btn-lg cancel-btn"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        cdkFocusInitial
+        class="my-2 primary-btn-lg"
+        (click)="onSubmit()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

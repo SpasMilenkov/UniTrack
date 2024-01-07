@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
 
 @Component({
@@ -10,11 +11,11 @@ import { differentPasswordsValidator } from 'src/app/shared/utils/validators';
 export class ResetPasswordComponent implements OnInit {
   authForm = this.fb.group(
     {
-      password: this.fb.control(null, [
+      password: this.fb.control('', [
         Validators.required,
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
       ]),
-      confirmPassword: this.fb.control(null, Validators.required),
+      confirmPassword: this.fb.control('', Validators.required),
     },
     {
       validators: differentPasswordsValidator(),
@@ -23,13 +24,15 @@ export class ResetPasswordComponent implements OnInit {
 
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {}
 
   onLogin(): void {
     this.authForm.markAllAsTouched();
-    console.log(this.authForm.value);
+    if(this.authForm.valid){
+      this.authService.resetPassword(this.authForm.getRawValue());
+    }
   }
 
   toggleHidePassword(event: any): void{

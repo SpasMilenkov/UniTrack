@@ -6,4 +6,5 @@ public interface ITeacherRepository: IRepository<Teacher>
 {
     Task<Teacher?> GetWithDetailsAsync(int id);
     public Task<IEnumerable<Teacher>> GetAllTeachersWithDetailsAsync();
+    Task<Teacher?> GetTeacherWithDetailsByUserIdAsync(string userId);
 }

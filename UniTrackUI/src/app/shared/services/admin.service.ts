@@ -1,93 +1,51 @@
 import { Injectable } from '@angular/core';
 import { UserRequest } from '../models/user-request';
-import { ProfileTypes } from '../enums/profile-types.enum';
+import { Roles } from '../enums/roles.enum';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { StudentsClass } from '../models/students-class';
+import { Subject } from '../models/subject';
+import { ApproveTeacherData } from '../models/approve-teacher-data';
+import { School } from '../models/school';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  getUserApprovalRequests(): UserRequest[] {
-    return [
-      {
-        id: '1',
-        email: 'test1@test.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-      {
-        id: '2',
-        email: 'test2@test.com',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-      {
-        id: '3',
-        email: 'test3@test.com',
-        firstName: 'Alice',
-        lastName: 'Johnson',
-        type: ProfileTypes.TEACHER,
-        approved: true
-      },
-      {
-        id: '4',
-        email: 'test4@test.com',
-        firstName: 'Bob',
-        lastName: 'Anderson',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-      {
-        id: '5',
-        email: 'test5@test.com',
-        firstName: 'Eva',
-        lastName: 'Brown',
-        type: ProfileTypes.TEACHER,
-        approved: false
-      },
-      {
-        id: '6',
-        email: 'test6@test.com',
-        firstName: 'Mike',
-        lastName: 'Wilson',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-      {
-        id: '7',
-        email: 'test7@test.com',
-        firstName: 'Sara',
-        lastName: 'Miller',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-      {
-        id: '8',
-        email: 'test8@test.com',
-        firstName: 'David',
-        lastName: 'Clark',
-        type: ProfileTypes.TEACHER,
-        approved: false
-      },
-      {
-        id: '9',
-        email: 'test9@test.com',
-        firstName: 'Grace',
-        lastName: 'White',
-        type: ProfileTypes.TEACHER,
-        approved: false
-      },
-      {
-        id: '10',
-        email: 'test10@test.com',
-        firstName: 'Tom',
-        lastName: 'Taylor',
-        type: ProfileTypes.STUDENT,
-        approved: false
-      },
-    ];
+  constructor(private http: HttpClient, private userService: UserService) {}
+
+  approveStudents(usersData: any): Observable<any> {
+    console.log(usersData)
+    return this.http.put<any>('http://localhost:5036/api/Approval/students', usersData, {withCredentials: true});
+  }
+
+  approveTeacher(teacherData: ApproveTeacherData) {
+    const body = {
+      classId: +teacherData.classId,
+      schoolId: +teacherData.schoolId,
+      gradeIds: teacherData.gradeIds?.map(grade => +grade),
+      subjectIds: teacherData.subjectIds.map(subject => +subject)
+    }
+    return this.http.put<any>('http://localhost:5036/api/Approval/teachers', body, {withCredentials: true});
+  }
+
+  getAllSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>('http://localhost:5036/api/Subjects', {withCredentials: true})
+  }
+
+  getAllSchools(): Observable<School[]> {
+    return this.http.get<School[]>('http://localhost:5036/api/School', {withCredentials: true})
+  }
+
+  getAllClasses(): Observable<StudentsClass[]> {
+    const {schoolId} = this.userService.getCurrentUserProfile();
+    return this.http.get<StudentsClass[]>(`http://localhost:5036/api/Grade/getSubjectsBySchoolId/${schoolId}`, {withCredentials: true})
+  }
+
+  getUserApprovalRequests(): Observable<UserRequest[]> {
+    const {schoolId} = this.userService.getCurrentUserProfile();
+
+    return this.http.get<UserRequest[]>('http://localhost:5036/api/Admin/GetAllUsers/' + schoolId, {withCredentials: true})
   }
 }
