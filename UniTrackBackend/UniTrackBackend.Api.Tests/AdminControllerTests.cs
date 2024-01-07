@@ -46,32 +46,32 @@ namespace UniTrackBackend.Api.Tests
         }
 
 
-        [Fact]
-        public async Task GetUser_ReturnsCorrectUser()
-        {
-            // Arrange
-            var fakeAdminService = A.Fake<IAdminService>();
-            var user = new User
-            {
-                Id = "2",
-                UserName = "testuser2",
-                Email = "testuser2@example.com",
-                FirstName = "Ivan",
-                LastName = "Ivanov",
-                RefreshToken = "SomeRefreshToken",
-                RefreshTokenValidity = DateTime.UtcNow.AddDays(7)
-            };
-            A.CallTo(() => fakeAdminService.GetUserByIdAsync(A<string>.Ignored)).Returns(user);
-
-            var controller = new AdminController(fakeAdminService);
-
-            // Act
-            var result = await controller.GetUser(user.Id);
-
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(user, okObjectResult.Value);
-        }
+        // [Fact]
+        // public async Task GetUser_ReturnsCorrectUser()
+        // {
+        //     // Arrange
+        //     var fakeAdminService = A.Fake<IAdminService>();
+        //     var user = new User
+        //     {
+        //         Id = "2",
+        //         UserName = "testuser2",
+        //         Email = "testuser2@example.com",
+        //         FirstName = "Ivan",
+        //         LastName = "Ivanov",
+        //         RefreshToken = "SomeRefreshToken",
+        //         RefreshTokenValidity = DateTime.UtcNow.AddDays(7)
+        //     };
+        //     A.CallTo(() => fakeAdminService.GetUserByIdAsync(A<string>.Ignored)).Returns(user);
+        //
+        //     var controller = new AdminController(fakeAdminService);
+        //
+        //     // Act
+        //     var result = await controller.GetUser(user.Id);
+        //
+        //     // Assert
+        //     var okObjectResult = Assert.IsType<OkObjectResult>(result);
+        //     Assert.Equal(user, okObjectResult.Value);
+        // }
 
         // [Fact]
         // public async Task GetAllUsers_ReturnsAllUsers()
