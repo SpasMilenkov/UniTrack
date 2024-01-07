@@ -296,6 +296,7 @@ public static class DataSeeder
         var user2 = await _userManager.FindByEmailAsync("user97@example.com");
         
         var teacher1 = await unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == user1!.Id);
+        await unitOfWork.TeacherRepository.LoadCollectionAsync(teacher1, t => t.Subjects);
         var teacher2 = await unitOfWork.TeacherRepository.FirstOrDefaultAsync(t => t.UserId == user2!.Id);
         var schools = await unitOfWork.SchoolRepository.GetAllAsync();
         var enumerable = schools.ToList();
@@ -305,12 +306,25 @@ public static class DataSeeder
             schools = await unitOfWork.SchoolRepository.GetAllAsync();
             enumerable = schools.ToList();
         }
+        
         var grades = new List<Grade>
         {
-            new() { Name = "Grade 10", ClassTeacherId = teacher1!.Id, Teachers = new List<Teacher> {teacher1}, SchoolId = enumerable.First().Id},
-            new() { Name = "Grade 9", ClassTeacherId = teacher2!.Id, Teachers = new List<Teacher> {teacher2}, SchoolId = enumerable.First().Id},  
+            new()
+            {
+                Name = "Grade 10",
+                ClassTeacherId = teacher1!.Id,
+                Teachers = new List<Teacher> {teacher1},
+                SchoolId = enumerable.First().Id,
+
+            },
+            new()
+            {
+                Name = "Grade 9",
+                ClassTeacherId = teacher2!.Id,
+                Teachers = new List<Teacher> {teacher2},
+                SchoolId = enumerable.First().Id
+            },  
         };
-        
         foreach (var grade in grades)
         {
             if (await unitOfWork.GradeRepository.FirstOrDefaultAsync(g => g.Name == grade.Name) == null)
@@ -318,7 +332,34 @@ public static class DataSeeder
                 await unitOfWork.GradeRepository.AddAsync(grade);
             }
         }
+        
         await unitOfWork.SaveAsync();
+        try
+        {
+            var subjects = await unitOfWork.SubjectRepository.GetAllAsync();
+            var gradeEntities = await unitOfWork.GradeRepository.GetAllAsync();
+            foreach (var grade in gradeEntities)
+            {
+                foreach (var subject in subjects)
+                {
+                    var gradeSubjectTeacher = new GradeSubjectTeacher
+                    {
+                        GradeId = grade.Id,
+                        SubjectId = subject.Id,
+                        TeacherId = (grade.Name == "Grade 10" ? teacher1.Id : teacher2.Id)
+                    };
+
+                    // Add GradeSubjectTeacher to the database
+                    await unitOfWork.GradeSubjectTeacherRepository.AddAsync(gradeSubjectTeacher);
+                }
+            }
+            await unitOfWork.SaveAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private static async Task SeedAbsencesAsync(IUnitOfWork unitOfWork)

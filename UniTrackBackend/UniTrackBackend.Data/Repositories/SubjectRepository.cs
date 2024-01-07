@@ -23,8 +23,15 @@ public class SubjectRepository : EfRepository<Subject>, ISubjectRepository
 
     public async Task<ICollection<Subject>> GetSubjectsWithDetails(HashSet<int> filter)
     {
-        return await _context.Subjects.Include(s => s.Teachers)
-            .Where(s => filter.Contains(s.Id))
-            .ToListAsync();
+        IQueryable<Subject> query = _context.Subjects
+            .Include(s => s.Teachers)
+            .ThenInclude(t => t.User);
+
+        if (filter.Any())
+        {
+            query = query.Where(s => filter.Contains(s.Id));
+        }
+
+        return await query.ToListAsync();
     }
 }

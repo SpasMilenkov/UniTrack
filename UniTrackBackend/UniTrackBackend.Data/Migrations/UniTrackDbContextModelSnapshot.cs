@@ -273,6 +273,26 @@ namespace UniTrackBackend.Data.Migrations
                     b.ToTable("Grades");
                 });
 
+            modelBuilder.Entity("UniTrackBackend.Data.Models.GradeSubjectTeacher", b =>
+                {
+                    b.Property<int>("GradeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GradeId", "TeacherId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("GradeSubjectTeachers");
+                });
+
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
                 {
                     b.Property<int>("Id")
@@ -664,6 +684,33 @@ namespace UniTrackBackend.Data.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("UniTrackBackend.Data.Models.GradeSubjectTeacher", b =>
+                {
+                    b.HasOne("UniTrackBackend.Data.Models.Grade", "Grade")
+                        .WithMany("GradeSubjectTeachers")
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTrackBackend.Data.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Grade");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("UniTrackBackend.Data.Models.Mark", b =>
                 {
                     b.HasOne("UniTrackBackend.Data.Models.Student", "Student")
@@ -761,6 +808,8 @@ namespace UniTrackBackend.Data.Migrations
 
             modelBuilder.Entity("UniTrackBackend.Data.Models.Grade", b =>
                 {
+                    b.Navigation("GradeSubjectTeachers");
+
                     b.Navigation("Subjects");
                 });
 

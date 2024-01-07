@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UniTrackBackend.Data.Commons;
 using UniTrackBackend.Data.Database;
 using UniTrackBackend.Data.Models;
+using UniTrackBackend.Services.Commons.Exceptions;
 
 namespace UniTrackBackend.Data.Repositories;
 
@@ -43,6 +44,43 @@ public class StudentRepository: EfRepository<Student>, IStudentRepository
                 .LoadAsync();
         }
         return student;
+    }
+
+    public async Task<IEnumerable<Student>> GetStudentsByTeacherIdAsync(int teacherId)
+    {
+        // Find the grades associated with the teacher through the GradeSubjectTeacher junction table
+        var gradeIds = await _context.GradeSubjectTeachers
+            .Where(gst => gst.TeacherId == teacherId)
+            .Select(gst => gst.GradeId)
+            .Distinct()
+            .ToListAsync();
+
+        if (!gradeIds.Any())
+            throw new DataNotFoundException("Teacher with such Id does not exist or does not teach any grades");
+
+        // Query for students in these grades
+        var students = await _context.Students
+            .Include(s => s.User)
+            .Include(s => s.Grade)
+            .ThenInclude(g => g.ClassTeacher)
+            .ThenInclude(t => t.User)
+            .Where(s => gradeIds.Contains(s.Grade.Id))
+            .ToListAsync();
+
+        // Load Absences and Marks for each student
+        foreach (var student in students)
+        {
+            await _context.Entry(student).Collection(s => s.Absences)
+                .Query()
+                .Include(a => a.Subject)
+                .LoadAsync();
+
+            await _context.Entry(student).Collection(s => s.Marks)
+                .Query()
+                .LoadAsync();
+        }
+    
+        return students;
     }
     public async Task<Student?> GetStudentWithDetailsAsync(string id)
     {

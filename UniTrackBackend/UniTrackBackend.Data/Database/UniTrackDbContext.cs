@@ -20,6 +20,7 @@ public class UniTrackDbContext : IdentityDbContext<User>
     public DbSet<Teacher> Teachers { get; set; } = null!;
     public DbSet<School> Schools { get; set; } = null!;
     public DbSet<Admin> Admins { get; set; } = null!;
+    public DbSet<GradeSubjectTeacher> GradeSubjectTeachers { get; set; } = null!;
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         
@@ -47,5 +48,15 @@ public class UniTrackDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Teacher>()
             .HasMany(t => t.Grades)
         .WithMany(g => g.Teachers);
+        
+        // GradeSubjectTeacher configuration
+        modelBuilder.Entity<GradeSubjectTeacher>()
+            .HasKey(gst => new { gst.GradeId, gst.TeacherId, gst.SubjectId });
+
+        modelBuilder.Entity<GradeSubjectTeacher>()
+            .HasOne(gst => gst.Grade)
+            .WithMany(g => g.GradeSubjectTeachers)
+            .HasForeignKey(gst => gst.GradeId);
+        
     }
 }

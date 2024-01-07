@@ -17,6 +17,7 @@ public class UnitOfWork : IDisposable, IUnitOfWork
     private ITeacherRepository? _teacherRepository;
     private EfRepository<School>? _schoolRepository;
     private EfRepository<Admin>? _adminRepository;
+    private IRepository<GradeSubjectTeacher> _gradeSubjectTeacherRepository;
     
     public UnitOfWork(UniTrackDbContext context)
     {
@@ -29,6 +30,15 @@ public class UnitOfWork : IDisposable, IUnitOfWork
             _schoolRepository ??= new EfRepository<School>(_context);
 
             return _schoolRepository;
+        }
+    }
+
+    public IRepository<GradeSubjectTeacher> GradeSubjectTeacherRepository
+    {
+        get
+        {
+            var gradeSubjectTeacherRepository = _gradeSubjectTeacherRepository ??= new EfRepository<GradeSubjectTeacher>(_context);
+            return gradeSubjectTeacherRepository;
         }
     }
 
