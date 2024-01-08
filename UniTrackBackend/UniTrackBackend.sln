@@ -1,32 +1,39 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend", "UniTrackBackend\UniTrackBackend.csproj", "{17334E40-BBE1-4767-A1E7-9E047E360570}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend", "UniTrackBackend\UniTrackBackend.csproj", "{17334E40-BBE1-4767-A1E7-9E047E360570}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{DDA47C10-578A-4F05-B738-DF23648D080B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Data.Models", "UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj", "{755B7C86-5A99-4BF2-8103-9DB03DB8F888}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Data.Models", "UniTrackBackend.Data.Models\UniTrackBackend.Data.Models.csproj", "{755B7C86-5A99-4BF2-8103-9DB03DB8F888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Data", "UniTrackBackend.Data\UniTrackBackend.Data.csproj", "{851124B3-2001-481E-A4B9-E276398D2131}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Data", "UniTrackBackend.Data\UniTrackBackend.Data.csproj", "{851124B3-2001-481E-A4B9-E276398D2131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Data.Commons", "UniTrackBackend.Data.Commons\UniTrackBackend.Data.Commons.csproj", "{672CB384-AF29-4658-9263-7E7EF5F83839}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Data.Commons", "UniTrackBackend.Data.Commons\UniTrackBackend.Data.Commons.csproj", "{672CB384-AF29-4658-9263-7E7EF5F83839}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2DB35EE2-805E-4476-AD8E-4F9C6CF74C52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services", "UniTrackBackend.Services\UniTrackBackend.Services.csproj", "{E22D37EA-B386-4ABD-94C0-F40A8642C3A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Services", "UniTrackBackend.Services\UniTrackBackend.Services.csproj", "{E22D37EA-B386-4ABD-94C0-F40A8642C3A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services.Mappings", "UniTrackBackend.Services.Mappings\UniTrackBackend.Services.Mappings.csproj", "{F69AE7D1-9966-4168-8B4B-7744B2D3F2FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Services.Mappings", "UniTrackBackend.Services.Mappings\UniTrackBackend.Services.Mappings.csproj", "{F69AE7D1-9966-4168-8B4B-7744B2D3F2FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E878AC06-2561-4BE8-B168-83A827B56C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Api.DTO", "UniTrackBackend.Api.DTO\UniTrackBackend.Api.DTO.csproj", "{800C4A69-37B3-43B6-8FD2-00AEEF8C4770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Api.DTO", "UniTrackBackend.Api.DTO\UniTrackBackend.Api.DTO.csproj", "{800C4A69-37B3-43B6-8FD2-00AEEF8C4770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services.Commons", "UniTrackBackend.Services.Commons\UniTrackBackend.Services.Commons.csproj", "{8A887F10-9049-4FE5-9712-D89545AE23FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Services.Commons", "UniTrackBackend.Services.Commons\UniTrackBackend.Services.Commons.csproj", "{8A887F10-9049-4FE5-9712-D89545AE23FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{594EE8A9-074A-4106-8AE4-D49240D56BC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Services.Tests", "UniTrackBackend.Services.Tests\UniTrackBackend.Services.Tests.csproj", "{310985FE-8784-455F-A910-E3CC11C29FD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Services.Tests", "UniTrackBackend.Services.Tests\UniTrackBackend.Services.Tests.csproj", "{310985FE-8784-455F-A910-E3CC11C29FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTrackBackend.Api.Tests", "UniTrackBackend.Api.Tests\UniTrackBackend.Api.Tests.csproj", "{FE15BF9E-5934-44C1-98D0-EC32388AA523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.Api.Tests", "UniTrackBackend.Api.Tests\UniTrackBackend.Api.Tests.csproj", "{FE15BF9E-5934-44C1-98D0-EC32388AA523}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{439D85E4-9062-41FE-A1B0-F44696AF17D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTrackBackend.MVC", "UniTrackBackend.MVC\UniTrackBackend.MVC.csproj", "{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,17 +81,28 @@ Global
 		{FE15BF9E-5934-44C1-98D0-EC32388AA523}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE15BF9E-5934-44C1-98D0-EC32388AA523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE15BF9E-5934-44C1-98D0-EC32388AA523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{17334E40-BBE1-4767-A1E7-9E047E360570} = {E878AC06-2561-4BE8-B168-83A827B56C04}
 		{755B7C86-5A99-4BF2-8103-9DB03DB8F888} = {DDA47C10-578A-4F05-B738-DF23648D080B}
 		{851124B3-2001-481E-A4B9-E276398D2131} = {DDA47C10-578A-4F05-B738-DF23648D080B}
 		{672CB384-AF29-4658-9263-7E7EF5F83839} = {DDA47C10-578A-4F05-B738-DF23648D080B}
 		{E22D37EA-B386-4ABD-94C0-F40A8642C3A7} = {2DB35EE2-805E-4476-AD8E-4F9C6CF74C52}
 		{F69AE7D1-9966-4168-8B4B-7744B2D3F2FC} = {2DB35EE2-805E-4476-AD8E-4F9C6CF74C52}
-		{17334E40-BBE1-4767-A1E7-9E047E360570} = {E878AC06-2561-4BE8-B168-83A827B56C04}
 		{800C4A69-37B3-43B6-8FD2-00AEEF8C4770} = {E878AC06-2561-4BE8-B168-83A827B56C04}
 		{8A887F10-9049-4FE5-9712-D89545AE23FD} = {2DB35EE2-805E-4476-AD8E-4F9C6CF74C52}
 		{310985FE-8784-455F-A910-E3CC11C29FD6} = {594EE8A9-074A-4106-8AE4-D49240D56BC9}
 		{FE15BF9E-5934-44C1-98D0-EC32388AA523} = {594EE8A9-074A-4106-8AE4-D49240D56BC9}
+		{D24279A6-8C69-4FEC-A4A2-42FB486C4E9C} = {439D85E4-9062-41FE-A1B0-F44696AF17D8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8CE1E21-8CF2-4D4F-ABAF-97CF000A8B55}
 	EndGlobalSection
 EndGlobal
