@@ -18,18 +18,24 @@ namespace UniTrackBackend.Services
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<School?> AddSchoolAsync(School? school)
+        public async Task<School?> AddSchoolAsync(string schoolName)
         {
             try
             {
+                var school = new School()
+                {
+                    Name = schoolName
+                };
                 await _context.SchoolRepository.AddAsync(school);
+                await _context.SaveAsync();
+                return school;
+
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while adding school");
                 return null;
             }
-            return school;
         }
         public async Task<School?> GetSchoolByIdAsync(int id)
         {
