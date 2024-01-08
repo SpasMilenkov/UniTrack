@@ -24,6 +24,7 @@ export class AddGradeAbsenceDialogComponent {
     value: this.fb.control(1, Validators.required),
     date: this.fb.control('', Validators.required),
     topic: this.fb.control(''),
+    excused: this.fb.control(false)
   });
 
   constructor(
