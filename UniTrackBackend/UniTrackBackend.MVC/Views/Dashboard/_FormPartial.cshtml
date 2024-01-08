@@ -1,0 +1,38 @@
+@model DashboardFormViewModel
+    <div class="d-flex">
+        <div class="card w-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Register new school:</h5>
+                <form asp-action="Index" method="post" class="pt-3">
+                    @Html.AntiForgeryToken()
+    
+                    <div class="form-group mb-4">
+                        @Html.LabelFor(model => model.SchoolName, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.SchoolName, new { @class = "form-control", placeholder = "Enter school name" })
+                        @Html.ValidationMessageFor(model => model.SchoolName, "", new { @class = "text-danger" })
+                    </div>
+    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<style>
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        font-size: 1.1rem; /* Larger text for input for better readability */
+        padding: .75rem 1.25rem; /* More padding inside the input */
+    }
+
+    .btn-primary {
+        padding: .75rem 1.25rem; /* Larger padding for button */
+        font-size: 1.1rem; /* Larger text for the button */
+        width: 100%; /* Full width button */
+    }
+</style>

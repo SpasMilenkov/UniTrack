@@ -1,0 +1,52 @@
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-4">
+    <div class="row g-3">
+        <!-- Cards Section -->
+        <div class="col-lg-8 d-flex flex-wrap align-items-stretch">
+            <div class="row g-3">
+                @foreach (var card in new[] { Model.SchoolCard, Model.TeacherCard, Model.StudentCard, Model.UserCard })
+                {
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@card.Title</h5>
+                                <p class="card-text flex-grow-1">@card.Content</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="col-lg-4">
+            <div class="h-100 d-flex align-items-stretch">
+                <!-- Align stretch will make the form the same height as the cards -->
+                @await Html.PartialAsync("_FormPartial", Model.Form)
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        font-size: 1.5rem;
+        border-bottom: none;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+</style>
