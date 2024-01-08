@@ -26,7 +26,7 @@ namespace UniTrackBackend.MVC.Controllers
 
             if (user is not null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
                 
             ModelState.AddModelError("", "Invalid login attempt");
